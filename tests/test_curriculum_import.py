@@ -100,3 +100,57 @@ def test_template_round_trip():
         c["code"]: (c["credits"], c["hours"], c["combined"]) for c in parsed["courses"]}
     blank = parse_xlsx(curriculum_workbook(None, s), s["days"])
     assert blank["sections"] == [] and blank["groups"] == []
+
+
+def test_names_with_spacing_and_thai_digits_match():
+    """ชื่อที่เว้นวรรคต่างกัน มีช่องว่างเกิน หรือใช้เลขไทย ต้องจับคู่กับชื่อในชีตสถานที่และชีตอาจารย์ได้"""
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "ชั้นปีที่1"
+    ws.append(HEAD)
+    ws.append(["ปีที่ ๑/๑", 30, 1, "ทด ๐๐๐๐๐๑", "ภาษาทดสอบ", "อ.ดร.สมมติ  หนึ่ง ", "ห้อง๑๐๑  ", "3(3-0-6)", "วิชาภาษา"])
+    ws.append([None, None, 2, "ทด 000002", "ทักษะทดสอบ", " อ. สมมติ สอง", "ห้องประชุม1", "2(1-2-3)", "วิชาภาษา"])
+    ws.append([None, None, 3, "ทด 000003", "ภาษาทดสอบ 2", "อ.ดร.สมมติ หนึ่ง", "ห้อง 101", "3(3-0-6)", "วิชาภาษา"])
+    adm = wb.create_sheet("ฝ่ายบริหาร")
+    adm.append(["อาจารย์ฝ่ายบริหาร"])
+    adm.append(["อ.สมมติสอง"])
+    pl = wb.create_sheet("สถานที่เรียน")
+    pl.append(["สถานที่เรียนบรรยาย", "หมายเหตุ", "สถานที่เรียนภาคปฏิบัติ", "หมายเหตุ"])
+    pl.append(["ห้อง 101 ", "ห้องเรียนประจำนักศึกษาปีที่ 1/1", None, None])
+    pl.append(["ห้องประชุม 1", None, None, None])
+    buf = io.BytesIO()
+    wb.save(buf)
+
+    parsed = parse_xlsx(buf.getvalue(), default_settings()["days"])
+    warnings = parsed.pop("_warnings")
+    assert [r["name"] for r in parsed["rooms"]] == ["ห้อง 101", "ห้องประชุม 1"]  # ไม่มีห้องซ้ำ
+    assert not any("ไม่พบ" in w or "เพิ่ม ห้อง" in w for w in warnings)
+    assert [g["code"] for g in parsed["groups"]] == ["1/1"]
+    assert {c["code"] for c in parsed["courses"]} == {"ทด 000001", "ทด 000002", "ทด 000003"}
+    places = {s["course_code"]: s["places"] for s in parsed["sections"]}
+    assert places["ทด 000001"] == ["ห้อง 101"] and places["ทด 000002"] == ["ห้องประชุม 1"]
+    assert len(parsed["teachers"]) == 2  # "อ.ดร.สมมติ  หนึ่ง " กับ "อ.ดร.สมมติ หนึ่ง" เป็นคนเดียวกัน
+    assert [t["is_admin"] for t in parsed["teachers"] if "สอง" in t["name"]] == [True]
+
+
+def test_json_import_links_names_with_spacing():
+    """ไฟล์ JSON/CSV: การเปิดสอนอ้างห้อง กลุ่ม และอาจารย์ด้วยชื่อที่เว้นวรรคหรือใช้เลขไทยต่างกัน"""
+    import json
+
+    from backend.data_io import link_names, parse_json
+
+    payload = {
+        "teachers": [{"code": "T01", "name": "อ.สมมติ หนึ่ง"}],
+        "groups": [{"code": "1/1", "year": 1, "size": 30, "homeroom": "ห้อง101"}],
+        "rooms": [{"name": "ห้อง 101", "kind": "ห้องเรียน", "capacity": 40}],
+        "courses": [{"code": "ทด 000001", "name": "ทดสอบ", "credits": "3(3-0-6)"}],
+        "sections": [{"course_code": "ทด ๐๐๐๐๐๑ ", "group_codes": ["๑/๑"], "teacher_codes": ["t01 "], "places": ["ห้อง  ๑๐๑"]}],
+        "busy": [{"kind": "ประชุม", "name": "ประชุม", "day": "จันทร์", "start": "๑", "end": 2, "teacher_codes": ["T 01"]}],
+    }
+    parsed = parse_json(json.dumps(payload, ensure_ascii=False).encode("utf-8"), default_settings()["days"])
+    link_names(None, parsed)
+    sec = parsed["sections"][0]
+    assert sec["course_code"] == "ทด 000001" and sec["group_codes"] == ["1/1"]
+    assert sec["teacher_codes"] == ["T01"] and sec["places"] == ["ห้อง 101"]
+    assert parsed["groups"][0]["homeroom"] == "ห้อง 101"
+    assert parsed["busy"][0]["start"] == 1 and parsed["busy"][0]["teacher_codes"] == ["T01"]

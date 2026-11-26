@@ -18,6 +18,8 @@ import hashlib
 import re
 from collections import Counter, defaultdict
 
+from .textnorm import match_key, norm_text
+
 HEADER = ["กลุ่มเรียน", "จำนวน", "ที่", "รหัสวิชา", "ชื่อรายวิชา", "อาจารย์ผู้สอน", "สถานที่ที่ใช้", "หน่วยกิต", "กลุ่มวิชา"]
 YEAR_SHEET = re.compile(r"ชั้นปีที่\s*(\d+)")
 GROUP_RE = re.compile(r"ปี(?:ที่)?\s*(\d+)\s*/\s*(\d+)")
@@ -41,7 +43,8 @@ def is_curriculum_workbook(wb) -> bool:
 
 
 def clean(text) -> str:
-    return re.sub(r"\s+", " ", str(text or "")).strip()
+    """ตัดช่องว่างหน้า-ท้าย ยุบช่องว่างซ้อน และแปลงเลขไทยเป็นเลขอารบิก"""
+    return norm_text(text)
 
 
 def clean_person(text) -> str:
@@ -51,7 +54,7 @@ def clean_person(text) -> str:
 
 def person_key(name: str) -> str:
     """ชื่อสำหรับเทียบว่าเป็นคนเดียวกัน: ตัดคำนำหน้า ยศ ตำแหน่งวิชาการ และช่องว่าง"""
-    s = re.sub(r"\s+", "", name)
+    s = match_key(name)
     changed = True
     while changed:
         changed = False
@@ -63,7 +66,7 @@ def person_key(name: str) -> str:
 
 
 def place_key(text: str) -> str:
-    s = re.sub(r"\s+", "", text).lower()
+    s = match_key(text)
     s = s.replace("ส์", "").replace("พละศึกษา", "พลศึกษา").replace("คณะพละ", "คณะพล")
     return s
 

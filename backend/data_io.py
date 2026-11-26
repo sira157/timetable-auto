@@ -18,6 +18,7 @@ from sqlalchemy import delete, select
 from sqlalchemy.orm import Session
 
 from .models import BusyTime, Course, Room, Section, StudentGroup, Teacher
+from .textnorm import match_key, norm_text
 
 # (คีย์ข้อมูล, ชื่อคอลัมน์ภาษาไทย, ชนิด)
 SHEETS: dict[str, dict[str, Any]] = {
@@ -73,12 +74,12 @@ def coerce(value, typ: str, days: list[str], *, excel: bool):
     if typ == "str":
         if isinstance(value, float) and value.is_integer():
             value = int(value)
-        return str(value).strip()
+        return norm_text(value)
     if typ == "int":
         if value == "" or value is None:
             return 0
         try:
-            return int(float(str(value).strip()))
+            return int(float(norm_text(value)))
         except ValueError:
             raise ImportError_(f"ค่า \"{value}\" ต้องเป็นตัวเลข")
     if typ == "bool":
@@ -87,15 +88,15 @@ def coerce(value, typ: str, days: list[str], *, excel: bool):
         return str(value).strip().lower() in TRUE_WORDS
     if typ == "list":
         if isinstance(value, list):
-            return [str(x).strip() for x in value if str(x).strip()]
-        return [x.strip() for x in re.split(r"[,，、;\n]", str(value)) if x.strip()]
+            return [norm_text(x) for x in value if norm_text(x)]
+        return [norm_text(x) for x in re.split(r"[,，、;\n]", str(value)) if norm_text(x)]
     if typ == "roomkind":
-        v = str(value).strip() or "ห้องเรียน"
+        v = norm_text(value) or "ห้องเรียน"
         if v not in ROOM_KIND:
             raise ImportError_(f"ประเภทห้อง \"{v}\" ไม่รู้จัก (ใช้ ห้องเรียน / ห้องคอมพิวเตอร์ / ห้องประชุม / สนาม / โรงยิม)")
         return ROOM_KIND[v]
     if typ == "busykind":
-        v = str(value).strip() or "ไม่ว่าง"
+        v = norm_text(value) or "ไม่ว่าง"
         if v not in BUSY_KIND:
             raise ImportError_(f"ประเภท \"{v}\" ไม่รู้จัก (ใช้ ประชุม / กิจกรรม / ไม่ว่าง)")
         return BUSY_KIND[v]
@@ -106,7 +107,7 @@ def coerce(value, typ: str, days: list[str], *, excel: bool):
             if not 0 <= n < len(days):
                 raise ImportError_(f"วัน \"{value}\" ไม่ถูกต้อง")
             return n
-        v = str(value).strip().removeprefix("วัน")
+        v = norm_text(value).removeprefix("วัน").strip()
         if v.isdigit():
             return coerce(int(v), "day", days, excel=excel)
         if v in days:
@@ -165,7 +166,7 @@ def parse_json(content: bytes, days: list[str]) -> dict[str, list[dict]]:
             result[entity] = normalize_rows(entity, payload.get(entity) or [], days, excel=False)
         except ImportError_ as e:
             errors.append(str(e))
-    admins = {str(x).strip() for x in payload.get("admins") or [] if str(x).strip()}
+    admins = {norm_text(x) for x in payload.get("admins") or [] if norm_text(x)}
     _mark_admins(result, admins, errors)
     if errors:
         raise ImportError_("\n".join(errors))
@@ -176,11 +177,12 @@ def _mark_admins(result: dict, admins: set[str], errors: list[str]) -> None:
     """กำหนดอาจารย์ฝ่ายบริหารจากชีต/รายการ ฝ่ายบริหาร"""
     if not admins or "teachers" not in result:
         return
-    codes = {t["code"] for t in result["teachers"]}
-    for code in sorted(admins - codes):
+    codes = {match_key(t["code"]) for t in result["teachers"]}
+    for code in sorted(a for a in admins if match_key(a) not in codes):
         errors.append(f"{ADMIN_SHEET}: ไม่พบรหัสอาจารย์ {code} ในชีตอาจารย์")
+    wanted = {match_key(a) for a in admins}
     for t in result["teachers"]:
-        if t["code"] in admins:
+        if match_key(t["code"]) in wanted:
             t["is_admin"] = True
 
 
@@ -330,7 +332,7 @@ def parse_csv_files(files: list[tuple[str, bytes]], days: list[str]) -> tuple[di
                 errors.append(f"{name}: ต้องมีคอลัมน์ รหัสอาจารย์")
                 continue
             col = header.index("รหัสอาจารย์")
-            admins = {r[col].strip() for r in body if col < len(r) and r[col].strip()}
+            admins = {norm_text(r[col]) for r in body if col < len(r) and norm_text(r[col])}
             continue
         spec = SHEETS[entity]
         label_to_key = {label: key for key, label, _ in spec["columns"]}
@@ -356,17 +358,51 @@ def parse_csv_files(files: list[tuple[str, bytes]], days: list[str]) -> tuple[di
 def apply_admins(db: Session, codes: set[str]) -> int:
     """อัปเดตรายชื่อฝ่ายบริหารจากไฟล์ ฝ่ายบริหาร.csv ไฟล์เดียว"""
     teachers = db.scalars(select(Teacher)).all()
-    known = {t.code for t in teachers}
-    missing = sorted(codes - known)
+    known = {match_key(t.code) for t in teachers}
+    missing = sorted(c for c in codes if match_key(c) not in known)
     if missing:
         raise ImportError_(f"{ADMIN_SHEET}: ไม่พบรหัสอาจารย์ {', '.join(missing)}")
+    wanted = {match_key(c) for c in codes}
     for t in teachers:
-        t.is_admin = t.code in codes
+        t.is_admin = match_key(t.code) in wanted
     return len(codes)
+
+
+def link_names(db: Session, parsed: dict[str, list[dict]]) -> None:
+    """อ้างอิงข้ามชีตด้วยชื่อที่สะกดต่างกันเล็กน้อย เช่น "ห้องประชุม1" ในการเปิดสอน กับ "ห้องประชุม 1" ในชีตห้อง
+    ให้เปลี่ยนเป็นชื่อในชีตหลัก (เทียบแบบไม่สนช่องว่าง ตัวพิมพ์ และเลขไทย) ชื่อที่ไม่พบคงไว้ตามเดิมให้ระบบตรวจแจ้ง"""
+
+    def pool(entity: str, model, attr: str) -> dict[str, str]:
+        names = [r[attr] for r in parsed[entity]] if entity in parsed else list(db.scalars(select(getattr(model, attr))).all())
+        return {match_key(n): n for n in names if n}
+
+    teachers = pool("teachers", Teacher, "code")
+    groups = pool("groups", StudentGroup, "code")
+    rooms = pool("rooms", Room, "name")
+    courses = pool("courses", Course, "code")
+
+    def one(value: str, names: dict[str, str]) -> str:
+        return names.get(match_key(value), value) if value else value
+
+    def many(values: list[str], names: dict[str, str]) -> list[str]:
+        return [one(v, names) for v in values or []]
+
+    for r in parsed.get("groups", []):
+        r["homeroom"] = one(r.get("homeroom", ""), rooms)
+        r["advisor"] = one(r.get("advisor", ""), teachers)
+    for r in parsed.get("sections", []):
+        r["course_code"] = one(r["course_code"], courses)
+        r["group_codes"] = many(r["group_codes"], groups)
+        r["teacher_codes"] = many(r["teacher_codes"], teachers)
+        r["places"] = many(r.get("places", []), rooms)
+    for r in parsed.get("busy", []):
+        r["teacher_codes"] = many(r["teacher_codes"], teachers)
+        r["group_codes"] = many(r["group_codes"], groups)
 
 
 def replace_all(db: Session, parsed: dict[str, list[dict]]) -> dict[str, int]:
     """แทนที่ข้อมูลเฉพาะชนิดที่มีในไฟล์ โดยคง id ของรายการที่รหัสเดิมยังอยู่ (บัญชีผู้ใช้ที่ผูกไว้ยังใช้ได้)"""
+    link_names(db, parsed)
     counts = {}
     for entity, spec in SHEETS.items():
         if entity not in parsed:
