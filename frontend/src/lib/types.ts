@@ -199,6 +199,8 @@ export interface Entry {
   elective_set: string;
   groups: string[];
   coteach: boolean;
+  /** ช่วงที่รวมไว้ในบล็อกเดียว (ทฤษฎี+ปฏิบัติห้องเดียวกันที่เรียนต่อกัน) */
+  parts?: Entry[];
 }
 
 export interface TimetableEvent {

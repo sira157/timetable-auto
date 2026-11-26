@@ -7,8 +7,33 @@ type Item =
   | { type: "electives"; list: Entry[]; start: number; length: number }
   | { type: "event"; event: TimetableEvent; start: number; length: number };
 
+/** ทฤษฎีและปฏิบัติของกลุ่มเรียนเดียวกันที่ใช้ห้องเดียวกันและเรียนต่อกัน รวมเป็นบล็อกเดียว */
+export function mergeAdjacent(entries: Entry[]): Entry[] {
+  const sorted = [...entries].sort((a, b) => a.day - b.day || a.start - b.start);
+  const out: Entry[] = [];
+  for (const e of sorted) {
+    const last = out[out.length - 1];
+    const linked = e.kind === "elective" || e.kind === "free";
+    if (
+      last &&
+      !linked &&
+      last.kind === e.kind &&
+      last.section_id === e.section_id &&
+      last.day === e.day &&
+      last.start + last.length === e.start &&
+      (last.room ?? "") === (e.room ?? "") &&
+      (last.field ?? "") === (e.field ?? "")
+    ) {
+      const parts = [...(last.parts ?? [last]), e];
+      out[out.length - 1] = { ...parts[0], length: last.length + e.length, locked: parts.some((p) => p.locked), parts };
+    } else out.push(e);
+  }
+  return out;
+}
+
 /** มุมมองชั้นปี: วิชาเลือกที่เรียนเวลาเดียวกันรวมเป็นกล่องเดียว */
-function groupElectives(entries: Entry[], view: View): (Entry | Entry[])[] {
+function groupElectives(raw: Entry[], view: View): (Entry | Entry[])[] {
+  const entries = mergeAdjacent(raw);
   if (view !== "group") return entries;
   const out: (Entry | Entry[])[] = [];
   const boxes = new Map<string, Entry[]>();
@@ -118,13 +143,13 @@ function matches(e: Entry, q: string) {
 
 function EntryBlock({ e, view, onSelect, drag, dim }: { e: Entry; view: View; onSelect?: (e: Entry) => void; drag?: DragSupport; dim: boolean }) {
   const { third, fourth } = entryLines(e, view);
-  const isDragging = Boolean(drag?.dragging && drag.dragging.unit_key === e.unit_key);
+  const isDragging = Boolean(drag?.dragging && (e.parts ?? [e]).some((x) => x.id === drag.dragging!.id));
   const title = [
     `${e.course_code} ${e.course_name} ${e.credits}`,
     `ผู้สอน: ${e.teachers.join(", ") || "-"}`,
     `กลุ่มเรียน: ${e.group_label || e.groups.join(", ")}`,
     `สถานที่: ${[e.room, e.field].filter(Boolean).join(" + ") || "-"}`,
-    e.locked ? "ล็อกไว้" : drag ? "ลากเพื่อย้าย หรือกดเพื่อดูรายละเอียด" : "",
+    e.parts ? "เรียนต่อกันในห้องเดียวกัน กดเพื่อดูรายละเอียดและย้ายทีละช่วง" : e.locked ? "ล็อกไว้" : drag ? "ลากเพื่อย้าย หรือกดเพื่อดูรายละเอียด" : "",
   ]
     .filter(Boolean)
     .join("\n");
@@ -132,14 +157,14 @@ function EntryBlock({ e, view, onSelect, drag, dim }: { e: Entry; view: View; on
     <button
       type="button"
       title={title}
-      draggable={Boolean(drag) && !e.locked}
+      draggable={Boolean(drag) && !e.locked && !e.parts}
       onDragStart={(ev) => {
         ev.dataTransfer.effectAllowed = "move";
         ev.dataTransfer.setData("text/plain", String(e.id));
         drag?.onDragStart(e);
       }}
       onDragEnd={() => drag?.onDragEnd()}
-      onClick={() => onSelect?.(e)}
+      onClick={() => onSelect?.(e.parts ? { ...e.parts[0], parts: e.parts } : e)}
       className={`flex h-full min-h-16 w-full flex-col gap-0.5 overflow-hidden rounded-md border px-1.5 py-1 text-left text-xs leading-snug transition ${entryStyle(e)} ${
         onSelect ? "cursor-pointer hover:-translate-y-px hover:shadow-md" : "cursor-default"
       } ${isDragging ? "opacity-40" : ""} ${dim ? "opacity-25" : ""}`}

@@ -227,6 +227,7 @@ export default function TimetablePage() {
         entry={detail}
         tt={tt.data}
         rooms={rooms.data ?? []}
+        onPick={setDetail}
         onClose={() => setDetail(null)}
         onSaved={(msg) => {
           toast.ok(msg);
@@ -245,6 +246,7 @@ function EntryModal({
   entry,
   tt,
   rooms,
+  onPick,
   onClose,
   onSaved,
   onError,
@@ -252,6 +254,7 @@ function EntryModal({
   entry: Entry | null;
   tt: Timetable | null;
   rooms: Room[];
+  onPick: (e: Entry) => void;
   onClose: () => void;
   onSaved: (msg: string) => void;
   onError: (msg: string) => void;
@@ -320,6 +323,26 @@ function EntryModal({
         </>
       }
     >
+      {entry.parts && entry.parts.length > 1 && (
+        <div className="mb-4">
+          <p className="mb-1.5 text-sm text-slate-600">วิชานี้เรียนต่อกันในห้องเดียวกัน เลือกช่วงที่จะแก้ไข</p>
+          <div className="flex flex-wrap gap-1 rounded-xl bg-slate-100 p-1 text-sm" role="radiogroup" aria-label="ช่วงคาบ">
+            {entry.parts.map((x) => (
+              <button
+                key={x.id}
+                type="button"
+                role="radio"
+                aria-checked={x.id === entry.id}
+                className={`rounded-lg px-3 py-1.5 ${x.id === entry.id ? "bg-white font-semibold text-indigo-700 shadow-sm" : "text-slate-600 hover:text-slate-900"}`}
+                onClick={() => onPick({ ...x, parts: entry.parts })}
+              >
+                คาบ {x.start}
+                {x.length > 1 ? `–${x.start + x.length - 1}` : ""}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <dl className="mb-5 grid grid-cols-[6.5rem_1fr] gap-x-3 gap-y-2 text-sm">
         <dt className="text-slate-500">หน่วยกิต</dt>
         <dd>
