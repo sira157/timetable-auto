@@ -35,7 +35,6 @@ from .core import (
     split_hours,
 )
 
-PART_LABEL = {"all": "", "both": "ทฤษฎี+ปฏิบัติ", "theory": "ทฤษฎี", "practice": "ปฏิบัติ"}
 MAX_ROOM_CHOICES = 8  # จำกัดจำนวนห้องที่เป็นตัวเลือกต่อหน่วย เพื่อให้แบบจำลองไม่ใหญ่เกินไป
 
 
@@ -366,6 +365,7 @@ class Solver:
         self.sec_days: dict[int, set[int]] = defaultdict(set)
         self.sec_slots: dict[tuple, list[tuple]] = defaultdict(list)  # (sid, วัน) → [(เริ่ม, ยาว, ภาค)]
         self.g_day: dict[tuple, set[int]] = defaultdict(set)
+        self.sec_room: dict[tuple, str] = {}  # (sid, วัน) → ห้องที่ใช้ (ให้อีกภาคใช้ห้องเดิม)
         self.placement: dict[int, tuple[int, int, list[Choice]]] = {}
 
     def starts(self, length: int) -> list[int]:
@@ -397,7 +397,7 @@ class Solver:
             if d in self.sec_days[m.sid]:
                 # ทฤษฎีกับปฏิบัติของวิชาเดียวกันอยู่วันเดียวกันได้ ถ้าเรียนต่อเนื่องกัน
                 same = self.sec_slots[(m.sid, d)]
-                if not (len(same) == 1 and pair_ok(same[0], (s, m.length, m.part))):
+                if not (len(same) == 1 and pair_ok(same[0], (s, m.length, m.part), self.lunch)):
                     return None, "sameday"
             for t in m.teachers:
                 if seen.get(t, m.course_code) != m.course_code:
@@ -421,7 +421,10 @@ class Solver:
             if mi in u.fixed_rooms:
                 room, fld = u.fixed_rooms[mi]
             else:
-                room = self._pick(m.rooms, used, d, s, m.length) if m.rooms else None
+                # ทฤษฎี+ปฏิบัติต่อเนื่องในวันเดียวกัน: ใช้ห้องเดิมก่อน (ข้อ 11.6)
+                partner = self.sec_room.get((m.sid, d))
+                cands = [partner] + [r for r in m.rooms if r != partner] if partner in m.rooms else m.rooms
+                room = self._pick(cands, used, d, s, m.length) if m.rooms else None
                 if m.rooms and room is None:
                     return None, "room"
                 fld = self._pick(m.fields, used, d, s, m.length) if m.fields else None
@@ -439,6 +442,8 @@ class Solver:
         for m, (room, fld) in zip(u.members, choices):
             self.sec_days[m.sid].add(d)
             self.sec_slots[(m.sid, d)].append((s, m.length, m.part))
+            if room:
+                self.sec_room.setdefault((m.sid, d), room)
             for p in range(s, s + m.length):
                 for t in m.teachers:
                     self.t_occ[(t, d, p)] = u.uid
@@ -463,7 +468,7 @@ class Solver:
         if self.avoid_last and end == self.N:
             sc += 3.0
         sc += self.half_mismatch(u, s) * 2.0
-        sc -= self.adjacent_pairs(u, d, s) * 3.0
+        sc -= self.adjacent_pairs(u, d, s) * 6.0
         if u.groups:
             load = sum(len(self.g_day[(g, d)]) for g in u.groups) / len(u.groups)
             sc += load * 0.45
@@ -500,16 +505,16 @@ class Solver:
         return failed
 
     def adjacent_pairs(self, u: Unit, d: int, s: int) -> int:
-        """จำนวนชุดคาบที่จะต่อเนื่องกับชุดคาบอีกภาคของวิชาเดียวกัน (ข้อ 11.3)"""
+        """จำนวนชุดคาบที่จะต่อเนื่องกับชุดคาบอีกภาคของวิชาเดียวกัน (ข้อ 11.6)"""
         return sum(
-            1 for m in u.members for x in self.sec_slots[(m.sid, d)] if pair_ok(x, (s, m.length, m.part))
+            1 for m in u.members for x in self.sec_slots[(m.sid, d)] if pair_ok(x, (s, m.length, m.part), self.lunch)
         )
 
     def penalty(self) -> float:
         pen = 0.0
         pen -= sum(
-            1 for slots in self.sec_slots.values() for i, a in enumerate(slots) for b in slots[i + 1:] if pair_ok(a, b)
-        ) * 3
+            1 for slots in self.sec_slots.values() for i, a in enumerate(slots) for b in slots[i + 1:] if pair_ok(a, b, self.lunch)
+        ) * 6
         units = {u.uid: u for u in self.prep.units}
         for uid, (_d, s, _r) in self.placement.items():
             if self.avoid_last and s + units[uid].length - 1 == self.N:
@@ -551,11 +556,16 @@ class Solver:
         return f"{head}: " + ", ".join(labels[k][0] for k in top), labels[top[0]][1]
 
 
-def pair_ok(a: tuple, b: tuple) -> bool:
-    """ชุดคาบ 2 ชุดของวิชาเดียวกันอยู่วันเดียวกันได้ เมื่อเป็นทฤษฎี+ปฏิบัติ และเรียนต่อเนื่องกัน (start, length, part)"""
+def pair_ok(a: tuple, b: tuple, lunch=()) -> bool:
+    """ชุดคาบ 2 ชุดของวิชาเดียวกันอยู่วันเดียวกันได้ เมื่อเป็นทฤษฎี+ปฏิบัติ และเรียนต่อเนื่องกัน (start, length, part)
+
+    ต่อเนื่อง = ชุดหนึ่งเริ่มทันทีที่อีกชุดจบ หรือคั่นด้วยเวลาพักเที่ยงเท่านั้น (เช่น ทฤษฎีคาบ 3–4 ปฏิบัติคาบ 6–7)
+    """
     if {a[2], b[2]} != {"theory", "practice"}:
         return False
-    return a[0] + a[1] == b[0] or b[0] + b[1] == a[0]
+    first, second = (a, b) if a[0] <= b[0] else (b, a)
+    end = first[0] + first[1]
+    return end <= second[0] and all(p in lunch for p in range(end, second[0]))
 
 
 def wrong_half(prefer: str | None, start: int, lunch: set[int]) -> bool:
@@ -687,7 +697,7 @@ def _cpsat(prep: Prepared, budget: float, seed: int, hint: dict | None, cancel=N
             teacher_done: set[tuple] = set()
             for mi, (m, (rs, fs)) in enumerate(zip(u.members, room_opts)):
                 if m.sid in pair_sids and m.part in ("theory", "practice") and len(u.members) == 1:
-                    sd_items[(m.sid, d)].append((x, s, m.length, m.part))
+                    sd_items[(m.sid, d)].append((x, s, m.length, m.part, u.uid))
                 else:
                     cells[("sd", m.sid, d)].append(x)
                 for p in range(s, s + m.length):
@@ -730,7 +740,12 @@ def _cpsat(prep: Prepared, budget: float, seed: int, hint: dict | None, cancel=N
         if len(lits) > 1:
             model.Add(sum(lits) <= 1)
 
-    # ทฤษฎี+ปฏิบัติวันเดียวกัน: ได้เฉพาะเมื่อต่อเนื่อง และให้คะแนนเพิ่ม (ข้อ 11.3 ไม่บังคับ)
+    room_lits: dict[tuple, dict] = defaultdict(dict)  # (หน่วย, วัน, เริ่ม) → {ห้อง: ตัวแปร} (สมาชิกคนแรก)
+    for (uid, mi, kind, r, d, s), w in wvars.items():
+        if mi == 0 and kind == "r":
+            room_lits[(uid, d, s)][r] = w
+
+    # ทฤษฎี+ปฏิบัติวันเดียวกัน: ได้เฉพาะเมื่อต่อเนื่อง และให้คะแนนเพิ่มเมื่อเรียนห้องเดิม (ข้อ 11.6 ไม่บังคับ)
     for (sid, d), items in sd_items.items():
         for part in ("theory", "practice"):
             same = [it[0] for it in items if it[3] == part]
@@ -740,11 +755,19 @@ def _cpsat(prep: Prepared, budget: float, seed: int, hint: dict | None, cancel=N
             for b in items[i + 1:]:
                 if a[3] == b[3] or a[0] is b[0]:
                     continue
-                if pair_ok(a[1:], b[1:]):
+                if pair_ok(a[1:4], b[1:4], lunch):
                     z = model.NewBoolVar(f"adj_{sid}_{d}_{i}")
                     model.AddImplication(z, a[0])
                     model.AddImplication(z, b[0])
-                    objective.append(10 * z)
+                    # ได้คะแนนเมื่อเรียนห้องเดิมทั้งสองชุด (ข้อ 11.6)
+                    rooms_a = room_lits.get((a[4], d, a[1]), {})
+                    rooms_b = room_lits.get((b[4], d, b[1]), {})
+                    for r in set(rooms_a) | set(rooms_b):
+                        if r in rooms_a and r in rooms_b:
+                            model.Add(rooms_a[r] == rooms_b[r]).OnlyEnforceIf(z)
+                        else:
+                            model.Add((rooms_a.get(r) or rooms_b.get(r)) == 0).OnlyEnforceIf(z)
+                    objective.append(20 * z)
                 else:
                     model.Add(a[0] + b[0] <= 1)
 
@@ -950,7 +973,7 @@ def run_schedule(data: dict, settings: dict, locks: dict | None = None, seed: in
             "teacher_overload": overload,
             "gap_violations": gap_violations,
             "adjacent_pairs": sum(
-                1 for slots in solver.sec_slots.values() for i, a in enumerate(slots) for b in slots[i + 1:] if pair_ok(a, b)
+                1 for slots in solver.sec_slots.values() for i, a in enumerate(slots) for b in slots[i + 1:] if pair_ok(a, b, idx.lunch)
             ),
             "half_mismatch": sum(solver.half_mismatch(units[uid], s) for uid, (_d, s, _c) in best["placement"].items()),
             "seed": seed,

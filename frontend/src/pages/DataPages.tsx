@@ -309,22 +309,6 @@ function SectionsPage({ title, subtitle, filter, intro }: { title: string; subti
   );
 }
 
-export function ManualEntryPage() {
-  return (
-    <SectionsPage
-      title="กรอกข้อมูลเอง"
-      subtitle="การเปิดสอน: กำหนดว่ารายวิชาใด เปิดให้กลุ่มเรียนใด และใครเป็นผู้สอน"
-      intro={
-        <div className="mb-4">
-          <Alert tone="info">
-            เพิ่มอาจารย์ รายวิชา กลุ่มเรียน และห้องเรียนก่อน แล้วจึงเพิ่มการเปิดสอนในหน้านี้ หรือ <Link to="/import" className="font-semibold underline">นำเข้าจากไฟล์ Excel</Link>
-          </Alert>
-        </div>
-      }
-    />
-  );
-}
-
 export function CombinedPage() {
   return <SectionsPage title="เรียนรวม" subtitle="วิชาที่ทุกกลุ่มในชั้นปีเดียวกันเรียนพร้อมกัน ใช้ห้องประชุม 1 และ 2 ก่อน" filter={(s, cm) => Boolean(cm.get(s.course_code)?.combined)} />;
 }

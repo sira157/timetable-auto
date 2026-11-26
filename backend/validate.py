@@ -17,7 +17,7 @@ from .core import (
     is_internship,
     norm,
 )
-from .scheduler import Prepared
+from .scheduler import Prepared, pair_ok
 
 
 def _issue(level, type_, message, **refs):
@@ -136,8 +136,10 @@ def validate(data: dict, settings: dict, assignments: list[dict]) -> list[dict]:
             days_used[a["day"]].append(a)
         for d, same in days_used.items():
             if len(same) > 1:
-                same = sorted(same, key=lambda x: x["start"])
-                contiguous = all(x["start"] + x["length"] == y["start"] for x, y in zip(same, same[1:]))
+                # ทฤษฎี+ปฏิบัติวันเดียวกันได้เมื่อต่อเนื่องกัน (คั่นด้วยพักเที่ยงได้) ข้อ 2.4, 11.6
+                contiguous = len(same) == 2 and pair_ok(
+                    *[(x["start"], x["length"], x.get("part")) for x in same], idx.lunch
+                )
                 if not contiguous:
                     issues.append(_issue(
                         "warning", "split_block", f"{label} ชุดคาบเดียวกันไม่ต่อเนื่อง ({where(d)})", section_id=sec["id"],

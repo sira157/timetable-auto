@@ -4,12 +4,12 @@ import { IconArrowRight } from "./Icons";
 export const FLOW = [
   { to: "/import", label: "นำเข้า" },
   { to: "/check", label: "ตรวจข้อมูล" },
-  { to: "/run", label: "คำนวณ" },
+  { to: "/run", label: "จัดตาราง" },
   { to: "/timetable", label: "ตรวจผล" },
   { to: "/reports", label: "ส่งออก" },
 ];
 
-/** แถบขั้นตอนต่อเนื่อง: นำเข้า → ตรวจข้อมูล → คำนวณ → ตรวจผล → ส่งออก */
+/** แถบขั้นตอนต่อเนื่อง: นำเข้า → ตรวจข้อมูล → จัดตาราง → ตรวจผล → ส่งออก */
 export default function Stepper({ current, nextReady = true, nextHint }: { current: number; nextReady?: boolean; nextHint?: string }) {
   const next = FLOW[current + 1];
   return (

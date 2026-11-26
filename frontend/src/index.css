@@ -183,3 +183,21 @@
   padding: 24px;
   background: #fff;
 }
+
+/* PDF: ข้อความในบล็อกแสดงเต็ม ไม่ตัดด้วย … และตัวอักษรใหญ่ขึ้นเพื่อให้อ่านง่ายเมื่อพิมพ์ */
+.pdf-full .truncate,
+.pdf-full .line-clamp-2 {
+  overflow: visible;
+  white-space: normal;
+  text-overflow: clip;
+  display: block;
+  -webkit-line-clamp: unset;
+}
+.pdf-full td .text-xs {
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+.pdf-full td .text-\[11px\],
+.pdf-full td .text-\[10px\] {
+  font-size: 0.72rem;
+}

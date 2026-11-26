@@ -42,7 +42,7 @@ from .db import BASE_DIR, SessionLocal, get_db
 from .models import Assignment, ChangeHistory, RunHistory, ScheduleVersion, iso
 from .curriculum_import import curriculum_workbook
 from .export_xlsx import grid_workbook, rows_workbook
-from .scheduler import PART_LABEL, run_schedule
+from .scheduler import run_schedule
 from .validate import check_data, validate
 
 SAMPLE_DIR = Path(os.environ.get("TIMETABLE_SAMPLE_DIR") or (BASE_DIR / "sample-data"))
@@ -251,6 +251,61 @@ async def import_file(request: Request, files: list[UploadFile] = File(...), db:
     except ImportError_ as e:
         raise HTTPException(400, str(e))
     return _import_parsed(db, parsed, request, names)
+
+
+# ---------- กรอกข้อมูลบนเว็บ (รูปแบบเดียวกับไฟล์ Excel ข้อมูลหลักสูตร) ----------
+
+# ค่าที่ไม่มีในรูปแบบข้อมูลหลักสูตร: คงค่าเดิมในระบบไว้เมื่อบันทึกจากหน้ากรอกข้อมูล
+CURRICULUM_KEEP = {
+    "teachers": ("note", "is_excluded"),
+    "groups": ("advisor", "is_excluded"),
+    "courses": ("sport", "venue", "is_excluded"),
+}
+
+
+@router.get("/curriculum", dependencies=staff)
+def get_curriculum(db: Session = Depends(get_db)):
+    from .curriculum_writer import curriculum_model
+
+    data = load_dataset(db)
+    return curriculum_model(data if data["teachers"] or data["groups"] else None, load_settings(db))
+
+
+@router.post("/curriculum", dependencies=staff)
+def save_curriculum(body: dict, request: Request, db: Session = Depends(get_db)):
+    """บันทึกข้อมูลจากหน้ากรอกข้อมูล: แปลงเป็นไฟล์ข้อมูลหลักสูตรแล้วอ่านด้วยตัวนำเข้าเดียวกับไฟล์ Excel"""
+    from .curriculum_writer import model_workbook
+
+    if not isinstance(body.get("years"), list) or not body["years"]:
+        raise HTTPException(400, "ยังไม่มีข้อมูลชั้นปี")
+    if len(json.dumps(body, ensure_ascii=False)) > 5 * 1024 * 1024:
+        raise HTTPException(400, "ข้อมูลใหญ่เกินไป")
+    rows = sum(len(g.get("rows") or []) for y in body["years"] if isinstance(y, dict)
+               for g in (y.get("groups") or []) if isinstance(g, dict))
+    if not rows:
+        raise HTTPException(400, "ยังไม่มีรายวิชา กรอกอย่างน้อย 1 รายวิชา")
+    try:
+        parsed = parse_xlsx(model_workbook(body), load_settings(db)["days"])
+    except ImportError_ as e:
+        raise HTTPException(400, str(e))
+    except (AttributeError, TypeError, ValueError):
+        raise HTTPException(400, "รูปแบบข้อมูลไม่ถูกต้อง")
+    current = load_dataset(db)
+    for entity, keys in CURRICULUM_KEEP.items():
+        key = "code"
+        old = {r[key]: r for r in current.get(entity, [])}
+        for r in parsed.get(entity, []):
+            prev = old.get(r.get(key))
+            if prev:
+                for k in keys:
+                    if not r.get(k) and prev.get(k):
+                        r[k] = prev[k]
+    old_rooms = {r["name"]: r for r in current.get("rooms", [])}
+    for r in parsed.get("rooms", []):
+        prev = old_rooms.get(r["name"])
+        if prev and r.get("kind") == "field" and prev.get("kind") == "field":
+            r["capacity"] = prev.get("capacity") or r.get("capacity")
+    return _import_parsed(db, parsed, request, "กรอกข้อมูลบนเว็บ")
 
 
 SAMPLE_SIZES = {"small": "เล็ก", "medium": "กลาง", "large": "ใหญ่"}
@@ -634,7 +689,6 @@ def _timetable(db: Session, v: ScheduleVersion, view: str, ident: str) -> dict:
             "credits": course.get("credits", ""),
             "elective_set": course.get("elective_set", "") if a["kind"] in ("elective", "free") else "",
             "group_label": group_label(idx, a["group_codes"]),
-            "part_label": PART_LABEL.get(a["part"], ""),
             "teachers": [idx.teacher_name(c) for c in a["teacher_codes"]],
             "groups": [idx.group_name(c) for c in a["group_codes"]],
             "coteach": len(a["teacher_codes"]) > 1,
@@ -761,7 +815,7 @@ def assignment_moves(aid: int, db: Session = Depends(get_db)):
                     reason = "ห้อง/สนามไม่ว่าง"
                 elif (x.section_id, d) in sec_slots and not (
                     len(sec_slots[(x.section_id, d)]) == 1
-                    and pair_ok(sec_slots[(x.section_id, d)][0], (start, x.length, x.part))
+                    and pair_ok(sec_slots[(x.section_id, d)][0], (start, x.length, x.part), lunch)
                 ):
                     reason = "วิชานี้มีคาบวันนี้แล้ว"
                 if reason:

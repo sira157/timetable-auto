@@ -353,6 +353,8 @@ export default function TimetableGrid({ tt, onSelect, actions, drag, search = ""
     return anyOk(d, from, span) ? "bg-green-50 outline-1 -outline-offset-2 outline-dashed outline-green-400" : "bg-slate-50/70";
   }
 
+  // ตอนสร้าง PDF ห้ามใช้ sticky: ตารางถูกวาดนอกจอ html2canvas จะวางคอลัมน์วันผิดตำแหน่ง
+  const stick = forceGrid ? "" : "sticky";
   const okCount = drag?.slots ? [...drag.slots.values()].filter((s) => s.ok && !s.current).length : 0;
 
   const dayLanes = tt.days.map((_day, d) => {
@@ -423,11 +425,11 @@ export default function TimetableGrid({ tt, onSelect, actions, drag, search = ""
           </colgroup>
           <thead>
             <tr>
-              <th className="sticky top-0 left-0 z-20 border-b border-slate-200 bg-slate-50 px-2 py-2 text-left text-xs font-semibold text-slate-500">
+              <th className={`${stick} top-0 left-0 z-20 border-b border-slate-200 bg-slate-50 px-2 py-2 text-left text-xs font-semibold text-slate-500`}>
                 วัน / คาบ
               </th>
               {periods.map((p) => (
-                <th key={p.no} className="sticky top-0 z-10 border-b border-l border-slate-200 border-l-slate-100 bg-slate-50 px-1 py-1.5 text-center">
+                <th key={p.no} className={`${stick} top-0 z-10 border-b border-l border-slate-200 border-l-slate-100 bg-slate-50 px-1 py-1.5 text-center`}>
                   <div className="text-xs font-semibold text-slate-600">คาบ {p.no}</div>
                   <div className="text-[11px] font-normal text-slate-400 tabular-nums">
                     {p.start}–{p.end}
@@ -491,7 +493,7 @@ export default function TimetableGrid({ tt, onSelect, actions, drag, search = ""
                       <th
                         scope="row"
                         rowSpan={lanes.length}
-                        className="sticky left-0 z-10 border-b border-slate-200 bg-white px-2 py-2 text-left align-top font-semibold text-slate-800"
+                        className={`${stick} left-0 z-10 border-b border-slate-200 bg-white px-2 py-2 text-left align-top font-semibold text-slate-800`}
                       >
                         {day}
                       </th>

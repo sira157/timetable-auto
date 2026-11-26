@@ -4,6 +4,7 @@ import { elementsToPdf } from "../lib/pdf";
 import type { Timetable, View } from "../lib/types";
 import { IconArrowDown, IconPrint } from "./Icons";
 import Modal from "./Modal";
+import PdfSummary from "./PdfSummary";
 import TimetableGrid from "./TimetableGrid";
 
 const REPORT_KEY: Record<View, string> = {
@@ -35,7 +36,8 @@ export default function ExportPanel({ versionId, view, current, all, selfOnly, a
   const holder = useRef<HTMLDivElement>(null);
   const canAll = !selfOnly && view !== "building" && all.length > 1;
   const targets = scope === "all" && canAll ? all : current ? [current] : [];
-  const fileBase = scope === "all" && canAll ? `ตาราง${VIEW_LABEL[view]}ทั้งหมด` : current?.label ?? "ตาราง";
+  // ชื่อไฟล์ห้ามมี / \ : * ? " < > | (เช่น "ปีที่ 1/1") ไม่เช่นนั้นเบราว์เซอร์บางตัวไม่ยอมบันทึก
+  const fileBase = (scope === "all" && canAll ? `ตาราง${VIEW_LABEL[view]}ทั้งหมด` : current?.label ?? "ตาราง").replace(/[\\/:*?"<>|]+/g, "-");
 
   function query(fmt: string) {
     const parts = [`format=${fmt}`];
@@ -163,10 +165,15 @@ export default function ExportPanel({ versionId, view, current, all, selfOnly, a
         </div>
       </Modal>
       {pdf && pdf.items.length > 0 && (
-        <div ref={holder} aria-hidden="true" className="pointer-events-none fixed top-0 -left-[20000px] w-[1280px] bg-white">
-          {pdf.items.map((tt) => (
-            <div key={tt.id} data-pdf-page className="bg-white p-4">
-              <TimetableGrid tt={tt} forceGrid />
+        <div ref={holder} aria-hidden="true" className="pointer-events-none fixed top-0 -left-[20000px] w-[1180px] bg-white">
+          {pdf.items.map((tt, i) => (
+            <div key={`${tt.id}-${i}`}>
+              <div data-pdf-page data-pdf-new="1" className="pdf-full bg-white p-3">
+                <TimetableGrid tt={tt} forceGrid />
+              </div>
+              <div data-pdf-page className="pdf-full bg-white px-3 pb-3">
+                <PdfSummary tt={tt} />
+              </div>
             </div>
           ))}
         </div>

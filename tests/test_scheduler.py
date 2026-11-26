@@ -4,7 +4,7 @@ from pathlib import Path
 
 from backend.core import default_settings, split_hours
 from backend.data_io import parse_json
-from backend.scheduler import run_schedule
+from backend.scheduler import pair_ok, run_schedule
 from backend.validate import validate
 
 SAMPLE = Path(__file__).resolve().parent.parent / "sample-data" / "medium.json"
@@ -83,19 +83,30 @@ def test_new_rules_hold():
     # ทฤษฎีส่วนใหญ่อยู่ช่วงเช้า ปฏิบัติส่วนใหญ่อยู่ช่วงบ่าย (ข้อ 11.2)
     theory = [a for a in A if a["part"] == "theory"]
     practice = [a for a in A if a["part"] == "practice"]
-    assert sum(a["start"] < 5 for a in theory) >= 0.85 * len(theory)
-    assert sum(a["start"] > 5 for a in practice) >= 0.7 * len(practice)
+    # ข้อ 11.2/11.6: ทฤษฎีเช้า ปฏิบัติบ่าย หรือทฤษฎี+ปฏิบัติต่อเนื่องกัน (การต่อเนื่องอาจดึงชุดหนึ่งไปอีกช่วง)
+    by_day = defaultdict(list)
+    for a in theory + practice:
+        by_day[(a["section_id"], a["day"])].append(a)
+    paired_ids = {id(a) for v in by_day.values() if len(v) == 2 for a in v}
+    good = sum(
+        1 for a in theory + practice
+        if id(a) in paired_ids or (a["part"] == "theory" and a["start"] < 5) or (a["part"] == "practice" and a["start"] > 5)
+    )
+    assert good >= 0.8 * len(theory + practice), f"{good}/{len(theory + practice)}"
+    assert sum(a["start"] < 5 for a in theory) >= 0.6 * len(theory)
     # วิชาเลือกกีฬาอยู่เวลาเดียวกันทั้ง 3 วิชา
     elect = defaultdict(set)
     for a in A:
         if a["kind"] == "elective":
             elect[a["unit_key"]].add((a["day"], a["start"]))
     assert elect and all(len(v) == 1 for v in elect.values())
-    # ชุดคาบวิชาเดียวกันคนละวัน
+    # ชุดคาบวิชาเดียวกันคนละวัน ยกเว้นทฤษฎี+ปฏิบัติที่เรียนต่อเนื่องกัน (ข้อ 2.4, 11.6)
     days = defaultdict(list)
     for a in A:
-        days[a["section_id"]].append(a["day"])
-    assert all(len(v) == len(set(v)) for v in days.values())
+        days[(a["section_id"], a["day"])].append(a)
+    for same in days.values():
+        if len(same) > 1:
+            assert len(same) == 2 and pair_ok(*[(x["start"], x["length"], x["part"]) for x in same], {5}), same
     # วิชาเลือกเสรีวันศุกร์คาบ 6
     assert all(a["day"] == 4 and a["start"] == 6 for a in A if a["kind"] == "free")
 
@@ -178,3 +189,33 @@ def test_small_and_large_samples_complete():
         res = run_schedule(data, s, seed=3)
         assert res["stats"]["placed_hours"] == res["stats"]["total_hours"], (size, res["unplaced"][:3])
         assert not [i for i in validate(data, s, res["assignments"]) if i["level"] == "error"]
+
+
+def test_pair_ok_counts_lunch_as_continuous():
+    lunch = {5}
+    assert pair_ok((1, 2, "theory"), (3, 2, "practice"), lunch)
+    assert pair_ok((3, 2, "theory"), (6, 2, "practice"), lunch)  # คั่นด้วยพักเที่ยงเท่านั้น
+    assert pair_ok((6, 2, "practice"), (3, 2, "theory"), lunch)
+    assert not pair_ok((1, 2, "theory"), (4, 2, "practice"), lunch)  # มีคาบว่างคั่น
+    assert not pair_ok((1, 2, "theory"), (3, 2, "theory"), lunch)  # ภาคเดียวกัน
+    assert not pair_ok((1, 2, "theory"), (2, 2, "practice"), lunch)  # ทับกัน
+
+
+def test_theory_practice_same_room_prefers_consecutive():
+    """ข้อ 11.6 (ไม่บังคับ): ทฤษฎี+ปฏิบัติที่เรียนห้องเดิม ส่วนใหญ่ได้เรียนต่อเนื่องในวันเดียวกันและห้องเดียวกัน"""
+    _data, _s, res = _cached(1)
+    by_sec = defaultdict(list)
+    for a in res["assignments"]:
+        if a["part"] in ("theory", "practice"):
+            by_sec[a["section_id"]].append(a)
+    both = {sid: xs for sid, xs in by_sec.items() if {x["part"] for x in xs} == {"theory", "practice"}}
+    assert both
+    paired = 0
+    for xs in both.values():
+        for t in (x for x in xs if x["part"] == "theory"):
+            for p in (x for x in xs if x["part"] == "practice"):
+                if t["day"] == p["day"] and pair_ok((t["start"], t["length"], "theory"), (p["start"], p["length"], "practice"), {5}):
+                    assert t["room"] == p["room"], (t, p)
+                    paired += 1
+    # เป้าหมายรอง (ไม่บังคับ) ผลแปรผันตามเวลาที่ CP-SAT ได้ จึงใช้เกณฑ์ขั้นต่ำ
+    assert paired >= 0.45 * len(both), f"ต่อเนื่อง {paired} จาก {len(both)} วิชา"

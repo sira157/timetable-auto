@@ -12,11 +12,11 @@ import {
   CombinedPage,
   CoursesPage,
   GroupsPage,
-  ManualEntryPage,
   RoomsPage,
   TeachersPage,
   UnregisteredPage,
 } from "./pages/DataPages";
+import ManualEntryPage from "./pages/ManualEntry";
 import MyTimetable from "./pages/MyTimetable";
 import ReportsPage from "./pages/ReportsPage";
 import { BackupPage, ChangesPage, RunsPage, SettingsPage, UsersPage } from "./pages/SystemPages";
@@ -55,7 +55,8 @@ export default function App() {
         <Route path="/run" element={<RunPage />} />
         <Route path="/timetable" element={<TimetablePage />} />
         <Route path="/reports" element={<ReportsPage />} />
-        <Route path="/data/manual" element={<ManualEntryPage />} />
+        <Route path="/import/manual" element={<ManualEntryPage />} />
+        <Route path="/data/manual" element={<Navigate to="/import/manual" replace />} />
         <Route path="/data/teachers" element={<TeachersPage />} />
         <Route path="/data/courses" element={<CoursesPage />} />
         <Route path="/data/groups" element={<GroupsPage />} />

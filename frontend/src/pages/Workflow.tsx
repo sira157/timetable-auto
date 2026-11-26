@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type DragEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { IconArrowDown, IconArrowRight, IconBolt, IconUpload, IconX } from "../components/Icons";
+import { IconArrowDown, IconArrowRight, IconBolt, IconEdit, IconUpload, IconX } from "../components/Icons";
 import { PipelineArt, WorkbookArt } from "../components/Illustrations";
 import Stepper from "../components/Stepper";
 import { Alert, Badge, EmptyState, PageHeader, Spinner, formatDateTime, useApi, useToast, type Tone } from "../components/ui";
@@ -103,7 +103,15 @@ export function ImportPage() {
   return (
     <div>
       <Stepper current={0} nextReady={hasData} nextHint="นำเข้าข้อมูลก่อน" />
-      <PageHeader title="นำเข้าข้อมูล" subtitle="ดาวน์โหลดแบบฟอร์ม → กรอกข้อมูล → ลากไฟล์มาวางที่นี่" />
+      <PageHeader
+        title="นำเข้าข้อมูล"
+        subtitle="ดาวน์โหลดแบบฟอร์ม → กรอกข้อมูล → ลากไฟล์มาวางที่นี่ หรือกด “กรอกข้อมูล” เพื่อกรอกบนเว็บ"
+        actions={
+          <Link to="/import/manual" className="btn btn-primary">
+            <IconEdit /> กรอกข้อมูล
+          </Link>
+        }
+      />
 
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="card lg:col-span-2">
@@ -231,6 +239,13 @@ export function ImportPage() {
               <button type="button" className="btn btn-primary mt-2 w-full" onClick={() => dl("/api/export/template.xlsx", "แบบฟอร์มข้อมูลหลักสูตร.xlsx")}>
                 <IconArrowDown /> ดาวน์โหลดแบบฟอร์ม
               </button>
+            </li>
+            <li className="rounded-xl border border-indigo-200 bg-white p-3">
+              <div className="font-semibold text-slate-800">กรอกข้อมูลบนเว็บ</div>
+              <p className="mt-1 text-sm text-slate-600">กรอกชั้นปี กลุ่มเรียน รายวิชา ฝ่ายบริหาร และสถานที่เรียน แบบเดียวกับไฟล์ Excel โดยไม่ต้องใช้ไฟล์</p>
+              <Link to="/import/manual" className="btn btn-ghost mt-2 w-full">
+                <IconEdit /> กรอกข้อมูล
+              </Link>
             </li>
             <li className="rounded-xl border border-slate-200 p-3">
               <div className="font-semibold text-slate-800">ไฟล์ที่ส่งออกจากระบบนี้</div>
@@ -369,9 +384,9 @@ export function CheckPage() {
           {data.sections.length > 0 &&
             (blocking === 0 ? (
               <Alert tone="ok">
-                ข้อมูลพร้อมคำนวณ{" "}
+                ข้อมูลพร้อมจัดตาราง{" "}
                 <Link to="/run" className="font-semibold underline">
-                  ไปคำนวณ →
+                  ไปจัดตาราง →
                 </Link>
               </Alert>
             ) : (
@@ -459,11 +474,18 @@ export function CheckPage() {
 const PRIORITY_RULES: { factor: keyof typeof FACTORS; rules: string }[] = [
   { factor: "teacher", rules: "ห้ามสอนซ้อน · ไม่สอนตอนประชุมฝ่ายบริหาร (อังคาร 1–4) และพบที่ปรึกษา · สอนร่วมต้องว่างพร้อมกัน" },
   { factor: "room", rules: "ห้ามใช้ซ้อน · ที่นั่งต้องพอ · ห้องคอมฯ สำหรับนวัตกรรมฯ · วิชากีฬาจองห้อง + สนามพร้อมกัน" },
-  { factor: "time", rules: "ไม่ลงคาบ 5 (พักเที่ยง) · พุธคาบ 8–9 · ชุดคาบวิชาเดียวกันคนละวัน · ไม่เกิน 3 คาบติดกัน" },
+  { factor: "time", rules: "ไม่ลงคาบ 5 (พักเที่ยง) · พุธคาบ 8–9 · ชุดคาบวิชาเดียวกันคนละวัน (ยกเว้นทฤษฎี+ปฏิบัติที่เรียนต่อกัน) · ไม่เกิน 3 คาบติดกัน" },
   { factor: "special", rules: "วิชาเลือกกีฬาเวลาเดียวกัน · เรียนรวมทั้งชั้นปี · เลือกเสรีศุกร์บ่าย · ปี 4 ฝึกสอนไม่ลงตาราง · คาบที่ล็อก" },
 ];
 
-const SOFT_RULES = ["จัดครบทุกชั่วโมง", "คาบว่างระหว่างวันไม่เกิน 3 คาบ", "ทฤษฎีช่วงเช้า ปฏิบัติช่วงบ่าย", "เลี่ยงคาบ 9", "ใช้ห้องประจำชั้นปีก่อน"];
+const SOFT_RULES = [
+  "จัดครบทุกชั่วโมง",
+  "คาบว่างระหว่างวันไม่เกิน 3 คาบ",
+  "ทฤษฎี+ปฏิบัติที่เรียนห้องเดิม เรียนต่อกันในวันเดียวกัน",
+  "ทฤษฎีช่วงเช้า ปฏิบัติช่วงบ่าย",
+  "เลี่ยงคาบ 9",
+  "ใช้ห้องประจำชั้นปีก่อน",
+];
 
 function useJob() {
   const [job, setJob] = useState<Job | null>(null);
@@ -603,8 +625,8 @@ export function RunPage() {
 
   return (
     <div>
-      <Stepper current={2} nextReady={Boolean(s?.active) && !running} nextHint="คำนวณก่อน" />
-      <PageHeader title="คำนวณตาราง" subtitle="ระบบจัดวัน คาบ ห้อง และสนามพร้อมกัน ตามลำดับความสำคัญด้านขวา" />
+      <Stepper current={2} nextReady={Boolean(s?.active) && !running} nextHint="จัดตารางก่อน" />
+      <PageHeader title="จัดตาราง" subtitle="ระบบจัดวัน คาบ ห้อง และสนามพร้อมกัน ตามลำดับความสำคัญด้านขวา" />
       <div className="grid gap-4 lg:grid-cols-5">
         <div className="card lg:col-span-3">
           {s && s.counts.sections === 0 && (
@@ -642,7 +664,7 @@ export function RunPage() {
           </div>
           <div className="mt-5">
             <button type="button" className="btn btn-primary px-6" onClick={() => start()} disabled={running || Boolean(blocked)}>
-              <IconBolt /> {running ? "กำลังคำนวณ…" : "เริ่มคำนวณ"}
+              <IconBolt /> {running ? "กำลังจัดตาราง…" : "จัดตาราง"}
             </button>
           </div>
           {startError && (
@@ -814,7 +836,7 @@ function RunResult({ v, onRetry, onNext }: { v: VersionDetail; onRetry: () => vo
           ตรวจผล <IconArrowRight />
         </button>
         <button type="button" className="btn btn-ghost" onClick={onRetry}>
-          คำนวณใหม่
+          จัดตารางใหม่
         </button>
       </div>
     </div>

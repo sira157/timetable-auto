@@ -181,7 +181,6 @@ export interface Entry {
   block_index: number;
   unit_key: string;
   part: "all" | "both" | "theory" | "practice";
-  part_label: string;
   kind: EntryKind;
   day: number;
   start: number;
@@ -272,4 +271,28 @@ export interface SampleInfo {
   courses: number;
   sections: number;
   rooms: number;
+}
+
+/** ข้อมูลหลักสูตร (รูปแบบเดียวกับไฟล์ Excel ที่ใช้นำเข้า) ใช้ในหน้ากรอกข้อมูล */
+export interface CurriculumRow {
+  no: number | null;
+  code: string;
+  name: string;
+  teachers: string;
+  places: string;
+  credits: string | null;
+  category: string | null;
+}
+
+export interface CurriculumGroup {
+  code: string;
+  size: number;
+  rows: CurriculumRow[];
+}
+
+export interface Curriculum {
+  years: { year: number; groups: CurriculumGroup[] }[];
+  admins: string[];
+  lecture: { name: string; note: string }[];
+  practice: { place: string; note: string }[];
 }

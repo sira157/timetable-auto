@@ -137,7 +137,7 @@ function steps(s: Summary): Step[] {
   return [
     { title: "นำเข้า", desc: "Excel, CSV หรือ JSON", to: "/import", done: imported },
     { title: "ตรวจข้อมูล", desc: "แก้รายการสีแดงก่อนคำนวณ", to: "/check", done: checked },
-    { title: "คำนวณ", desc: "ระบบจัดให้อัตโนมัติ", to: "/run", done: scheduled },
+    { title: "จัดตาราง", desc: "ระบบจัดให้อัตโนมัติ", to: "/run", done: scheduled },
     { title: "ตรวจผลและส่งออก", desc: "ลากปรับคาบ แล้วส่งออก", to: "/timetable", done: reviewed },
   ];
 }
@@ -187,7 +187,7 @@ function GetStarted({ onSample }: { onSample: () => void }) {
           </div>
           <h3 className="font-semibold">กรอกบนเว็บ</h3>
           <p className="mb-4 flex-1 text-sm text-slate-500">เพิ่มอาจารย์ รายวิชา กลุ่มเรียน และการเปิดสอนทีละรายการ</p>
-          <button type="button" className="btn btn-ghost" onClick={() => navigate("/data/manual")}>
+          <button type="button" className="btn btn-ghost" onClick={() => navigate("/import/manual")}>
             กรอกข้อมูลเอง
           </button>
         </div>

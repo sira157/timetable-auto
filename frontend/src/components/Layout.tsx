@@ -19,7 +19,6 @@ const GROUPS: { key: string; title: string; items: { to: string; label: string }
     key: "data",
     title: "ข้อมูลพื้นฐาน",
     items: [
-      { to: "/data/manual", label: "กรอกข้อมูลเอง" },
       { to: "/data/teachers", label: "อาจารย์" },
       { to: "/data/courses", label: "รายวิชา" },
       { to: "/data/groups", label: "กลุ่มเรียน" },
