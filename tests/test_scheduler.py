@@ -107,8 +107,9 @@ def test_new_rules_hold():
     for same in days.values():
         if len(same) > 1:
             assert len(same) == 2 and pair_ok(*[(x["start"], x["length"], x["part"]) for x in same], {5}), same
-    # วิชาเลือกเสรีวันศุกร์คาบ 6
-    assert all(a["day"] == 4 and a["start"] == 6 for a in A if a["kind"] == "free")
+    # วิชาเลือกเสรีไม่ล็อกวันและคาบ แต่ทุกวิชาเริ่มเรียนพร้อมกันเป็นช่วงเดียว (ข้อ 7.1)
+    free = [a for a in A if a["kind"] == "free"]
+    assert free and len({(a["day"], a["start"]) for a in free}) == 1
 
 
 def test_locks_are_kept():

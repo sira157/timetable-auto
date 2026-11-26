@@ -100,7 +100,6 @@ def validate(data: dict, settings: dict, assignments: list[dict]) -> list[dict]:
     for a in assignments:
         by_section[a["section_id"]].append(a)
 
-    fe = settings.get("free_elective") or {}
     year_homerooms = {
         idx.groups[g]["homeroom"] for y in (1, 2, 3, 4) for g in idx.year_groups.get(y, [])
         if idx.groups[g].get("homeroom")
@@ -153,8 +152,6 @@ def validate(data: dict, settings: dict, assignments: list[dict]) -> list[dict]:
             m = expected_units.get((a["section_id"], a["block_index"]))
             room = a.get("room")
             if a["kind"] == "free":
-                if fe and (a["day"] != int(fe["day"]) or a["start"] != int(fe["start"])):
-                    issues.append(_issue("error", "free_elective_time", f"{label} วิชาเลือกเสรีไม่อยู่ในเวลาที่กำหนด", assignment_id=aid))
                 if room and room not in year_homerooms:
                     issues.append(_issue("error", "free_elective_room", f"{label} วิชาเลือกเสรีไม่อยู่ในห้องเรียนประจำชั้นปี 1–4", assignment_id=aid))
             if is_field_course(course, settings):

@@ -102,7 +102,6 @@ export interface Settings {
   admin_meeting: FixedBlock | null;
   max_block: number;
   max_gap: number;
-  free_elective: { day: number; start: number; end: number };
   combined_rooms: string[];
   homeroom_categories: string[];
   field_categories: string[];

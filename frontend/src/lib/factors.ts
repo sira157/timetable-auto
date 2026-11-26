@@ -30,7 +30,6 @@ const ISSUE: Record<string, { factor: Factor; fix: string }> = {
   split_block: { factor: "time", fix: "ย้ายให้คาบต่อกัน" },
   hours_mismatch: { factor: "special", fix: "จัดตารางใหม่" },
   elective_not_aligned: { factor: "special", fix: "ย้ายให้อยู่เวลาเดียวกัน" },
-  free_elective_time: { factor: "special", fix: "วิชาเลือกเสรีต้องอยู่ศุกร์บ่าย" },
   not_scheduled_course: { factor: "special", fix: "วิชานี้ไม่ต้องลงตาราง" },
 };
 

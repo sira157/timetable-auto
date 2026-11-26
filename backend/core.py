@@ -35,6 +35,7 @@ def load_settings(db: Session) -> dict:
             settings.update(json.loads(row.value))
         except ValueError:
             pass
+    settings.pop("free_elective", None)  # เลิกล็อกเวลาวิชาเลือกเสรีแล้ว ค่าที่บันทึกไว้แต่เดิมไม่ใช้
     return settings
 
 
@@ -95,16 +96,6 @@ def validate_settings(settings: dict) -> list[str]:
             continue
         if not (0 <= day < len(days)) or not (1 <= start <= end <= n):
             problems.append(f"{name}: วันหรือคาบไม่ถูกต้อง")
-    fe = settings.get("free_elective") or {}
-    if fe:
-        if not (0 <= int(fe.get("day", -1)) < len(days)):
-            problems.append("วันของวิชาเลือกเสรีไม่ถูกต้อง")
-        if not (1 <= int(fe.get("start", 0)) <= int(fe.get("end", 0)) <= n):
-            problems.append("ช่วงคาบของวิชาเลือกเสรีไม่ถูกต้อง")
-        else:
-            lunch = {int(x) for x in settings.get("lunch_periods") or []}
-            if any(p in lunch for p in range(int(fe["start"]), int(fe["end"]) + 1)):
-                problems.append("ช่วงคาบของวิชาเลือกเสรีทับเวลาพักกลางวัน")
     return problems
 
 

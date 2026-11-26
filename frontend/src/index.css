@@ -197,6 +197,104 @@
   animation: stripes 0.8s linear infinite;
 }
 
+/* หน้าเข้าสู่ระบบ: บล็อกวิชาค่อย ๆ ตกลงช่องในตาราง วนซ้ำ */
+@keyframes slot-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-22px) scale(0.85) rotate(-4deg);
+  }
+  9% {
+    opacity: 1;
+    transform: translateY(2px) scale(1.03) rotate(0);
+  }
+  13% {
+    transform: none;
+  }
+  82% {
+    opacity: 1;
+    transform: none;
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+}
+
+.slot-in {
+  opacity: 0;
+  animation: slot-in 9s cubic-bezier(0.2, 0.8, 0.2, 1) infinite;
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(18px, -22px) scale(1.06);
+  }
+}
+
+.float-slow {
+  animation: float-slow 14s ease-in-out infinite;
+}
+
+@keyframes bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.bob {
+  animation: bob 3.6s ease-in-out infinite;
+}
+
+/* ข้อความไล่สีเขียว-เหลืองที่เคลื่อนช้า ๆ */
+@keyframes shimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.text-shimmer {
+  background: linear-gradient(90deg, var(--color-sun-200), var(--color-sun-400), #ffffff, var(--color-sun-300), var(--color-sun-200));
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shimmer 6s linear infinite;
+}
+
+/* กรอบไล่สีหมุนรอบการ์ดเข้าสู่ระบบ */
+@property --ring-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes ring-spin {
+  to {
+    --ring-angle: 360deg;
+  }
+}
+
+.ring-glow {
+  background: conic-gradient(
+    from var(--ring-angle),
+    var(--color-brand-300),
+    var(--color-sun-300),
+    var(--color-brand-200),
+    var(--color-sun-200),
+    var(--color-brand-300)
+  );
+  animation: ring-spin 8s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -204,6 +302,10 @@
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+  .slot-in {
+    animation: none !important;
+    opacity: 1;
   }
 }
 

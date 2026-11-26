@@ -19,7 +19,6 @@
   "admin_meeting": { "name": "ประชุมฝ่ายบริหาร", "day": 1, "start": 1, "end": 4 },
   "max_block": 3,
   "max_gap": 3,
-  "free_elective": { "day": 4, "start": 6, "end": 9 },
   "combined_rooms": ["ห้องประชุม 1", "ห้องประชุม 2"],
   "homeroom_categories": ["ภาษา", "สังคมศาสตร์และมนุษยศาสตร์", "สังคมศาสตร์", "วิชาชีพครู", "วิชาบังคับ", "คณิตศาสตร์", "วิทยาศาสตร์"],
   "computer_categories": ["นวัตกรรมและเทคโนโลยี"],

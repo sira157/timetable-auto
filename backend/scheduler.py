@@ -131,12 +131,16 @@ class Prepared:
 
         elective_sets = idx.elective_sets()
         elective_sid = {sec["id"]: key for key, secs in elective_sets.items() for sec in secs}
-        fe = s.get("free_elective") or {}
-        fe_len = int(fe.get("end", 0)) - int(fe.get("start", 0)) + 1 if fe else 0
+
+        # ช่วงคาบติดกันที่ยาวที่สุดโดยไม่มีพักกลางวัน
+        longest_run, run = 0, 0
+        for p in range(1, idx.n_periods + 1):
+            run = 0 if p in idx.lunch else run + 1
+            longest_run = max(longest_run, run)
 
         uid = 0
         elective_members: dict[tuple[int, str], list[list[Member]]] = defaultdict(list)
-        free_members: list[Member] = []
+        free_members: list[list[Member]] = []
 
         for sec in idx.data["sections"]:
             course = idx.courses.get(sec["course_code"])
@@ -183,16 +187,10 @@ class Prepared:
                 kind = "normal"
 
             if kind == "free":
+                # วิชาเลือกเสรีเรียนต่อเนื่องเป็นช่วงเดียว (ข้อ 7.1) ถ้ายาวเกินช่วงที่ไม่มีพักจึงแบ่งตามปกติ
                 total = sum(h for _, h in blocks)
-                if not fe_len:
-                    self._fail(base_info, sec, "ยังไม่ตั้งเวลาวิชาเลือกเสรี")
-                    continue
-                if total > fe_len:
-                    self.unplaced.append({
-                        **base_info, "hours": total - fe_len, "group_codes": groups, "teacher_codes": teachers,
-                        "reason": f"เรียน {total} ชม. เกินช่วงวิชาเลือกเสรี {fe_len} คาบ", "factor": "time",
-                    })
-                blocks = [("all", min(total, fe_len))]
+                if total <= longest_run:
+                    blocks = [("all", total)]
 
             is_field = is_field_course(course, s)
             fields = field_candidates(course, idx.field_rooms) if is_field else []
@@ -206,7 +204,8 @@ class Prepared:
                     sid=sec["id"], bidx=bidx, part=part, length=length, teachers=teachers, groups=groups,
                     rooms=rooms, fields=fields, needs_field=is_field, kind=kind,
                     course_code=course["code"], course_name=course["name"],
-                    prefer=None if kind == "free" else slot_preference(part, course),
+                    # วิชาเลือกเสรีเรียนพร้อมกันทุกชั้นปี: เลือกช่วงบ่ายก่อน เพื่อเว้นช่วงเช้าให้วิชาทฤษฎี (ไม่บังคับ)
+                    prefer="afternoon" if kind == "free" else slot_preference(part, course),
                 )
                 for bidx, (part, length) in enumerate(blocks)
             ]
@@ -215,7 +214,7 @@ class Prepared:
                 elective_members[elective_sid[sec["id"]]].append(members)
                 continue
             if kind == "free":
-                free_members.extend(members)
+                free_members.append(members)
                 continue
 
             for m in members:
@@ -243,18 +242,20 @@ class Prepared:
                 unit.base_priority = self._priority(unit)
                 self.units.append(unit)
 
-        # วิชาเลือกเสรีทุกวิชาเริ่มเรียนพร้อมกัน (ข้อ 7.1) จึงรวมเป็นหน่วยเดียว
+        # วิชาเลือกเสรีทุกวิชาเริ่มเรียนพร้อมกัน (ข้อ 7.1) ไม่ล็อกวันและคาบ ระบบเลือกเวลาที่ว่างตรงกันให้
+        # ชุดคาบที่ i ของทุกวิชารวมเป็นหน่วยเดียวกัน (เหมือนกลุ่มวิชาเลือก)
         if free_members:
-            uid += 1
-            unit = Unit(
-                uid=uid, key="F:free", members=free_members,
-                groups=sorted({g for m in free_members for g in m.groups}),
-                length=max(m.length for m in free_members), label="วิชาเลือกเสรี",
-                fixed=(int(fe["day"]), int(fe["start"])),
-            )
-            self._apply_locks(unit)
-            unit.base_priority = self._priority(unit)
-            self.units.append(unit)
+            for i in range(max(len(x) for x in free_members)):
+                members = [x[i] for x in free_members if i < len(x)]
+                uid += 1
+                unit = Unit(
+                    uid=uid, key=f"F:free:{i}", members=members,
+                    groups=sorted({g for m in members for g in m.groups}),
+                    length=max(m.length for m in members), label="วิชาเลือกเสรี",
+                )
+                self._apply_locks(unit)
+                unit.base_priority = self._priority(unit)
+                self.units.append(unit)
 
         self.lock_dropped = len(self.locks) - sum(
             1 for u in self.units for m in u.members if (m.sid, m.bidx) in self.locks
