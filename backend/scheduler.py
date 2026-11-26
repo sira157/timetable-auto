@@ -766,7 +766,8 @@ def _cpsat(prep: Prepared, budget: float, seed: int, hint: dict | None, cancel=N
                         if r in rooms_a and r in rooms_b:
                             model.Add(rooms_a[r] == rooms_b[r]).OnlyEnforceIf(z)
                         else:
-                            model.Add((rooms_a.get(r) or rooms_b.get(r)) == 0).OnlyEnforceIf(z)
+                            # ห้ามใช้ or กับตัวแปรของ CP-SAT (ประเมินเป็นค่าจริง/เท็จไม่ได้)
+                            model.Add((rooms_a[r] if r in rooms_a else rooms_b[r]) == 0).OnlyEnforceIf(z)
                     objective.append(20 * z)
                 else:
                     model.Add(a[0] + b[0] <= 1)

@@ -31,6 +31,7 @@ from .data_io import (
     ImportError_,
     apply_admins,
     csv_zip,
+    keep_existing,
     normalize_rows,
     parse_csv_files,
     parse_json,
@@ -208,6 +209,8 @@ def delete_entity(entity: str, item_id: int, request: Request, db: Session = Dep
 
 def _import_parsed(db: Session, parsed: dict, request: Request, source: str, admins: set | None = None) -> dict:
     warnings = parsed.pop("_warnings", [])
+    if parsed.pop("_curriculum", False):
+        keep_existing(db, parsed)
     counts = replace_all(db, parsed)
     if admins is not None:
         try:
@@ -255,12 +258,7 @@ async def import_file(request: Request, files: list[UploadFile] = File(...), db:
 
 # ---------- กรอกข้อมูลบนเว็บ (รูปแบบเดียวกับไฟล์ Excel ข้อมูลหลักสูตร) ----------
 
-# ค่าที่ไม่มีในรูปแบบข้อมูลหลักสูตร: คงค่าเดิมในระบบไว้เมื่อบันทึกจากหน้ากรอกข้อมูล
-CURRICULUM_KEEP = {
-    "teachers": ("note", "is_excluded"),
-    "groups": ("advisor", "is_excluded"),
-    "courses": ("sport", "venue", "is_excluded"),
-}
+# ค่าที่ไม่มีในรูปแบบข้อมูลหลักสูตรคงค่าเดิมในระบบไว้ (data_io.keep_existing) ทั้งตอนนำเข้าไฟล์และบันทึกจากหน้ากรอกข้อมูล
 
 
 @router.get("/curriculum", dependencies=staff)
@@ -290,21 +288,6 @@ def save_curriculum(body: dict, request: Request, db: Session = Depends(get_db))
         raise HTTPException(400, str(e))
     except (AttributeError, TypeError, ValueError):
         raise HTTPException(400, "รูปแบบข้อมูลไม่ถูกต้อง")
-    current = load_dataset(db)
-    for entity, keys in CURRICULUM_KEEP.items():
-        key = "code"
-        old = {r[key]: r for r in current.get(entity, [])}
-        for r in parsed.get(entity, []):
-            prev = old.get(r.get(key))
-            if prev:
-                for k in keys:
-                    if not r.get(k) and prev.get(k):
-                        r[k] = prev[k]
-    old_rooms = {r["name"]: r for r in current.get("rooms", [])}
-    for r in parsed.get("rooms", []):
-        prev = old_rooms.get(r["name"])
-        if prev and r.get("kind") == "field" and prev.get("kind") == "field":
-            r["capacity"] = prev.get("capacity") or r.get("capacity")
     return _import_parsed(db, parsed, request, "กรอกข้อมูลบนเว็บ")
 
 
@@ -852,7 +835,7 @@ def _timetable_rows(tt: dict) -> list[list]:
 
 @router.get("/reports/{key}")
 def report(key: str, request: Request, id: str | None = None, version_id: int | None = None,
-           format: str = "csv", db: Session = Depends(get_db)):
+           format: str = "csv", building: str | None = None, db: Session = Depends(get_db)):
     user = current_user(request)
     is_staff = user is None or user.role == "staff"
     if version_id is None:
@@ -883,17 +866,22 @@ def report(key: str, request: Request, id: str | None = None, version_id: int | 
     elif not is_staff:
         raise HTTPException(403, "บัญชีนี้ไม่มีสิทธิ์ใช้งานส่วนนี้")
     elif key == "room_timetables":
-        items = [r for r in data["rooms"] if id is None or r["name"] == id]
+        # building = ส่งออกเฉพาะห้อง/จุดของอาคารหรือสนามที่เลือก (มุมมองอาคาร)
+        items = [r for r in data["rooms"] if (id is None or r["name"] == id)
+                 and (building is None or (r.get("building") or "") == building)]
         rows, name = many("room", items, lambda r: r["name"]), "ตารางการใช้ห้องเรียน"
+        if building is not None:
+            name = f"ตารางการใช้ {building}"
     elif key == "issues":
         rows = [["ระดับ", "ประเภท", "รายละเอียด"]] + [
             ["ข้อผิดพลาด" if i["level"] == "error" else "คำเตือน", i["type"], i["message"]] for i in v.issues or []
         ]
         name = "ผลการตรวจสอบ"
     elif key == "unplaced":
+        tname = {t["code"]: t["name"] for t in data["teachers"]}  # แสดงชื่ออาจารย์ ไม่แสดงรหัส
         rows = [["รหัสวิชา", "ชื่อวิชา", "ชั่วโมง", "กลุ่มเรียน", "ผู้สอน", "เหตุผล"]] + [
             [u["course_code"], u.get("course_name", ""), u.get("hours", ""), ", ".join(u.get("group_codes") or []),
-             ", ".join(u.get("teacher_codes") or []), u["reason"]] for u in v.unplaced or []
+             ", ".join(tname.get(t, t) for t in u.get("teacher_codes") or []), u["reason"]] for u in v.unplaced or []
         ]
         name = "วิชาที่จัดไม่ได้"
     elif key == "teacher_load":
@@ -902,8 +890,8 @@ def report(key: str, request: Request, id: str | None = None, version_id: int | 
         for a in db.scalars(select(Assignment).where(Assignment.version_id == v.id)):
             for t in a.teacher_codes or []:
                 load[t] = load.get(t, 0) + a.length
-        rows = [["รหัสอาจารย์", "ชื่อ", "ชั่วโมงสอน/สัปดาห์"]] + [
-            [t["code"], t["name"], load.get(t["code"], 0)] for t in data["teachers"]
+        rows = [["อาจารย์", "ชั่วโมงสอน/สัปดาห์"]] + [
+            [t["name"], load.get(t["code"], 0)] for t in data["teachers"]
         ]
         del idx
         name = "ภาระงานสอน"

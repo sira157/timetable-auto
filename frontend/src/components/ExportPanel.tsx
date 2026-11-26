@@ -43,6 +43,8 @@ export default function ExportPanel({ versionId, view, current, all, selfOnly, a
     const parts = [`format=${fmt}`];
     if (!selfOnly) parts.push(`version_id=${versionId}`);
     if ((scope === "one" || !canAll) && current && view !== "building") parts.push(`id=${encodeURIComponent(current.id)}`);
+    // มุมมองอาคาร: ส่งออกเฉพาะห้อง/จุดของอาคารที่เลือก
+    if (view === "building" && current) parts.push(`building=${encodeURIComponent(current.id)}`);
     return `/api/reports/${REPORT_KEY[view]}?${parts.join("&")}`;
   }
 

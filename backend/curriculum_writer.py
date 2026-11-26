@@ -60,7 +60,8 @@ def curriculum_model(data: dict | None, settings: dict) -> dict:
                         "teachers": ",".join(tname.get(t, t) for t in m.get("teacher_codes") or []),
                         "places": ",".join(m.get("places") or []) or ("-" if is_internship(mc, settings) else ""),
                         "credits": credits.strip() if k == 0 else None,
-                        "category": (mc.get("category") or "") if k == 0 else None,
+                        # วิชาเลือก: คอลัมน์กลุ่มวิชาเป็นชื่อกลุ่มวิชาเลือก (ตัวอ่านใช้ค่านี้เป็นชื่อกลุ่ม)
+                        "category": (set_name or mc.get("category") or "") if k == 0 else None,
                     })
             groups_out.append({"code": g["code"], "size": int(g.get("size") or 0), "rows": rows})
         model["years"].append({"year": year, "groups": groups_out})

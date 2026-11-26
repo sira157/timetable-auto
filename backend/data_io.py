@@ -208,6 +208,7 @@ def parse_xlsx(content: bytes, days: list[str]) -> dict[str, list[dict]]:
         if errors:
             raise ImportError_("\n".join(errors))
         result["_warnings"] = warnings
+        result["_curriculum"] = True
         return result
     result = {}
     errors = []
@@ -366,6 +367,63 @@ def apply_admins(db: Session, codes: set[str]) -> int:
     for t in teachers:
         t.is_admin = match_key(t.code) in wanted
     return len(codes)
+
+
+def keep_existing(db: Session, parsed: dict[str, list[dict]]) -> None:
+    """ไฟล์รูปแบบข้อมูลหลักสูตรไม่มีบางค่า (รหัสอาจารย์ ที่ปรึกษา ความจุห้อง กีฬา ฯลฯ)
+    เมื่อนำเข้าไฟล์นี้ซ้ำ ให้คงค่าเดิมในระบบไว้ ข้อมูลที่ส่งออกแล้วนำเข้ากลับจึงไม่หาย
+    และบัญชีผู้ใช้ที่ผูกกับอาจารย์ยังใช้ได้ (รหัสอาจารย์เดิมไม่เปลี่ยน)"""
+    from .curriculum_import import person_key
+
+    # อาจารย์: ใช้รหัสเดิมของคนชื่อเดียวกัน
+    old_teachers = db.scalars(select(Teacher)).all()
+    by_person = {person_key(t.name): t for t in old_teachers}
+    new_codes = {t["code"] for t in parsed.get("teachers", [])}
+    remap: dict[str, str] = {}
+    taken: set[str] = set()
+    for t in parsed.get("teachers", []):
+        old = by_person.get(person_key(t["name"]))
+        if old is None or old.code in taken or (old.code in new_codes and old.code != t["code"]):
+            continue
+        taken.add(old.code)
+        if old.code != t["code"]:
+            remap[t["code"]] = old.code
+            t["code"] = old.code
+        t["note"] = t.get("note") or old.note or ""
+        t["is_excluded"] = bool(t.get("is_excluded") or old.is_excluded)
+    for s in parsed.get("sections", []):
+        s["teacher_codes"] = [remap.get(c, c) for c in s.get("teacher_codes") or []]
+
+    old_groups = {g.code: g for g in db.scalars(select(StudentGroup)).all()}
+    for g in parsed.get("groups", []):
+        old = old_groups.get(g["code"])
+        if old is None:
+            continue
+        g["advisor"] = remap.get(g.get("advisor") or "", g.get("advisor") or "") or old.advisor or ""
+        g["name"] = old.name or g["name"]
+        g["is_excluded"] = bool(g.get("is_excluded") or old.is_excluded)
+
+    old_rooms = {r.name: r for r in db.scalars(select(Room)).all()}
+    for r in parsed.get("rooms", []):
+        old = old_rooms.get(r["name"])
+        if old is None:
+            continue
+        # ประเภท อาคาร และความจุ ไฟล์นี้เดาจากชื่อ ใช้ค่าที่แก้ไว้ในระบบ
+        r["kind"], r["building"], r["capacity"] = old.kind, old.building, old.capacity
+        r["sports"] = r.get("sports") or list(old.sports or [])
+
+    old_courses = {c.code: c for c in db.scalars(select(Course)).all()}
+    for c in parsed.get("courses", []):
+        old = old_courses.get(c["code"])
+        if old is None:
+            continue
+        c["sport"] = c.get("sport") or old.sport or ""
+        c["venue"] = c.get("venue") or old.venue or ""
+        c["hours"] = c.get("hours") or old.hours or 0
+        c["is_excluded"] = bool(c.get("is_excluded") or old.is_excluded)
+        # วิชาเลือก: คอลัมน์กลุ่มวิชาของไฟล์คือชื่อกลุ่มวิชาเลือก หมวดวิชาเดิมจึงคงไว้
+        if c.get("elective_set") and old.category:
+            c["category"] = old.category
 
 
 def link_names(db: Session, parsed: dict[str, list[dict]]) -> None:

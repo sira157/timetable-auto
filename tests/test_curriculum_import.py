@@ -70,6 +70,7 @@ def test_curriculum_schedules_cleanly():
     s["time_budget_sec"] = 5
     parsed = parse_xlsx(_workbook(), s["days"])
     parsed.pop("_warnings")
+    parsed.pop("_curriculum")
     assert "busy" not in parsed  # ไฟล์นี้ไม่มีเวลาที่ไม่ว่าง จึงต้องไม่ลบข้อมูลเดิม
     parsed["busy"] = []
     data = {k: [{"id": i + 1, **r} for i, r in enumerate(rows)] for k, rows in parsed.items()}
@@ -90,6 +91,7 @@ def test_template_round_trip():
     s = default_settings()
     parsed = parse_xlsx(_workbook(), s["days"])
     parsed.pop("_warnings")
+    parsed.pop("_curriculum")
     parsed["busy"] = []
     data = {k: [{"id": i + 1, **r} for i, r in enumerate(rows)] for k, rows in parsed.items()}
     again = parse_xlsx(curriculum_workbook(data, s), s["days"])

@@ -65,8 +65,8 @@ export default function ReportsPage() {
     );
 
   const d = detail.data;
-  const loadRows = (load.data?.rows ?? []).slice(1).filter((r) => !loadQ || String(r[1]).includes(loadQ) || String(r[0]).includes(loadQ));
-  const maxLoad = Math.max(1, ...loadRows.map((r) => Number(r[2]) || 0));
+  const loadRows = (load.data?.rows ?? []).slice(1).filter((r) => !loadQ || String(r[0]).includes(loadQ));
+  const maxLoad = Math.max(1, ...loadRows.map((r) => Number(r[1]) || 0));
 
   return (
     <div>
@@ -241,13 +241,13 @@ export default function ReportsPage() {
             <ul className="grid gap-x-8 gap-y-2 md:grid-cols-2">
               {loadRows.map((r) => (
                 <li key={String(r[0])} className="grid grid-cols-[minmax(0,9rem)_1fr_2rem] items-center gap-3 text-sm">
-                  <span className="truncate text-slate-700" title={String(r[1])}>
-                    {r[1]}
+                  <span className="truncate text-slate-700" title={String(r[0])}>
+                    {r[0]}
                   </span>
                   <span className="h-2.5 overflow-hidden rounded-full bg-slate-100">
-                    <span className="block h-full rounded-full bg-indigo-500" style={{ width: `${((Number(r[2]) || 0) / maxLoad) * 100}%` }} />
+                    <span className="block h-full rounded-full bg-indigo-500" style={{ width: `${((Number(r[1]) || 0) / maxLoad) * 100}%` }} />
                   </span>
-                  <span className="text-right font-semibold tabular-nums">{r[2]}</span>
+                  <span className="text-right font-semibold tabular-nums">{r[1]}</span>
                 </li>
               ))}
             </ul>
