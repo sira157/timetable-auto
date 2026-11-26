@@ -13,11 +13,15 @@ interface Props {
 /** โมดัลตามข้อ 6 ของ style guide: มือถือติดล่าง, จอกว้างอยู่กลาง, Esc / คลิกนอกกรอบเพื่อปิด */
 export default function Modal({ open, title, onClose, children, footer, wide }: Props) {
   const panel = useRef<HTMLDivElement>(null);
+  // เก็บ onClose ไว้ใน ref: ผู้เรียกมักส่งฟังก์ชันใหม่ทุกครั้งที่ render
+  // ถ้าใส่ใน dependency จะโฟกัสกรอบใหม่ทุกครั้งที่พิมพ์ ช่องกรอกจึงพิมพ์ได้ทีละตัว
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
 
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") closeRef.current();
     };
     document.addEventListener("keydown", onKey);
     const prev = document.body.style.overflow;
@@ -27,7 +31,7 @@ export default function Modal({ open, title, onClose, children, footer, wide }: 
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prev;
     };
-  }, [open, onClose]);
+  }, [open]);
 
   if (!open) return null;
   return (
