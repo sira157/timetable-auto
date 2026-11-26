@@ -400,7 +400,6 @@ export default function TimetableGrid({ tt, onSelect, actions, drag, search = ""
             <div key={i} className="mt-2 rounded-xl border border-violet-200 bg-violet-50 px-3 py-2 text-sm text-violet-800">
               <div className="font-semibold">{n.text}</div>
               {n.teachers && n.teachers.length > 0 && <div>อาจารย์ผู้รับผิดชอบ: {n.teachers.join(", ")}</div>}
-              {n.advisor && <div>อาจารย์ที่ปรึกษา: {n.advisor}</div>}
             </div>
           ))}
         </div>

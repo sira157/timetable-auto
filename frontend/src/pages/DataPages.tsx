@@ -121,7 +121,6 @@ export function GroupsPage() {
     { key: "year", label: "ชั้นปี", type: "number", required: true },
     { key: "size", label: "จำนวนนักศึกษา", type: "number" },
     { key: "homeroom", label: "ห้องประจำ", type: "text", placeholder: "321" },
-    { key: "advisor", label: "อาจารย์ที่ปรึกษา (รหัส)", type: "text" },
     { key: "is_excluded", label: "ไม่ลงทะเบียน (ไม่ใช้จัดตาราง)", type: "bool", full: true },
   ];
   return (
@@ -139,7 +138,6 @@ export function GroupsPage() {
         { key: "year", label: "ชั้นปี", className: "tabular-nums" },
         { key: "size", label: "จำนวน", className: "tabular-nums", render: (g) => `${g.size} คน` },
         { key: "homeroom", label: "ห้องประจำ", render: (g) => g.homeroom || <Badge tone="warn">ยังไม่มี</Badge> },
-        { key: "advisor", label: "ที่ปรึกษา" },
         { key: "status", label: "สถานะ", render: (g) => (g.is_excluded ? <Badge tone="muted" strike>ไม่ลงทะเบียน</Badge> : <Badge tone="ok">ใช้งาน</Badge>) },
       ]}
     />

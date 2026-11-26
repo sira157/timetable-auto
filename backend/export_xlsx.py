@@ -112,8 +112,7 @@ def grid_workbook(timetables: list[dict]) -> bytes:
         ws.cell(2, 1).font = Font(color="64748B")
         ws.merge_cells(start_row=2, start_column=1, end_row=2, end_column=n + 1)
         for nt in tt.get("notices") or []:
-            ws.cell(2, 1).value += f" · {nt['text']}" + (f" · ผู้รับผิดชอบ {', '.join(nt['teachers'])}" if nt.get("teachers") else "") + (
-                f" (ที่ปรึกษา {nt['advisor']})" if nt.get("advisor") else "")
+            ws.cell(2, 1).value += f" · {nt['text']}" + (f" · ผู้รับผิดชอบ {', '.join(nt['teachers'])}" if nt.get("teachers") else "")
         head = ws.cell(3, 1, "วัน / คาบ")
         head.font, head.alignment, head.border = Font(bold=True, color="475569"), center, border
         head.fill = PatternFill("solid", fgColor="F8FAFC")

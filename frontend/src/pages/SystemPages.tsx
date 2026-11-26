@@ -282,7 +282,7 @@ export function SettingsPage() {
         <div className="card lg:col-span-2">
           <h2 className="mb-1 font-bold">ช่วงเวลาที่กำหนดตายตัว</h2>
           <p className="mb-4 text-sm text-slate-500">
-            ห้ามจัดการเรียนการสอนในช่วงเหล่านี้ คาบพบอาจารย์ที่ปรึกษาและกิจกรรมใช้กับทุกห้องทุกชั้นปี (คาบพบที่ปรึกษากันเวลาอาจารย์ที่ปรึกษาด้วย)
+            ห้ามจัดการเรียนการสอนในช่วงเหล่านี้ คาบพบอาจารย์ที่ปรึกษาและกิจกรรมใช้กับทุกห้องทุกชั้นปี 
             ส่วนประชุมฝ่ายบริหารใช้กับอาจารย์ในชีต “ฝ่ายบริหาร”
           </p>
           <div className="space-y-3">
@@ -300,10 +300,7 @@ export function SettingsPage() {
                     {i === -1 ? (
                       <input className="input" disabled value={`อาจารย์ฝ่ายบริหาร ${adminCount} คน`} />
                     ) : (
-                      <select className="input" value={b.kind ?? "activity"} onChange={(e) => update({ kind: e.target.value as "advisor" | "activity" })}>
-                        <option value="advisor">ทุกกลุ่ม + อาจารย์ที่ปรึกษา</option>
-                        <option value="activity">ทุกกลุ่ม</option>
-                      </select>
+                      <input className="input" disabled value="ทุกกลุ่มทุกชั้นปี" />
                     )}
                   </Field>
                   <Field label="วัน">

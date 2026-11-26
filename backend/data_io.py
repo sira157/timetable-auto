@@ -29,7 +29,7 @@ SHEETS: dict[str, dict[str, Any]] = {
     "groups": {"title": "กลุ่มเรียน", "model": StudentGroup, "key": "code", "columns": [
         ("code", "รหัสกลุ่ม", "str"), ("name", "ชื่อกลุ่ม", "str"), ("year", "ชั้นปี", "int"),
         ("size", "จำนวนนักศึกษา", "int"), ("homeroom", "ห้องประจำ", "str"),
-        ("advisor", "อาจารย์ที่ปรึกษา (รหัส)", "str"), ("is_excluded", "ไม่ลงทะเบียน", "bool"),
+        ("is_excluded", "ไม่ลงทะเบียน", "bool"),
     ]},
     "rooms": {"title": "ห้องและสนาม", "model": Room, "key": "name", "columns": [
         ("name", "ชื่อห้อง/จุด", "str"), ("building", "อาคาร/สนาม", "str"), ("kind", "ประเภท", "roomkind"),
@@ -370,7 +370,7 @@ def apply_admins(db: Session, codes: set[str]) -> int:
 
 
 def keep_existing(db: Session, parsed: dict[str, list[dict]]) -> None:
-    """ไฟล์รูปแบบข้อมูลหลักสูตรไม่มีบางค่า (รหัสอาจารย์ ที่ปรึกษา ความจุห้อง กีฬา ฯลฯ)
+    """ไฟล์รูปแบบข้อมูลหลักสูตรไม่มีบางค่า (รหัสอาจารย์ ความจุห้อง กีฬา ฯลฯ)
     เมื่อนำเข้าไฟล์นี้ซ้ำ ให้คงค่าเดิมในระบบไว้ ข้อมูลที่ส่งออกแล้วนำเข้ากลับจึงไม่หาย
     และบัญชีผู้ใช้ที่ผูกกับอาจารย์ยังใช้ได้ (รหัสอาจารย์เดิมไม่เปลี่ยน)"""
     from .curriculum_import import person_key
@@ -399,7 +399,6 @@ def keep_existing(db: Session, parsed: dict[str, list[dict]]) -> None:
         old = old_groups.get(g["code"])
         if old is None:
             continue
-        g["advisor"] = remap.get(g.get("advisor") or "", g.get("advisor") or "") or old.advisor or ""
         g["name"] = old.name or g["name"]
         g["is_excluded"] = bool(g.get("is_excluded") or old.is_excluded)
 
@@ -447,7 +446,6 @@ def link_names(db: Session, parsed: dict[str, list[dict]]) -> None:
 
     for r in parsed.get("groups", []):
         r["homeroom"] = one(r.get("homeroom", ""), rooms)
-        r["advisor"] = one(r.get("advisor", ""), teachers)
     for r in parsed.get("sections", []):
         r["course_code"] = one(r["course_code"], courses)
         r["group_codes"] = many(r["group_codes"], groups)

@@ -46,7 +46,7 @@ class StudentGroup(Base):
     year: Mapped[int] = mapped_column(Integer, default=1)
     size: Mapped[int] = mapped_column(Integer, default=0)
     homeroom: Mapped[str] = mapped_column(String(100), default="")
-    advisor: Mapped[str] = mapped_column(String(50), default="")  # รหัสครู
+    advisor: Mapped[str] = mapped_column(String(50), default="")  # ไม่ใช้แล้ว (เลิกเก็บรหัสอาจารย์ที่ปรึกษา) คงคอลัมน์ไว้ให้ฐานข้อมูลเดิมเปิดได้
     is_excluded: Mapped[bool] = mapped_column(Boolean, default=False)
 
 

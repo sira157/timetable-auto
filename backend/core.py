@@ -107,7 +107,7 @@ def _row(obj, fields) -> dict:
 
 
 TEACHER_FIELDS = ["id", "code", "name", "is_admin", "is_excluded", "note"]
-GROUP_FIELDS = ["id", "code", "name", "year", "size", "homeroom", "advisor", "is_excluded"]
+GROUP_FIELDS = ["id", "code", "name", "year", "size", "homeroom", "is_excluded"]
 ROOM_FIELDS = ["id", "name", "building", "kind", "capacity", "sports"]
 COURSE_FIELDS = [
     "id", "code", "name", "credits", "category", "combined", "elective_set",
@@ -198,16 +198,12 @@ def effective_busy(data: dict, settings: dict) -> list[dict]:
     years = sorted({int(g.get("year") or 0) for g in data["groups"] if not g.get("is_excluded")})
     all_groups = [f"ปี {y}" for y in years]
     for cb in settings.get("common_blocks") or []:
-        advisors: list[str] = []
-        if cb.get("kind") == "advisor":
-            advisors = sorted({
-                g["advisor"] for g in data["groups"] if g.get("advisor") and not g.get("is_excluded")
-            })
+        # คาบพบอาจารย์ที่ปรึกษาและกิจกรรม: ห้ามจัดสอนทุกกลุ่ม (ไม่มีรหัสอาจารย์ที่ปรึกษาในระบบแล้ว)
         out.append({
             "id": None, "kind": "advisor" if cb.get("kind") == "advisor" else "activity",
             "name": cb.get("name") or KIND_LABEL.get(cb.get("kind"), "กิจกรรม"),
             "day": int(cb["day"]), "start": int(cb["start"]), "end": int(cb["end"]),
-            "teacher_codes": advisors, "group_codes": all_groups,
+            "teacher_codes": [], "group_codes": all_groups,
         })
     am = settings.get("admin_meeting")
     if am:

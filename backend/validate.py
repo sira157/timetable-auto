@@ -295,8 +295,6 @@ def check_data(data: dict, settings: dict) -> dict:
     for g in data["groups"]:
         if not g.get("is_excluded") and g.get("homeroom") and g["homeroom"] not in idx.rooms:
             general.append({"level": "warning", "message": f"กลุ่ม {g['name']}: ไม่พบห้องประจำ {g['homeroom']}"})
-        if g.get("advisor") and g["advisor"] not in idx.teachers:
-            general.append({"level": "warning", "message": f"กลุ่ม {g['name']}: ไม่พบอาจารย์ที่ปรึกษา {g['advisor']}"})
     for name in settings.get("combined_rooms") or []:
         if name not in idx.rooms:
             general.append({"level": "warning", "message": f"ไม่พบห้องสำหรับเรียนรวม {name}"})

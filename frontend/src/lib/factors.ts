@@ -11,7 +11,7 @@ export const FACTORS: Record<Factor, { label: string; icon: string; desc: string
 /** ชนิดปัญหา → หมวด และวิธีแก้สั้นๆ */
 const ISSUE: Record<string, { factor: Factor; fix: string }> = {
   teacher_overlap: { factor: "teacher", fix: "ลากวิชาหนึ่งไปช่องสีเขียว" },
-  teacher_busy: { factor: "teacher", fix: "ย้ายออกจากเวลาประชุม/พบที่ปรึกษา" },
+  teacher_busy: { factor: "teacher", fix: "ย้ายออกจากเวลาประชุมหรือเวลาที่ไม่ว่าง" },
   no_teacher: { factor: "teacher", fix: "เพิ่มผู้สอนในหน้ากรอกข้อมูลเอง" },
   room_overlap: { factor: "room", fix: "เปลี่ยนห้องหรือย้ายเวลา" },
   no_room: { factor: "room", fix: "กำหนดห้องประจำของกลุ่ม" },

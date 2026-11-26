@@ -52,7 +52,6 @@ def test_new_rules_hold():
     groups = {g["code"]: g for g in data["groups"]}
     rooms = {r["name"]: r for r in data["rooms"]}
     admins = {t["code"] for t in data["teachers"] if t.get("is_admin")}
-    advisors = {g["advisor"] for g in data["groups"]}
     assert admins == {f"T0{i}" for i in range(1, 8)}
     for a in A:
         span = set(range(a["start"], a["start"] + a["length"]))
@@ -61,8 +60,6 @@ def test_new_rules_hold():
             assert not span & {8, 9}, f"ทับคาบพบที่ปรึกษา/กิจกรรม: {a['course_code']}"
         if a["day"] == 1 and span & {1, 2, 3, 4}:  # วันอังคาร คาบ 1–4 ประชุมฝ่ายบริหาร
             assert not set(a["teacher_codes"]) & admins, f"สอนทับประชุมฝ่ายบริหาร: {a['course_code']}"
-        if a["day"] == 2 and 8 in span:
-            assert not set(a["teacher_codes"]) & advisors
     # ชั้นปี 4 ฝึกสอนทั้งภาคเรียน ไม่มีคาบเรียน
     assert not any(groups[g]["year"] == 4 for a in A for g in a["group_codes"])
     intern = [n for n in res["notices"] if n["course_code"] == "กศ 021037"]
@@ -142,7 +139,7 @@ def test_overloaded_teacher_reported():
     assert any("เกินคาบ" in u["reason"] for u in res["unplaced"])
 
 
-def test_validator_detects_overlap_and_advisor_block():
+def test_validator_detects_overlap_and_advisor_period():
     data, s, res = _cached(1)
     A = [dict(a) for a in res["assignments"]]
     normals = [a for a in A if a["kind"] == "normal" and a["teacher_codes"]]

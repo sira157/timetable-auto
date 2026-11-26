@@ -28,7 +28,6 @@ export interface Group {
   year: number;
   size: number;
   homeroom: string;
-  advisor: string;
   is_excluded: boolean;
 }
 
@@ -223,7 +222,7 @@ export interface Timetable {
   lunch_periods: number[];
   entries: Entry[];
   events: TimetableEvent[];
-  notices: { text: string; course: string; advisor: string; teachers?: string[] }[];
+  notices: { text: string; course: string; teachers?: string[] }[];
   total_hours: number;
 }
 

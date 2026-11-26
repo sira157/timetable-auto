@@ -710,7 +710,7 @@ def _timetable(db: Session, v: ScheduleVersion, view: str, ident: str) -> dict:
             if n.get("type") == "internship" and t["code"] in (n.get("teacher_codes") or []):
                 notices.append({
                     "text": f"รับผิดชอบรายวิชา {n['course_code']} {n.get('course_name', '')} (ไม่มีคาบสอน)",
-                    "course": f"{n['course_code']} {n.get('course_name', '')}", "advisor": "",
+                    "course": f"{n['course_code']} {n.get('course_name', '')}",
                 })
     elif view == "group":
         g = next((x for x in data["groups"] if str(x["id"]) == ident), None)
@@ -725,7 +725,6 @@ def _timetable(db: Session, v: ScheduleVersion, view: str, ident: str) -> dict:
                 notices.append({
                     "text": f"{n['course_code']} {n.get('course_name', '')} · ฝึกสอนในสถานศึกษาตลอดภาคเรียน ไม่มีคาบเรียน",
                     "course": f"{n['course_code']} {n.get('course_name', '')}",
-                    "advisor": idx.teacher_name(g["advisor"]) if g.get("advisor") else "",
                     "teachers": [idx.teacher_name(c) for c in n.get("teacher_codes") or []],
                 })
     elif view == "room":

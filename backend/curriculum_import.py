@@ -204,7 +204,7 @@ def parse_curriculum(wb) -> tuple[dict[str, list[dict]], list[str]]:
                 code = f"{gm.group(1)}/{gm.group(2)}"
                 group = groups.setdefault(code, {"code": code, "name": clean(a), "year": int(gm.group(1)),
                                                  "size": int(b) if isinstance(b, (int, float)) else 0,
-                                                 "homeroom": homeroom_note.get(code, ""), "advisor": ""})
+                                                 "homeroom": homeroom_note.get(code, "")})
             if group is None or not cells[3]:
                 continue
             course_code = cells[3]
