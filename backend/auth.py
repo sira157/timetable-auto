@@ -288,7 +288,7 @@ def _link_name(db: Session, user: UserAccount) -> tuple[str, bool]:
     obj = db.get(model, user.scope_id) if user.scope_id is not None else None
     if obj is None:
         return MISSING_LINK, False
-    return f"{obj.code} {obj.name}", True
+    return (obj.name if user.role == "teacher" else f"{obj.code} {obj.name}"), True
 
 
 @router.get("/users", dependencies=[Depends(require_staff)])
@@ -360,9 +360,10 @@ class BulkIn(BaseModel):
 
 @router.post("/users/bulk", dependencies=[Depends(require_staff)])
 def bulk_create(body: BulkIn, request: Request, db: Session = Depends(get_db)):
-    if body.role not in ("teacher", "student"):
-        raise HTTPException(400, "บทบาทไม่ถูกต้อง")
-    model = Teacher if body.role == "teacher" else StudentGroup
+    # บัญชีอาจารย์ให้ผู้ดูแลเว็บไซต์สร้างทีละบัญชีและตั้งชื่อผู้ใช้เอง (ไม่ใช้รหัสอาจารย์)
+    if body.role != "student":
+        raise HTTPException(400, "สร้างอัตโนมัติได้เฉพาะบัญชีกลุ่มเรียน")
+    model = StudentGroup
     linked = set(db.scalars(select(UserAccount.scope_id).where(UserAccount.role == body.role)).all())
     taken = set(db.scalars(select(UserAccount.username)).all())
     created = []

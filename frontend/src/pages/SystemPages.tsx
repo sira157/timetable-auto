@@ -351,9 +351,6 @@ export function UsersPage() {
         subtitle="อาจารย์ดูได้เฉพาะตารางสอนของตนเอง นักเรียนดูได้เฉพาะตารางของกลุ่มเรียนที่ผูกไว้"
         actions={
           <>
-            <button type="button" className="btn btn-ghost" onClick={() => bulk("teacher")}>
-              สร้างบัญชีอาจารย์อัตโนมัติ
-            </button>
             <button type="button" className="btn btn-ghost" onClick={() => bulk("student")}>
               สร้างบัญชีกลุ่มเรียนอัตโนมัติ
             </button>
@@ -546,20 +543,18 @@ function CreateUserModal({ open, onClose, onCreated }: { open: boolean; onClose:
               value={scope}
               onChange={(e) => {
                 setScope(e.target.value);
-                const t = targets.data?.find((x) => String(x.id) === e.target.value);
-                if (t && !username) setUsername(t.code.replace(/\s+/g, "").toLowerCase());
               }}
             >
               <option value="">— เลือก —</option>
               {(targets.data ?? []).map((t) => (
                 <option key={t.id} value={t.id}>
-                  {t.code} {t.name}
+                  {role === "teacher" ? t.name : `${t.code} ${t.name}`}
                 </option>
               ))}
             </select>
           </Field>
         )}
-        <Field label="ชื่อผู้ใช้" hint="ตัวพิมพ์เล็ก ไม่มีช่องว่าง">
+        <Field label="ชื่อผู้ใช้" hint="ตั้งเอง ตัวพิมพ์เล็ก ไม่มีช่องว่าง">
           <input className="input" value={username} autoComplete="off" onChange={(e) => setUsername(e.target.value)} />
         </Field>
         <Field label="ชื่อแสดง (ไม่บังคับ)">

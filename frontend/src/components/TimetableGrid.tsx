@@ -182,23 +182,12 @@ function ElectiveBlock({ list, onSelect, drag, dim }: { list: Entry[]; onSelect?
         onSelect ? "cursor-pointer hover:-translate-y-px hover:shadow-md" : "cursor-default"
       } ${isDragging ? "opacity-40" : ""} ${dim ? "opacity-25" : ""}`}
     >
-      <span className="flex min-w-0 items-center gap-1">
+      <span className="flex items-center gap-1">
         <Tag className="bg-sky-700">{label}</Tag>
-        <span className="min-w-0 truncate font-bold">{first.elective_set}</span>
-        <span className="shrink-0 text-[10px] opacity-70">{first.credits}</span>
         {first.locked && <IconLock width={12} height={12} className="ml-auto shrink-0 opacity-70" aria-label="ล็อกไว้" />}
       </span>
-      <span className="text-[11px] opacity-75">เลือกเรียน 1 จาก {list.length} วิชา</span>
-      <span className="flex flex-col gap-0.5 border-t border-sky-200/80 pt-1">
-        {list.map((e) => (
-          <span key={e.id} className="block leading-tight">
-            <span className="font-semibold">{e.course_code}</span> {e.course_name}
-            <span className="block truncate text-[11px] opacity-75">
-              {e.teachers.join(", ") || "ยังไม่มีผู้สอน"} · {[e.room, e.field].filter(Boolean).join(" + ") || "-"}
-            </span>
-          </span>
-        ))}
-      </span>
+      <span className="line-clamp-2 font-bold">{first.elective_set}</span>
+      <span className="text-[11px] opacity-75">{first.credits}</span>
     </button>
   );
 }

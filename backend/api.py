@@ -640,7 +640,7 @@ def _timetable(db: Session, v: ScheduleVersion, view: str, ident: str) -> dict:
         if t is None:
             raise HTTPException(404, "ไม่พบอาจารย์")
         rows = [a for a in rows if t["code"] in a["teacher_codes"]]
-        title, subtitle = f"ตารางสอน {t['name']}", f"รหัส {t['code']}"
+        title, subtitle = f"ตารางสอน {t['name']}", "ตารางสอนรายบุคคล"
         busy_events(lambda b: t["code"] in (b.get("teacher_codes") or []))
         for n in v.notices or []:
             if n.get("type") == "internship" and t["code"] in (n.get("teacher_codes") or []):
