@@ -24,12 +24,12 @@ export default function Stepper({ current, nextReady = true, nextHint }: { curre
                 to={s.to}
                 aria-current={active ? "step" : undefined}
                 className={`flex min-h-10 items-center gap-1.5 rounded-lg px-1.5 text-sm transition sm:px-2 ${
-                  active ? "font-semibold text-indigo-700" : done ? "text-slate-600 hover:bg-slate-50" : "text-slate-400 hover:bg-slate-50"
+                  active ? "font-semibold text-brand-700" : done ? "text-slate-600 hover:bg-slate-50" : "text-slate-400 hover:bg-slate-50"
                 }`}
               >
                 <span
                   className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold transition ${
-                    active ? "bg-indigo-600 text-white shadow-sm shadow-indigo-200" : done ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-400"
+                    active ? "bg-brand-600 text-white shadow-sm shadow-brand-200" : done ? "bg-green-100 text-green-700" : "bg-slate-100 text-slate-400"
                   }`}
                 >
                   {done ? "✓" : i + 1}

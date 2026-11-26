@@ -8,20 +8,20 @@ export function LogoMark({ size = 36, className = "" }: { size?: number; classNa
     <svg width={size} height={size} viewBox="0 0 48 48" className={className} role="img" aria-label="โลโก้ระบบจัดตารางสอนอัตโนมัติ">
       <defs>
         <linearGradient id={`lg-${id}`} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#6366f1" />
-          <stop offset="1" stopColor="#7c3aed" />
+          <stop offset="0" stopColor="#5fba81" />
+          <stop offset="1" stopColor="#2c8150" />
         </linearGradient>
       </defs>
       <rect width="48" height="48" rx="13" fill={`url(#lg-${id})`} />
       <rect x="9" y="12" width="30" height="26" rx="5" fill="#fff" />
-      <rect x="9" y="12" width="30" height="7" rx="5" fill="#e0e7ff" />
-      <rect x="9" y="16" width="30" height="3" fill="#e0e7ff" />
+      <rect x="9" y="12" width="30" height="7" rx="5" fill="#dcf3e3" />
+      <rect x="9" y="16" width="30" height="3" fill="#dcf3e3" />
       <rect x="15" y="8.5" width="3" height="7" rx="1.5" fill="#fff" />
       <rect x="30" y="8.5" width="3" height="7" rx="1.5" fill="#fff" />
       <rect x="13" y="22.5" width="6" height="4" rx="1.2" fill="#38bdf8" />
       <rect x="21" y="22.5" width="6" height="4" rx="1.2" fill="#4ade80" />
-      <rect x="29" y="22.5" width="6" height="4" rx="1.2" fill="#a5b4fc" />
-      <rect x="13" y="29" width="6" height="4" rx="1.2" fill="#a5b4fc" />
+      <rect x="29" y="22.5" width="6" height="4" rx="1.2" fill="#8fd3a7" />
+      <rect x="13" y="29" width="6" height="4" rx="1.2" fill="#8fd3a7" />
       <rect x="21" y="29" width="6" height="4" rx="1.2" fill="#fcd34d" />
       <circle cx="35.5" cy="34.5" r="7" fill="#22c55e" stroke="#fff" strokeWidth="2.5" />
       <path d="m32.4 34.6 2.2 2.2 4-4.2" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -35,10 +35,10 @@ export function TimetableArt({ className = "" }: { className?: string }) {
   const blocks: [number, number, number, string][] = [
     // [วัน, เริ่มคาบ, จำนวนคาบ, สี]
     [0, 0, 2, "#bae6fd"], [0, 5, 3, "#bbf7d0"],
-    [1, 1, 2, "#c7d2fe"], [1, 5, 2, "#bae6fd"],
-    [2, 0, 3, "#bae6fd"], [2, 6, 2, "#ddd6fe"],
-    [3, 2, 2, "#bbf7d0"], [3, 5, 3, "#c7d2fe"],
-    [4, 0, 2, "#c7d2fe"], [4, 5, 4, "#bae6fd"],
+    [1, 1, 2, "#bbe6c9"], [1, 5, 2, "#bae6fd"],
+    [2, 0, 3, "#bae6fd"], [2, 6, 2, "#fff4c6"],
+    [3, 2, 2, "#bbf7d0"], [3, 5, 3, "#bbe6c9"],
+    [4, 0, 2, "#bbe6c9"], [4, 5, 4, "#bae6fd"],
   ];
   const x0 = 34;
   const cw = 26;
@@ -95,7 +95,7 @@ export function WorkbookArt({ className = "" }: { className?: string }) {
       </text>
       {cols.map((c, i) => (
         <g key={c}>
-          <rect x={10 + i * 50} y="28" width="49" height="14" fill="#eef2ff" stroke="#c7d2fe" />
+          <rect x={10 + i * 50} y="28" width="49" height="14" fill="#f0faf3" stroke="#bbe6c9" />
           <text x={34.5 + i * 50} y="38" fontSize="6.5" textAnchor="middle" fill="#3730a3" fontWeight="600">
             {c}
           </text>
@@ -110,7 +110,7 @@ export function WorkbookArt({ className = "" }: { className?: string }) {
           <rect x={114} y={47 + r * 14} width={34 - ((r * 5) % 12)} height="4" rx="2" fill="#cbd5e1" />
           <rect x={164} y={47 + r * 14} width={30} height="4" rx="2" fill="#cbd5e1" />
           <rect x={214} y={47 + r * 14} width={22 + ((r * 3) % 16)} height="4" rx="2" fill="#bae6fd" />
-          <rect x={264} y={47 + r * 14} width="22" height="4" rx="2" fill="#c7d2fe" />
+          <rect x={264} y={47 + r * 14} width="22" height="4" rx="2" fill="#bbe6c9" />
         </g>
       ))}
       <text x="34.5" y="52" fontSize="6.5" textAnchor="middle" fill="#334155">
@@ -131,9 +131,9 @@ export function WorkbookArt({ className = "" }: { className?: string }) {
 /** ขั้นตอนการคำนวณ: ข้อมูล → ตัดเวลาที่ห้าม → CP-SAT → ตรวจทุกคาบ → ตาราง */
 export function PipelineArt({ className = "" }: { className?: string }) {
   const steps = [
-    { label: "ข้อมูล", color: "#e0e7ff", ink: "#4338ca", icon: "M-6 -5h12M-6 0h12M-6 5h8" },
+    { label: "ข้อมูล", color: "#dcf3e3", ink: "#246742", icon: "M-6 -5h12M-6 0h12M-6 5h8" },
     { label: "ตัดเวลาห้าม", color: "#fef3c7", ink: "#b45309", icon: "M-6 -6 6 6M6 -6 -6 6" },
-    { label: "CP-SAT", color: "#ede9fe", ink: "#6d28d9", icon: "M1 -7-5 1h5l-2 7 7-9H1Z" },
+    { label: "CP-SAT", color: "#fff4c6", ink: "#9e650d", icon: "M1 -7-5 1h5l-2 7 7-9H1Z" },
     { label: "ตรวจทุกคาบ", color: "#dcfce7", ink: "#15803d", icon: "m-6 0 4 4 8-8" },
     { label: "ตาราง", color: "#e0f2fe", ink: "#0369a1", icon: "M-7 -6h14v12h-14ZM-7 -1h14M-2 -6v12" },
   ];

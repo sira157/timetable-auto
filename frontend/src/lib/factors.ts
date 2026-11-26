@@ -39,7 +39,7 @@ export function issueInfo(type: string): { factor: Factor; fix: string } {
 }
 
 export const FACTOR_STYLE: Record<Factor, string> = {
-  teacher: "bg-indigo-50 text-indigo-700 border-indigo-200",
+  teacher: "bg-brand-50 text-brand-700 border-brand-200",
   room: "bg-sky-50 text-sky-700 border-sky-200",
   time: "bg-amber-50 text-amber-700 border-amber-200",
   special: "bg-violet-50 text-violet-700 border-violet-200",

@@ -65,3 +65,30 @@ def test_reports_export_hours_and_building(client, admin_token):
     # ภาระงานสอนไม่แสดงรหัสอาจารย์
     load = client.get(f"/api/reports/teacher_load?version_id={vid}&format=json", headers=H(admin_token)).json()
     assert load["rows"][0] == ["อาจารย์", "ชั่วโมงสอน/สัปดาห์"]
+
+
+def test_teacher_unavailable_slots(client, admin_token):
+    """เลือกช่องที่อาจารย์ไม่สะดวกสอน: บันทึกเป็นเวลาที่ไม่ว่าง และตารางที่จัดต้องไม่ลงช่องนั้น"""
+    assert client.post("/api/import/sample?size=small", headers=H(admin_token)).status_code == 200
+    teachers = client.get("/api/data/teachers", headers=H(admin_token)).json()
+    sections = client.get("/api/data/sections", headers=H(admin_token)).json()
+    t = next(x for x in teachers if any(x["code"] in s["teacher_codes"] for s in sections))
+    # วันจันทร์คาบ 1-3 + คาบ 4 และ 6 (ข้ามพักกลางวัน) + คาบพัก (ต้องถูกตัดทิ้ง)
+    slots = [{"day": 0, "period": p} for p in (1, 2, 3, 4, 5, 6)] + [{"day": 2, "period": 9}]
+    r = client.put(f"/api/teachers/{t['id']}/unavailable", headers=H(admin_token), json={"slots": slots})
+    assert r.status_code == 200, r.text
+    assert r.json()["periods"] == 6
+    got = client.get(f"/api/teachers/{t['id']}/unavailable", headers=H(admin_token)).json()
+    picked = {(s["day"], s["period"]) for s in got["slots"]}
+    assert {(0, 1), (0, 4), (0, 6), (2, 9)} <= picked and got["need_hours"] > 0
+    busy = [b for b in client.get("/api/data/busy", headers=H(admin_token)).json() if b["teacher_codes"] == [t["code"]]]
+    assert {(b["day"], b["start"], b["end"]) for b in busy} >= {(0, 1, 6), (2, 9, 9)}
+
+    run = client.post("/api/schedule/run", headers=H(admin_token), json={"name": "ไม่สะดวกสอน", "wait": True}).json()
+    tt = client.get(f"/api/schedule/versions/{run['id']}/timetable?view=teacher&id={t['id']}", headers=H(admin_token)).json()
+    taught = {(e["day"], p) for e in tt["entries"] for p in range(e["start"], e["start"] + e["length"])}
+    assert not (taught & {(0, p) for p in range(1, 7)}) and (2, 9) not in taught
+
+    # บันทึกซ้ำแทนที่ของเดิม และล้างได้
+    client.put(f"/api/teachers/{t['id']}/unavailable", headers=H(admin_token), json={"slots": []})
+    assert client.get(f"/api/teachers/{t['id']}/unavailable", headers=H(admin_token)).json()["slots"] == []

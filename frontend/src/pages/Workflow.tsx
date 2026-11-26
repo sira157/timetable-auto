@@ -125,10 +125,10 @@ export function ImportPage() {
             onDragLeave={() => setOver(false)}
             onDrop={onDrop}
             className={`flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed px-4 py-10 text-center transition ${
-              over ? "scale-[1.01] border-indigo-400 bg-indigo-50" : "border-slate-300 bg-slate-50/60 hover:border-indigo-300 hover:bg-indigo-50/40"
+              over ? "scale-[1.01] border-brand-400 bg-brand-50" : "border-slate-300 bg-slate-50/60 hover:border-brand-300 hover:bg-brand-50/40"
             }`}
           >
-            <span className={`flex h-12 w-12 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 transition ${over ? "animate-bounce" : ""}`}>
+            <span className={`flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-brand-600 transition ${over ? "animate-bounce" : ""}`}>
               <IconUpload />
             </span>
             <span className="text-sm font-medium text-slate-700">ลากไฟล์มาวาง หรือกดเพื่อเลือก</span>
@@ -164,7 +164,7 @@ export function ImportPage() {
           {tooMany && <p className="mt-2 text-sm text-red-600">Excel/JSON เลือกได้ครั้งละ 1 ไฟล์</p>}
           {needConfirm && (
             <label className="mt-3 flex cursor-pointer items-start gap-2.5 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-sm text-amber-800">
-              <input type="checkbox" className="mt-1 h-4 w-4 accent-indigo-600" checked={confirm} onChange={(e) => setConfirm(e.target.checked)} />
+              <input type="checkbox" className="mt-1 h-4 w-4 accent-brand-600" checked={confirm} onChange={(e) => setConfirm(e.target.checked)} />
               แทนที่ข้อมูลเดิมทั้งหมด (ตารางที่คำนวณแล้วยังอยู่ แต่ควรคำนวณใหม่)
             </label>
           )}
@@ -224,7 +224,7 @@ export function ImportPage() {
           <h2 className="mb-3 font-bold">ไฟล์ที่นำเข้าได้</h2>
           <WorkbookArt className="mb-4 w-full" />
           <ol className="space-y-4">
-            <li className="rounded-xl border border-indigo-200 bg-indigo-50/50 p-3">
+            <li className="rounded-xl border border-brand-200 bg-brand-50/50 p-3">
               <div className="flex items-center gap-2">
                 <Badge tone="info">แนะนำ</Badge>
                 <span className="font-semibold text-slate-800">Excel ข้อมูลหลักสูตร (.xlsx)</span>
@@ -240,7 +240,7 @@ export function ImportPage() {
                 <IconArrowDown /> ดาวน์โหลดแบบฟอร์ม
               </button>
             </li>
-            <li className="rounded-xl border border-indigo-200 bg-white p-3">
+            <li className="rounded-xl border border-brand-200 bg-white p-3">
               <div className="font-semibold text-slate-800">กรอกข้อมูลบนเว็บ</div>
               <p className="mt-1 text-sm text-slate-600">กรอกชั้นปี กลุ่มเรียน รายวิชา ฝ่ายบริหาร และสถานที่เรียน แบบเดียวกับไฟล์ Excel โดยไม่ต้องใช้ไฟล์</p>
               <Link to="/import/manual" className="btn btn-ghost mt-2 w-full">
@@ -274,7 +274,7 @@ export function ImportPage() {
       <p className="mb-3 text-sm text-slate-500">ข้อมูลสมมติ กด “นำเข้า” เพื่อลองทันที หรือดาวน์โหลดเป็น Excel ข้อมูลหลักสูตรไปดูวิธีกรอก</p>
       <div className="grid gap-4 md:grid-cols-3">
         {(samples.data ?? []).map((s) => (
-          <div key={s.size} className="card flex flex-col transition hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md">
+          <div key={s.size} className="card flex flex-col transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-md">
             <div className="mb-2 flex items-center justify-between">
               <h3 className="font-bold">ชุด{s.label}</h3>
               <Badge tone={s.size === "small" ? "ok" : s.size === "medium" ? "info" : "purple"}>{s.sections} การเปิดสอน</Badge>
@@ -303,7 +303,7 @@ export function ImportPage() {
                 <button
                   key={fmt}
                   type="button"
-                  className="min-h-8 cursor-pointer font-medium text-indigo-600 hover:text-indigo-700"
+                  className="min-h-8 cursor-pointer font-medium text-brand-600 hover:text-brand-700"
                   onClick={() => dl(`/api/samples/${s.size}.${fmt}`, `ตัวอย่าง.${fmt}`)}
                 >
                   ↓ {label}
@@ -373,7 +373,7 @@ export function CheckPage() {
                 key={k}
                 type="button"
                 onClick={() => setFilter(k)}
-                className={`card cursor-pointer p-4 text-left transition hover:-translate-y-0.5 hover:border-indigo-200 ${filter === k ? "border-indigo-300 ring-4 ring-indigo-100" : ""}`}
+                className={`card cursor-pointer p-4 text-left transition hover:-translate-y-0.5 hover:border-brand-200 ${filter === k ? "border-brand-300 ring-4 ring-brand-100" : ""}`}
               >
                 <Badge tone={v.tone}>{v.label}</Badge>
                 <div className="mt-2 text-2xl font-bold tabular-nums">{data.counts[k] ?? 0}</div>
@@ -425,14 +425,14 @@ export function CheckPage() {
               <div className="p-4">
                 <EmptyState title={data.sections.length ? "ไม่มีรายการในหมวดนี้" : "ยังไม่มีข้อมูล"}>
                   {!data.sections.length && (
-                    <Link to="/import" className="font-medium text-indigo-600">
+                    <Link to="/import" className="font-medium text-brand-600">
                       นำเข้าข้อมูล →
                     </Link>
                   )}
                 </EmptyState>
               </div>
             ) : (
-              <div className="overflow-x-auto">
+              <div className="relative overflow-x-auto">
                 <table className="data-table">
                   <thead>
                     <tr>
@@ -532,16 +532,16 @@ function useJob() {
 function ProgressPanel({ job, onCancel }: { job: Job; onCancel: () => void }) {
   const budget = job.budget_sec ?? 0;
   return (
-    <div className="mt-5 rounded-2xl border border-indigo-200 bg-indigo-50/50 p-4" role="status" aria-live="polite">
+    <div className="mt-5 rounded-2xl border border-brand-200 bg-brand-50/50 p-4" role="status" aria-live="polite">
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
-        <div className="flex items-center gap-2 font-semibold text-indigo-800">
-          <span className="h-2.5 w-2.5 animate-ping rounded-full bg-indigo-500" aria-hidden="true" />
+        <div className="flex items-center gap-2 font-semibold text-brand-800">
+          <span className="h-2.5 w-2.5 animate-ping rounded-full bg-brand-500" aria-hidden="true" />
           {job.phase_label}
         </div>
-        <span className="text-sm text-indigo-700 tabular-nums">{job.percent}%</span>
+        <span className="text-sm text-brand-700 tabular-nums">{job.percent}%</span>
       </div>
       <div className="h-3 overflow-hidden rounded-full bg-white">
-        <div className="progress-stripes h-full rounded-full bg-indigo-600 transition-[width] duration-500" style={{ width: `${Math.max(3, job.percent)}%` }} />
+        <div className="progress-stripes h-full rounded-full bg-brand-600 transition-[width] duration-500" style={{ width: `${Math.max(3, job.percent)}%` }} />
       </div>
       <div className="mt-3 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-600">
         <span className="tabular-nums">
@@ -655,7 +655,7 @@ export function RunPage() {
               <input className="input" value={name} placeholder="เช่น ภาคเรียนที่ 1/2569" disabled={running} onChange={(e) => setName(e.target.value)} />
             </label>
             <label className="flex cursor-pointer items-start gap-2.5 text-sm text-slate-700">
-              <input type="checkbox" className="mt-1 h-4 w-4 accent-indigo-600" checked={keepLocks} disabled={running} onChange={(e) => setKeepLocks(e.target.checked)} />
+              <input type="checkbox" className="mt-1 h-4 w-4 accent-brand-600" checked={keepLocks} disabled={running} onChange={(e) => setKeepLocks(e.target.checked)} />
               <span>
                 คงคาบที่ล็อกไว้
                 <span className="block text-xs text-slate-400">ล็อกได้ในหน้าตรวจผล โดยกดที่วิชา</span>
@@ -711,7 +711,7 @@ export function RunPage() {
           <ol className="space-y-1.5 text-sm">
             {SOFT_RULES.map((r, i) => (
               <li key={r} className="flex items-center gap-2">
-                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-indigo-50 text-[11px] font-bold text-indigo-600">{i + 1}</span>
+                <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-50 text-[11px] font-bold text-brand-600">{i + 1}</span>
                 {r}
               </li>
             ))}
@@ -726,7 +726,7 @@ export function RunPage() {
         {versions.loading && <Spinner />}
         {versions.data && versions.data.length === 0 && <p className="p-4 text-sm text-slate-500">ยังไม่มี</p>}
         {versions.data && versions.data.length > 0 && (
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="data-table">
               <thead>
                 <tr>

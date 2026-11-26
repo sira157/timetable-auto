@@ -148,7 +148,7 @@ export default function CrudPage<T extends { id: number }>(props: Props<T>) {
           </div>
         )}
         {!loading && rows.length > 0 && (
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="data-table">
               <thead>
                 <tr>
@@ -171,7 +171,7 @@ export default function CrudPage<T extends { id: number }>(props: Props<T>) {
                     <td className="text-right whitespace-nowrap">
                       <button
                         type="button"
-                        className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-indigo-600"
+                        className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 hover:text-brand-600"
                         onClick={() => setEditing({ id: row.id, draft: toDraft(fields, row as unknown as Draft) })}
                         aria-label="แก้ไข"
                       >
@@ -259,7 +259,7 @@ function FieldInput({ def, value, onChange }: { def: FieldDef; value: unknown; o
   if (def.type === "bool") {
     return (
       <label className={`flex min-h-10 cursor-pointer items-center gap-2.5 self-end rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-700 hover:bg-slate-50 ${wrap}`}>
-        <input type="checkbox" className="h-4 w-4 accent-indigo-600" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} />
+        <input type="checkbox" className="h-4 w-4 accent-brand-600" checked={Boolean(value)} onChange={(e) => onChange(e.target.checked)} />
         {def.label}
       </label>
     );

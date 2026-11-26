@@ -34,7 +34,7 @@ export function Alert({ tone, children, onClick }: { tone: "error" | "warn" | "o
     error: "border-red-200 bg-red-50 text-red-800",
     warn: "border-amber-200 bg-amber-50 text-amber-800",
     ok: "border-green-200 bg-green-50 text-green-800",
-    info: "border-indigo-200 bg-indigo-50 text-indigo-800",
+    info: "border-brand-200 bg-brand-50 text-brand-800",
   }[tone];
   const Tag = onClick ? "button" : "div";
   return (
@@ -52,7 +52,7 @@ export function Alert({ tone, children, onClick }: { tone: "error" | "warn" | "o
 export function Spinner({ label = "กำลังโหลด…" }: { label?: string }) {
   return (
     <div className="flex items-center justify-center gap-2 py-10 text-sm text-slate-500" role="status">
-      <span className="h-4 w-4 animate-spin rounded-full border-2 border-indigo-200 border-t-indigo-600" />
+      <span className="h-4 w-4 animate-spin rounded-full border-2 border-brand-200 border-t-brand-600" />
       {label}
     </div>
   );
@@ -152,7 +152,7 @@ export function Ring({ value, total, size = 76 }: { value: number; total: number
   const color = pct >= 1 ? "#16a34a" : pct >= 0.9 ? "#f59e0b" : "#dc2626";
   return (
     <svg width={size} height={size} viewBox="0 0 76 76" role="img" aria-label={`จัดได้ ${Math.round(pct * 100)} เปอร์เซ็นต์`}>
-      <circle cx="38" cy="38" r={r} fill="none" stroke="#eef2ff" strokeWidth="9" />
+      <circle cx="38" cy="38" r={r} fill="none" stroke="#f0faf3" strokeWidth="9" />
       <circle
         cx="38"
         cy="38"

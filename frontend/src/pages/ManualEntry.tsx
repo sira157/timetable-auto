@@ -291,14 +291,14 @@ function GroupCard({
                         <label className="flex cursor-pointer items-center gap-1.5">
                           <input
                             type="checkbox"
-                            className="h-4 w-4 accent-indigo-600"
+                            className="h-4 w-4 accent-brand-600"
                             checked={c.combined}
                             onChange={(e) => setRow(i, { credits: joinCredits(c.base, e.target.checked, c.elective) })}
                           />
                           เรียนรวมทั้งชั้นปี
                         </label>
                         <label className="flex cursor-pointer items-center gap-1.5">
-                          <input type="checkbox" className="h-4 w-4 accent-indigo-600" checked={c.elective} onChange={(e) => toggleElective(i, e.target.checked)} />
+                          <input type="checkbox" className="h-4 w-4 accent-brand-600" checked={c.elective} onChange={(e) => toggleElective(i, e.target.checked)} />
                           เลือกเรียน 1 รายวิชา
                         </label>
                       </div>
@@ -312,7 +312,7 @@ function GroupCard({
                         onChange={(e) => setRow(i, { category: e.target.value })}
                       />
                       {c.elective && (
-                        <button type="button" className="mt-1.5 cursor-pointer text-xs font-medium text-indigo-600 hover:text-indigo-700" onClick={() => addMember(i)}>
+                        <button type="button" className="mt-1.5 cursor-pointer text-xs font-medium text-brand-600 hover:text-brand-700" onClick={() => addMember(i)}>
                           + วิชาในกลุ่มเลือกนี้
                         </button>
                       )}
@@ -584,7 +584,7 @@ export default function ManualEntryPage() {
             role="tab"
             aria-selected={tab === t.id}
             onClick={() => setTab(t.id)}
-            className={`min-h-9 cursor-pointer rounded-lg px-3 font-medium transition ${tab === t.id ? "bg-white text-indigo-700 shadow-sm" : "text-slate-600 hover:text-slate-800"}`}
+            className={`min-h-9 cursor-pointer rounded-lg px-3 font-medium transition ${tab === t.id ? "bg-white text-brand-700 shadow-sm" : "text-slate-600 hover:text-slate-800"}`}
           >
             {t.label}
             {t.count !== undefined && <span className="ml-1 text-xs text-slate-400 tabular-nums">({t.count})</span>}
@@ -592,7 +592,7 @@ export default function ManualEntryPage() {
         ))}
         <button
           type="button"
-          className="min-h-9 cursor-pointer rounded-lg px-3 font-medium text-indigo-600 hover:text-indigo-700"
+          className="min-h-9 cursor-pointer rounded-lg px-3 font-medium text-brand-600 hover:text-brand-700"
           onClick={() => {
             const year = Math.max(0, ...m.years.map((y) => y.year)) + 1;
             setM({ ...m, years: [...m.years, { year, groups: [] }] });
@@ -647,7 +647,7 @@ export default function ManualEntryPage() {
         <div className="flex flex-wrap items-center gap-3">
           {hasData && dirty && (
             <label className="flex cursor-pointer items-start gap-2 text-sm text-amber-800">
-              <input type="checkbox" className="mt-1 h-4 w-4 accent-indigo-600" checked={confirm} onChange={(e) => setConfirm(e.target.checked)} />
+              <input type="checkbox" className="mt-1 h-4 w-4 accent-brand-600" checked={confirm} onChange={(e) => setConfirm(e.target.checked)} />
               แทนที่ข้อมูลอาจารย์ กลุ่มเรียน ห้อง รายวิชา และการเปิดสอนเดิม (เวลาที่ไม่ว่างคงเดิม)
             </label>
           )}

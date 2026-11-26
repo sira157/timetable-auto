@@ -1,6 +1,7 @@
 import { useMemo, useState, type ReactNode } from "react";
 import { Link } from "react-router-dom";
 import CrudPage, { type FieldDef } from "../components/CrudPage";
+import UnavailablePicker from "../components/UnavailablePicker";
 import { Alert, Badge, EmptyState, PageHeader, Spinner, useApi, useToast } from "../components/ui";
 import { api } from "../lib/api";
 import type { Busy, Course, Group, Room, Section, Settings, Teacher } from "../lib/types";
@@ -217,7 +218,7 @@ export function BuildingsPage() {
                 </li>
               ))}
             </ul>
-            <Link to={`/timetable?view=building&id=${encodeURIComponent(b)}`} className="mt-4 inline-flex text-sm font-medium text-indigo-600 hover:text-indigo-700">
+            <Link to={`/timetable?view=building&id=${encodeURIComponent(b)}`} className="mt-4 inline-flex text-sm font-medium text-brand-600 hover:text-brand-700">
               ดูตารางการใช้อาคาร →
             </Link>
           </div>
@@ -319,6 +320,12 @@ export function CoTeachPage() {
 
 export function BusyPage() {
   const settings = useApi<{ settings: Settings }>("/api/settings");
+  const busyList = useApi<Busy[]>("/api/data/busy");
+  const teachers = useApi<Teacher[]>("/api/data/teachers");
+  const toast = useToast();
+  const [rev, setRev] = useState(0); // เปลี่ยนค่าเพื่อโหลดรายการด้านล่างใหม่หลังบันทึก
+  const [teacherId, setTeacherId] = useState<number | null>(null);
+  const teacherNames = useMemo(() => new Map((teachers.data ?? []).map((t) => [t.code, t.name])), [teachers.data]);
   if (!settings.data) return settings.error ? <Alert tone="error">{settings.error}</Alert> : <Spinner />;
   const days = settings.data.settings.days;
   const periods = settings.data.settings.periods;
@@ -334,18 +341,36 @@ export function BusyPage() {
   ];
   return (
     <CrudPage<Busy>
+      key={rev}
       entity="busy"
       title="เวลาที่ไม่ว่าง"
       subtitle="ประชุม กิจกรรม และเวลาที่ผู้สอนไม่ว่าง ระบบจะไม่จัดสอนในช่วงเวลาเหล่านี้"
+      intro={
+        <>
+          <UnavailablePicker
+            settings={settings.data.settings}
+            busy={busyList.data ?? []}
+            teacherId={teacherId}
+            onTeacher={setTeacherId}
+            onSaved={(msg) => {
+              toast.ok(msg);
+              busyList.reload();
+              setRev((r) => r + 1);
+            }}
+            onError={(m) => toast.error(m)}
+          />
+          {toast.node}
+        </>
+      }
       fields={fields}
       defaults={{ kind: "meeting", day: 0, start: 1, end: 2, teacher_codes: [], group_codes: [] }}
-      searchText={(b) => `${b.name} ${b.teacher_codes.join(" ")} ${b.group_codes.join(" ")}`}
+      searchText={(b) => `${b.name} ${b.teacher_codes.map((t) => teacherNames.get(t) ?? t).join(" ")} ${b.group_codes.join(" ")}`}
       deleteLabel={(b) => b.name}
       columns={[
         { key: "kind", label: "ประเภท", render: (b) => <Badge tone={b.kind === "activity" ? "purple" : b.kind === "meeting" ? "muted" : "warn"}>{BUSY_KIND_LABEL[b.kind]}</Badge> },
         { key: "name", label: "ชื่อรายการ", className: "font-medium" },
         { key: "when", label: "เวลา", className: "whitespace-nowrap", render: (b) => `วัน${days[b.day] ?? "?"} คาบ ${b.start}–${b.end}` },
-        { key: "teachers", label: "ผู้สอน", render: (b) => <Codes codes={b.teacher_codes} /> },
+        { key: "teachers", label: "ผู้สอน", render: (b) => <Codes codes={b.teacher_codes} names={teacherNames} /> },
         { key: "groups", label: "กลุ่มเรียน", render: (b) => <Codes codes={b.group_codes} /> },
       ]}
     />

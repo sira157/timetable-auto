@@ -18,6 +18,7 @@ from sqlalchemy.orm import Session
 from .auth import current_user, current_username, log_change, require_staff
 from .core import (
     DataIndex,
+    course_hours,
     dataset_hash,
     default_settings,
     effective_busy,
@@ -40,7 +41,7 @@ from .data_io import (
 )
 from . import jobs
 from .db import BASE_DIR, SessionLocal, get_db
-from .models import Assignment, ChangeHistory, RunHistory, ScheduleVersion, iso
+from .models import Assignment, BusyTime, ChangeHistory, RunHistory, ScheduleVersion, Teacher, iso
 from .curriculum_import import curriculum_workbook
 from .export_xlsx import grid_workbook, rows_workbook
 from .scheduler import run_schedule
@@ -158,6 +159,86 @@ def _check_unique(entity: str, row: dict, db: Session, exclude_id: int | None = 
     found = db.scalar(q)
     if found is not None and found.id != exclude_id:
         raise HTTPException(409, f"{row[key]} มีอยู่แล้ว")
+
+
+# ---------- เวลาที่อาจารย์ไม่สะดวกสอน (เลือกเป็นช่องวัน x คาบ) ----------
+
+UNAVAILABLE_NAME = "ไม่สะดวกสอน"
+
+
+class Slot(BaseModel):
+    day: int
+    period: int
+
+
+class UnavailableIn(BaseModel):
+    slots: list[Slot] = []
+
+
+def _teacher_or_404(db: Session, teacher_id: int) -> Teacher:
+    t = db.get(Teacher, teacher_id)
+    if t is None:
+        raise HTTPException(404, "ไม่พบอาจารย์")
+    return t
+
+
+def _own_unavailable(db: Session, code: str) -> list[BusyTime]:
+    """รายการ "ไม่สะดวกสอน" ของอาจารย์คนนี้คนเดียว (รายการอื่น เช่น ประชุม แก้ที่ตารางด้านล่าง)"""
+    rows = db.scalars(select(BusyTime).where(BusyTime.kind == "unavailable", BusyTime.name == UNAVAILABLE_NAME)).all()
+    return [b for b in rows if list(b.teacher_codes or []) == [code] and not (b.group_codes or [])]
+
+
+@router.get("/teachers/{teacher_id}/unavailable", dependencies=staff)
+def get_unavailable(teacher_id: int, db: Session = Depends(get_db)):
+    t = _teacher_or_404(db, teacher_id)
+    settings = load_settings(db)
+    data = load_dataset(db)
+    mine = _own_unavailable(db, t.code)
+    mine_ids = {b.id for b in mine}
+    slots = sorted({(b.day, p) for b in mine for p in range(b.start, b.end + 1)})
+    # เวลาที่ไม่ว่างอื่นของอาจารย์ (ประชุม พบนักศึกษา ฯลฯ) แสดงให้เห็นแต่แก้ที่หน้านี้ไม่ได้
+    others = [
+        {"day": int(b["day"]), "period": p, "name": b.get("name") or "ไม่ว่าง"}
+        for b in effective_busy(data, settings)
+        if t.code in (b.get("teacher_codes") or []) and b.get("id") not in mine_ids
+        for p in range(int(b["start"]), int(b["end"]) + 1)
+    ]
+    # คาบที่ต้องสอนต่อสัปดาห์ (ประมาณจากหน่วยกิตของวิชาที่สอน) ใช้เตือนเมื่อเลือกช่องไม่สะดวกมากเกินไป
+    courses = {c["code"]: c for c in data["courses"]}
+    need = 0
+    for sec in data["sections"]:
+        c = courses.get(sec["course_code"])
+        if c and t.code in (sec.get("teacher_codes") or []) and not c.get("is_excluded"):
+            h = course_hours(c)
+            need += sum(h) if h else 0
+    return {"teacher": {"id": t.id, "name": t.name}, "slots": [{"day": d, "period": p} for d, p in slots],
+            "others": others, "need_hours": need}
+
+
+@router.put("/teachers/{teacher_id}/unavailable", dependencies=staff)
+def put_unavailable(teacher_id: int, body: UnavailableIn, request: Request, db: Session = Depends(get_db)):
+    t = _teacher_or_404(db, teacher_id)
+    settings = load_settings(db)
+    n_days, n_periods = len(settings["days"]), len(settings["periods"])
+    lunch = {int(x) for x in settings.get("lunch_periods") or []}
+    wanted = sorted({(s.day, s.period) for s in body.slots
+                     if 0 <= s.day < n_days and 1 <= s.period <= n_periods and s.period not in lunch})
+    for b in _own_unavailable(db, t.code):
+        db.delete(b)
+    # รวมคาบที่ติดกันในวันเดียวกันเป็นช่วงเดียว (ข้ามพักกลางวันได้ เพราะพักไม่มีการสอนอยู่แล้ว)
+    ranges: list[list[int]] = []
+    for d, p in wanted:
+        last = ranges[-1] if ranges else None
+        if last and last[0] == d and all(q in lunch for q in range(last[2] + 1, p)):
+            last[2] = p
+        else:
+            ranges.append([d, p, p])
+    for d, a, b in ranges:
+        db.add(BusyTime(kind="unavailable", name=UNAVAILABLE_NAME, day=d, start=a, end=b,
+                        teacher_codes=[t.code], group_codes=[]))
+    log_change(db, current_username(request), "แก้ไข", "เวลาที่ไม่ว่าง", f"{t.name} ไม่สะดวกสอน {len(wanted)} คาบ")
+    db.commit()
+    return {"ok": True, "periods": len(wanted), "ranges": len(ranges)}
 
 
 @router.post("/data/{entity}", dependencies=staff)

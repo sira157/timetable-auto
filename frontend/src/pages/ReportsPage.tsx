@@ -57,7 +57,7 @@ export default function ReportsPage() {
         <Stepper current={4} />
         <PageHeader title="ส่งออก" />
         <EmptyState title="ยังไม่ได้คำนวณตาราง">
-          <Link to="/run" className="font-medium text-indigo-600">
+          <Link to="/run" className="font-medium text-brand-600">
             ไปคำนวณ →
           </Link>
         </EmptyState>
@@ -123,7 +123,7 @@ export default function ReportsPage() {
                     key={k}
                     type="button"
                     onClick={() => setLevel(k)}
-                    className={`min-h-9 cursor-pointer rounded-lg px-3 text-sm font-medium ${level === k ? "bg-white text-indigo-700 shadow-sm" : "text-slate-600"}`}
+                    className={`min-h-9 cursor-pointer rounded-lg px-3 text-sm font-medium ${level === k ? "bg-white text-brand-700 shadow-sm" : "text-slate-600"}`}
                   >
                     {l}
                   </button>
@@ -134,7 +134,7 @@ export default function ReportsPage() {
               <button
                 type="button"
                 onClick={() => setFactor("all")}
-                className={`min-h-9 cursor-pointer rounded-full border px-3 text-sm ${factor === "all" ? "border-indigo-300 bg-indigo-50 text-indigo-700" : "border-slate-200 text-slate-600"}`}
+                className={`min-h-9 cursor-pointer rounded-full border px-3 text-sm ${factor === "all" ? "border-brand-300 bg-brand-50 text-brand-700" : "border-slate-200 text-slate-600"}`}
               >
                 ทุกหมวด
               </button>
@@ -245,7 +245,7 @@ export default function ReportsPage() {
                     {r[0]}
                   </span>
                   <span className="h-2.5 overflow-hidden rounded-full bg-slate-100">
-                    <span className="block h-full rounded-full bg-indigo-500" style={{ width: `${((Number(r[1]) || 0) / maxLoad) * 100}%` }} />
+                    <span className="block h-full rounded-full bg-brand-500" style={{ width: `${((Number(r[1]) || 0) / maxLoad) * 100}%` }} />
                   </span>
                   <span className="text-right font-semibold tabular-nums">{r[1]}</span>
                 </li>

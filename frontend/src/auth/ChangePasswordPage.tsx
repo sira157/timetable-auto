@@ -6,7 +6,7 @@ export default function ChangePasswordPage() {
   const { user, logout } = useAuth();
   return (
     <AuthCard subtitle="ตั้งรหัสผ่านใหม่ก่อนใช้งาน">
-      <p className="mb-4 rounded-xl bg-indigo-50 px-3 py-2.5 text-sm text-indigo-800">
+      <p className="mb-4 rounded-xl bg-brand-50 px-3 py-2.5 text-sm text-brand-800">
         สวัสดี {user?.display_name} — กรุณาเปลี่ยนรหัสผ่านที่ได้รับเป็นรหัสผ่านของคุณเอง (อย่างน้อย 6 ตัวอักษร)
       </p>
       <PasswordForm

@@ -45,12 +45,12 @@ const GROUPS: { key: string; title: string; items: { to: string; label: string }
 
 function itemClass(active: boolean) {
   return `group relative flex min-h-10 items-center gap-2.5 rounded-lg px-2 py-2.5 text-sm transition ${
-    active ? "bg-indigo-50 font-semibold text-indigo-700" : "text-slate-600 hover:bg-slate-100"
+    active ? "bg-brand-50 font-semibold text-brand-700" : "text-slate-600 hover:bg-slate-100"
   }`;
 }
 
 function ActiveBar({ active }: { active: boolean }) {
-  return active ? <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-indigo-600" aria-hidden="true" /> : null;
+  return active ? <span className="absolute inset-y-1.5 left-0 w-[3px] rounded-full bg-brand-600" aria-hidden="true" /> : null;
 }
 
 function MainItem({ to, label, icon: Ico, num, onNavigate }: { to: string; label: string; icon: Icon; num?: number; onNavigate: () => void }) {
@@ -61,13 +61,13 @@ function MainItem({ to, label, icon: Ico, num, onNavigate }: { to: string; label
           <ActiveBar active={isActive} />
           <span
             className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${
-              isActive ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-500"
+              isActive ? "bg-brand-600 text-white" : "bg-slate-100 text-slate-500"
             }`}
           >
             <Ico width={16} height={16} />
           </span>
           <span className="min-w-0 flex-1 truncate">{label}</span>
-          {num !== undefined && <span className={`text-xs tabular-nums ${isActive ? "text-indigo-400" : "text-slate-300"}`}>{num}</span>}
+          {num !== undefined && <span className={`text-xs tabular-nums ${isActive ? "text-brand-400" : "text-slate-300"}`}>{num}</span>}
         </>
       )}
     </NavLink>
@@ -80,7 +80,7 @@ export function Logo() {
       <LogoMark size={38} className="shrink-0 drop-shadow-[0_4px_8px_rgba(99,102,241,0.25)]" />
       <div className="leading-tight">
         <div className="text-[15px] font-bold text-slate-800">ระบบจัดตารางสอน</div>
-        <div className="text-xs text-indigo-600">อัตโนมัติ</div>
+        <div className="text-xs text-brand-600">อัตโนมัติ</div>
       </div>
     </div>
   );
@@ -143,7 +143,7 @@ function SideNav({ onNavigate }: { onNavigate: () => void }) {
 
 function Header({ onMenu, menuOpen, showMenuButton }: { onMenu?: () => void; menuOpen?: boolean; showMenuButton: boolean }) {
   return (
-    <header className="no-print sticky top-0 z-30 border-b border-slate-200 bg-white/80 backdrop-blur">
+    <header className="no-print sticky top-0 z-30 border-b border-brand-100 bg-white/80 backdrop-blur">
       <div className="flex h-14 items-center justify-between gap-2 px-4 md:px-8">
         <div className="flex min-w-0 items-center gap-2">
           {showMenuButton && (
@@ -181,7 +181,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="no-print sticky top-0 hidden h-screen w-60 shrink-0 overflow-y-auto border-r border-slate-200 bg-white px-3 py-4 md:block">
+      <aside className="no-print sticky top-0 hidden h-screen w-60 shrink-0 overflow-y-auto border-r border-brand-100 bg-white/90 px-3 py-4 backdrop-blur md:block">
         <div className="mb-5 px-1">
           <Logo />
         </div>

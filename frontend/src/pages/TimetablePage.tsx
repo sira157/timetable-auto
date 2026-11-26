@@ -119,7 +119,7 @@ export default function TimetablePage() {
         <Stepper current={3} nextReady={false} />
         <PageHeader title="ตารางสอน" />
         <EmptyState title="ยังไม่ได้คำนวณตาราง">
-          <Link to="/run" className="font-medium text-indigo-600">
+          <Link to="/run" className="font-medium text-brand-600">
             ไปคำนวณ →
           </Link>
         </EmptyState>
@@ -333,7 +333,7 @@ function EntryModal({
                 type="button"
                 role="radio"
                 aria-checked={x.id === entry.id}
-                className={`rounded-lg px-3 py-1.5 ${x.id === entry.id ? "bg-white font-semibold text-indigo-700 shadow-sm" : "text-slate-600 hover:text-slate-900"}`}
+                className={`rounded-lg px-3 py-1.5 ${x.id === entry.id ? "bg-white font-semibold text-brand-700 shadow-sm" : "text-slate-600 hover:text-slate-900"}`}
                 onClick={() => onPick({ ...x, parts: entry.parts })}
               >
                 คาบ {x.start}
@@ -404,9 +404,9 @@ function EntryModal({
                         }}
                         className={`flex min-h-8 w-full cursor-pointer items-center justify-center gap-1 rounded-md border text-xs transition disabled:cursor-not-allowed ${
                           chosen
-                            ? "border-indigo-600 bg-indigo-600 text-white"
+                            ? "border-brand-600 bg-brand-600 text-white"
                             : s?.current
-                              ? "border-indigo-200 bg-indigo-50 text-indigo-700"
+                              ? "border-brand-200 bg-brand-50 text-brand-700"
                               : s?.ok
                                 ? "border-green-300 bg-green-50 text-green-800 hover:bg-green-100"
                                 : "border-slate-100 bg-slate-50 text-slate-300"

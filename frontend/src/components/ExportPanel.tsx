@@ -107,7 +107,7 @@ export default function ExportPanel({ versionId, view, current, all, selfOnly, a
               role="radio"
               aria-checked={scope === k}
               onClick={() => setScope(k)}
-              className={`min-h-9 cursor-pointer rounded-lg px-3 font-medium transition ${scope === k ? "bg-white text-indigo-700 shadow-sm" : "text-slate-600"}`}
+              className={`min-h-9 cursor-pointer rounded-lg px-3 font-medium transition ${scope === k ? "bg-white text-brand-700 shadow-sm" : "text-slate-600"}`}
             >
               {l}
             </button>
@@ -163,7 +163,7 @@ export default function ExportPanel({ versionId, view, current, all, selfOnly, a
           {pdf?.stage} {pdf?.done ?? 0}/{pdf?.total ?? 0}
         </p>
         <div className="h-2.5 overflow-hidden rounded-full bg-slate-100">
-          <div className="h-full rounded-full bg-indigo-600 transition-all" style={{ width: `${percent}%` }} />
+          <div className="h-full rounded-full bg-brand-600 transition-all" style={{ width: `${percent}%` }} />
         </div>
       </Modal>
       {pdf && pdf.items.length > 0 && (

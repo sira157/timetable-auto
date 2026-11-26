@@ -55,7 +55,7 @@ export default function PdfSummary({ tt }: { tt: Timetable }) {
       ) : (
         <table className="w-full border-collapse text-[13px] leading-snug">
           <thead>
-            <tr className="bg-indigo-50 text-left text-indigo-900">
+            <tr className="bg-brand-50 text-left text-brand-900">
               {["ที่", "รหัสวิชา", "ชื่อรายวิชา", "หน่วยกิต", personCol, ...(showGroups ? ["กลุ่มเรียน"] : []), "สถานที่ที่ใช้", "วันและคาบ", "คาบ/สัปดาห์"].map(
                 (h) => (
                   <th key={h} className="border border-slate-200 px-2 py-1.5 font-semibold">

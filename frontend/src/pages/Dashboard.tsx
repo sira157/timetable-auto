@@ -13,7 +13,7 @@ function StatCard({ label, value, icon: Ico, warn }: { label: string; value: num
   return (
     <div className="card flex flex-col gap-3">
       <div className="flex items-center gap-2.5">
-        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+        <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-50 text-brand-600">
           <Ico />
         </span>
         <span className="text-sm text-slate-500">{label}</span>
@@ -37,7 +37,7 @@ function Readiness({ s }: { s: Summary }) {
     <div className="card lg:col-span-2">
       <div className="mb-1 flex items-center justify-between gap-2">
         <h2 className="font-bold">ความพร้อมของข้อมูล</h2>
-        <Link to="/check" className="text-sm font-medium text-indigo-600 hover:text-indigo-700">
+        <Link to="/check" className="text-sm font-medium text-brand-600 hover:text-brand-700">
           ตรวจสอบ →
         </Link>
       </div>
@@ -192,7 +192,7 @@ function GetStarted({ onSample }: { onSample: () => void }) {
           </button>
         </div>
       </div>
-      <button type="button" onClick={onSample} className="mt-4 cursor-pointer text-sm font-medium text-indigo-600 hover:text-indigo-700">
+      <button type="button" onClick={onSample} className="mt-4 cursor-pointer text-sm font-medium text-brand-600 hover:text-brand-700">
         ลองนำเข้าข้อมูลตัวอย่าง →
       </button>
       {toast.node}
@@ -231,22 +231,24 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <section className="rounded-2xl bg-gradient-to-r from-indigo-600 to-violet-600 p-6 text-white shadow-sm sm:p-7">
-        <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-brand-700 via-brand-600 to-brand-500 p-6 text-white shadow-lg shadow-brand-700/15 sm:p-7">
+        <div className="pointer-events-none absolute -top-20 -right-16 h-56 w-56 rounded-full bg-white/10" aria-hidden="true" />
+        <div className="pointer-events-none absolute -bottom-24 left-1/3 h-48 w-48 rounded-full bg-white/5" aria-hidden="true" />
+        <div className="relative flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div className="min-w-0">
-            <p className="text-sm text-indigo-100">{user?.display_name ? `สวัสดี ${user.display_name}` : "ยินดีต้อนรับ"}</p>
+            <p className="text-sm text-brand-100">{user?.display_name ? `สวัสดี ${user.display_name}` : "ยินดีต้อนรับ"}</p>
             <h1 className="mt-1 text-2xl font-bold lg:text-3xl">ระบบจัดตารางสอนอัตโนมัติ</h1>
-            <p className="mt-2 max-w-xl text-sm text-indigo-100">
+            <p className="mt-2 max-w-xl text-sm text-brand-100">
               นำเข้าข้อมูล → กดคำนวณ → ตรวจผลและลากปรับ → ส่งออก PDF / Excel / CSV
             </p>
           </div>
           <TimetableArt className="hidden w-64 shrink-0 -rotate-2 drop-shadow-xl xl:block" />
           <div className="w-full shrink-0 rounded-xl bg-white/10 p-4 backdrop-blur md:w-64">
-            <div className="text-xs text-indigo-100">ขั้นตอนถัดไป</div>
-            <div className="mt-0.5 mb-3 font-semibold">{next ? next.title : "เรียบร้อยทุกขั้นตอน"}</div>
+            <span className="inline-flex rounded-full bg-sun-300 px-2.5 py-0.5 text-xs font-semibold text-brand-900">ขั้นตอนถัดไป</span>
+            <div className="mt-1.5 mb-3 font-semibold">{next ? next.title : "เรียบร้อยทุกขั้นตอน"}</div>
             <button
               type="button"
-              className="btn w-full bg-white font-bold text-indigo-700 hover:bg-indigo-50"
+              className="btn w-full bg-white font-bold text-brand-700 hover:bg-brand-50"
               onClick={() => navigate(next ? next.to : "/timetable")}
             >
               {next ? "ไปที่ขั้นตอนนี้" : "ดูตารางสอน"} <IconArrowRight />
@@ -289,11 +291,11 @@ export default function Dashboard() {
                 <Link
                   key={x.title}
                   to={x.to}
-                  className={`card flex flex-col gap-2 transition hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md ${isNext ? "border-indigo-300 ring-4 ring-indigo-100" : ""}`}
+                  className={`card flex flex-col gap-2 transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-md ${isNext ? "border-brand-300 ring-4 ring-brand-100" : ""}`}
                 >
                   <span
                     className={`flex h-8 w-8 items-center justify-center rounded-full text-sm font-bold ${
-                      x.done ? "bg-green-100 text-green-700" : isNext ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-400"
+                      x.done ? "bg-green-100 text-green-700" : isNext ? "bg-brand-600 text-white" : "bg-slate-100 text-slate-400"
                     }`}
                   >
                     {x.done ? "✓" : i + 1}
@@ -315,7 +317,7 @@ export default function Dashboard() {
                 { emoji: "🏫", title: "การใช้ห้องและสนาม", desc: "ดูตารางของห้องและจุดสนาม", to: "/timetable?view=room" },
                 { emoji: "🔐", title: "บัญชีผู้ใช้", desc: "สร้างบัญชีให้อาจารย์และนักเรียน", to: "/system/users" },
               ].map((x) => (
-                <Link key={x.title} to={x.to} className="card flex flex-col gap-1 transition hover:-translate-y-0.5 hover:border-indigo-200 hover:shadow-md">
+                <Link key={x.title} to={x.to} className="card flex flex-col gap-1 transition hover:-translate-y-0.5 hover:border-brand-200 hover:shadow-md">
                   <span className="text-2xl" aria-hidden="true">
                     {x.emoji}
                   </span>

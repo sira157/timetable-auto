@@ -109,7 +109,7 @@ export function SettingsPage() {
                   <label className="flex min-h-10 cursor-pointer items-center gap-1.5 text-sm text-slate-600">
                     <input
                       type="checkbox"
-                      className="h-4 w-4 accent-indigo-600"
+                      className="h-4 w-4 accent-brand-600"
                       checked={s.lunch_periods.includes(p.no)}
                       onChange={(e) =>
                         set("lunch_periods", e.target.checked ? [...s.lunch_periods, p.no].sort((a, b) => a - b) : s.lunch_periods.filter((x) => x !== p.no))
@@ -165,7 +165,7 @@ export function SettingsPage() {
                 </select>
               </Field>
               <label className="flex min-h-10 cursor-pointer items-center gap-2.5 self-end text-sm text-slate-700">
-                <input type="checkbox" className="h-4 w-4 accent-indigo-600" checked={s.avoid_last_period} onChange={(e) => set("avoid_last_period", e.target.checked)} />
+                <input type="checkbox" className="h-4 w-4 accent-brand-600" checked={s.avoid_last_period} onChange={(e) => set("avoid_last_period", e.target.checked)} />
                 หลีกเลี่ยงคาบท้ายของวัน
               </label>
             </div>
@@ -363,7 +363,7 @@ export function UsersPage() {
       {loading && <Spinner />}
       {error && <Alert tone="error">{error}</Alert>}
       {data && (
-        <div className="card overflow-x-auto p-0">
+        <div className="card relative overflow-x-auto p-0">
           <table className="data-table">
             <thead>
               <tr>
@@ -762,7 +762,7 @@ export function ChangesPage() {
         {error && <div className="p-4"><Alert tone="error">{error}</Alert></div>}
         {data && rows.length === 0 && <div className="p-4"><EmptyState title="ยังไม่มีประวัติ" /></div>}
         {rows.length > 0 && (
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="data-table">
               <thead>
                 <tr>
@@ -806,7 +806,7 @@ export function RunsPage() {
         {error && <div className="p-4"><Alert tone="error">{error}</Alert></div>}
         {data && data.length === 0 && <div className="p-4"><EmptyState title="ยังไม่เคยจัดตาราง" /></div>}
         {data && data.length > 0 && (
-          <div className="overflow-x-auto">
+          <div className="relative overflow-x-auto">
             <table className="data-table">
               <thead>
                 <tr>

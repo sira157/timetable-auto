@@ -11,15 +11,15 @@ const FEATURES = [
 /** โครงหน้าเข้าสู่ระบบ: ซ้ายเป็นภาพอธิบายระบบ (จอใหญ่) ขวาเป็นฟอร์ม */
 export function AuthCard({ subtitle, children }: { subtitle: string; children: ReactNode }) {
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-indigo-50 via-white to-violet-50">
-      <aside className="relative hidden w-[46%] max-w-2xl flex-col justify-between overflow-hidden bg-gradient-to-br from-indigo-600 to-violet-700 p-10 text-white lg:flex">
+    <div className="flex min-h-screen bg-gradient-to-br from-brand-50 via-white to-sun-50">
+      <aside className="relative hidden w-[46%] max-w-2xl flex-col justify-between overflow-hidden bg-gradient-to-br from-brand-600 via-brand-700 to-brand-800 p-10 text-white lg:flex">
         <div className="pointer-events-none absolute -top-24 -right-24 h-72 w-72 rounded-full bg-white/10" aria-hidden="true" />
-        <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-violet-400/20" aria-hidden="true" />
+        <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-white/5" aria-hidden="true" />
         <div className="relative flex items-center gap-3">
           <LogoMark size={44} />
           <div className="leading-tight">
             <div className="text-lg font-bold">ระบบจัดตารางสอน</div>
-            <div className="text-sm text-indigo-100">อัตโนมัติ</div>
+            <div className="text-sm text-brand-100">อัตโนมัติ</div>
           </div>
         </div>
         <div className="relative">
@@ -33,17 +33,17 @@ export function AuthCard({ subtitle, children }: { subtitle: string; children: R
         <ol className="relative space-y-3">
           {FEATURES.map((f) => (
             <li key={f.n} className="flex items-start gap-3">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-white/20 text-sm font-bold">{f.n}</span>
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-sun-300 text-sm font-bold text-brand-900">{f.n}</span>
               <span>
                 <span className="block font-semibold">{f.title}</span>
-                <span className="text-sm text-indigo-100">{f.desc}</span>
+                <span className="text-sm text-brand-100">{f.desc}</span>
               </span>
             </li>
           ))}
         </ol>
       </aside>
       <main className="flex flex-1 items-center justify-center px-4 py-10">
-        <div className="w-full max-w-sm animate-[pop_.35s_ease-out] rounded-2xl border border-slate-200/80 bg-white p-6 shadow-lg shadow-indigo-100">
+        <div className="w-full max-w-sm animate-[pop_.35s_ease-out] rounded-2xl border border-slate-200/80 bg-white p-6 shadow-lg shadow-brand-100">
           <div className="mb-6 flex flex-col items-center text-center">
             <LogoMark size={52} className="mb-3 drop-shadow-[0_6px_12px_rgba(99,102,241,0.3)]" />
             <h1 className="font-bold text-slate-800">ระบบจัดตารางสอนอัตโนมัติ</h1>
