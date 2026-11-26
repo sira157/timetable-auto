@@ -1,0 +1,2055 @@
+{
+ "format": "timetable-dataset",
+ "version": 2,
+ "name": "large",
+ "teachers": [
+  {
+   "code": "T01",
+   "name": "อ.สมชาย ใจดี"
+  },
+  {
+   "code": "T02",
+   "name": "อ.วิไลวรรณ ศรีสุข"
+  },
+  {
+   "code": "T03",
+   "name": "อ.ประเสริฐ มั่นคง"
+  },
+  {
+   "code": "T04",
+   "name": "อ.กนกพร แสงทอง"
+  },
+  {
+   "code": "T05",
+   "name": "อ.ธีระ รุ่งเรือง"
+  },
+  {
+   "code": "T06",
+   "name": "อ.สุภาวดี พรหมมา"
+  },
+  {
+   "code": "T07",
+   "name": "อ.วรเชษฐ์ บุญมา"
+  },
+  {
+   "code": "T08",
+   "name": "อ.นภัสสร คงสวัสดิ์"
+  },
+  {
+   "code": "T09",
+   "name": "อ.ภานุวัฒน์ ทองดี"
+  },
+  {
+   "code": "T10",
+   "name": "อ.ศิริพร วงศ์ใหญ่"
+  },
+  {
+   "code": "T11",
+   "name": "อ.ชาญวิทย์ สมบูรณ์"
+  },
+  {
+   "code": "T12",
+   "name": "อ.อรุณี แก้วประเสริฐ"
+  },
+  {
+   "code": "T13",
+   "name": "อ.เกียรติศักดิ์ ชัยมงคล"
+  },
+  {
+   "code": "T14",
+   "name": "อ.พิมพ์ชนก รักษ์ไทย"
+  },
+  {
+   "code": "T15",
+   "name": "อ.ณัฐพล อินทร์แก้ว"
+  },
+  {
+   "code": "T16",
+   "name": "อ.จันทร์เพ็ญ สายสุวรรณ"
+  },
+  {
+   "code": "T17",
+   "name": "อ.อนุชา ปัญญาดี"
+  },
+  {
+   "code": "T18",
+   "name": "อ.รัตนา ทองคำ"
+  },
+  {
+   "code": "T19",
+   "name": "อ.สุรเชษฐ์ เพชรรัตน์"
+  },
+  {
+   "code": "T20",
+   "name": "อ.มาลัย ศรีวงศ์"
+  },
+  {
+   "code": "T21",
+   "name": "อ.ปิยะพงษ์ สุขเจริญ"
+  },
+  {
+   "code": "T22",
+   "name": "อ.วนิดา ใจงาม"
+  },
+  {
+   "code": "T23",
+   "name": "อ.ธนากร พูลผล"
+  },
+  {
+   "code": "T24",
+   "name": "อ.ลัดดา มีสุข"
+  },
+  {
+   "code": "T25",
+   "name": "อ.กิตติพงษ์ ศรีเมือง"
+  },
+  {
+   "code": "T26",
+   "name": "อ.ปวีณา บุญรอด"
+  },
+  {
+   "code": "T27",
+   "name": "อ.ศักดิ์ชัย จันทร์หอม"
+  },
+  {
+   "code": "T28",
+   "name": "อ.อัญชลี นาคสุข"
+  },
+  {
+   "code": "T29",
+   "name": "อ.วีระพงษ์ ใจดี"
+  },
+  {
+   "code": "T30",
+   "name": "อ.นงลักษณ์ ศรีสุข"
+  },
+  {
+   "code": "T31",
+   "name": "อ.ชัยวัฒน์ มั่นคง"
+  },
+  {
+   "code": "T32",
+   "name": "อ.สมใจ แสงทอง"
+  },
+  {
+   "code": "T33",
+   "name": "อ.ธวัชชัย รุ่งเรือง"
+  },
+  {
+   "code": "T34",
+   "name": "อ.พรทิพย์ พรหมมา"
+  },
+  {
+   "code": "T35",
+   "name": "อ.อำนาจ บุญมา"
+  },
+  {
+   "code": "T36",
+   "name": "อ.สุดารัตน์ คงสวัสดิ์"
+  },
+  {
+   "code": "T37",
+   "name": "อ.ไพโรจน์ ทองดี"
+  },
+  {
+   "code": "T38",
+   "name": "อ.จิราพร วงศ์ใหญ่"
+  },
+  {
+   "code": "T39",
+   "name": "อ.สมศักดิ์ สมบูรณ์"
+  },
+  {
+   "code": "T40",
+   "name": "อ.กาญจนา แก้วประเสริฐ"
+  },
+  {
+   "code": "T41",
+   "name": "อ.สมชาย มีสุข"
+  },
+  {
+   "code": "T42",
+   "name": "อ.วิไลวรรณ ศรีเมือง"
+  },
+  {
+   "code": "T43",
+   "name": "อ.ประเสริฐ บุญรอด"
+  },
+  {
+   "code": "T44",
+   "name": "อ.กนกพร จันทร์หอม"
+  },
+  {
+   "code": "T45",
+   "name": "อ.ธีระ นาคสุข"
+  },
+  {
+   "code": "T46",
+   "name": "อ.สุภาวดี ใจดี"
+  },
+  {
+   "code": "T47",
+   "name": "อ.วรเชษฐ์ ศรีสุข"
+  },
+  {
+   "code": "T48",
+   "name": "อ.นภัสสร มั่นคง"
+  },
+  {
+   "code": "T49",
+   "name": "อ.ภานุวัฒน์ แสงทอง"
+  },
+  {
+   "code": "T50",
+   "name": "อ.ศิริพร รุ่งเรือง"
+  }
+ ],
+ "admins": [
+  "T01",
+  "T02",
+  "T03",
+  "T04",
+  "T05",
+  "T06",
+  "T07"
+ ],
+ "groups": [
+  {
+   "code": "1/1",
+   "name": "ปี 1/1",
+   "year": 1,
+   "size": 30,
+   "homeroom": "301",
+   "advisor": "T08"
+  },
+  {
+   "code": "1/2",
+   "name": "ปี 1/2",
+   "year": 1,
+   "size": 30,
+   "homeroom": "302",
+   "advisor": "T09"
+  },
+  {
+   "code": "1/3",
+   "name": "ปี 1/3",
+   "year": 1,
+   "size": 30,
+   "homeroom": "303",
+   "advisor": "T10"
+  },
+  {
+   "code": "1/4",
+   "name": "ปี 1/4",
+   "year": 1,
+   "size": 30,
+   "homeroom": "304",
+   "advisor": "T11"
+  },
+  {
+   "code": "1/5",
+   "name": "ปี 1/5",
+   "year": 1,
+   "size": 30,
+   "homeroom": "305",
+   "advisor": "T12"
+  },
+  {
+   "code": "1/6",
+   "name": "ปี 1/6",
+   "year": 1,
+   "size": 30,
+   "homeroom": "306",
+   "advisor": "T13"
+  },
+  {
+   "code": "2/1",
+   "name": "ปี 2/1",
+   "year": 2,
+   "size": 30,
+   "homeroom": "401",
+   "advisor": "T14"
+  },
+  {
+   "code": "2/2",
+   "name": "ปี 2/2",
+   "year": 2,
+   "size": 30,
+   "homeroom": "402",
+   "advisor": "T15"
+  },
+  {
+   "code": "2/3",
+   "name": "ปี 2/3",
+   "year": 2,
+   "size": 30,
+   "homeroom": "403",
+   "advisor": "T16"
+  },
+  {
+   "code": "2/4",
+   "name": "ปี 2/4",
+   "year": 2,
+   "size": 30,
+   "homeroom": "404",
+   "advisor": "T17"
+  },
+  {
+   "code": "2/5",
+   "name": "ปี 2/5",
+   "year": 2,
+   "size": 30,
+   "homeroom": "405",
+   "advisor": "T18"
+  },
+  {
+   "code": "2/6",
+   "name": "ปี 2/6",
+   "year": 2,
+   "size": 30,
+   "homeroom": "406",
+   "advisor": "T19"
+  },
+  {
+   "code": "3/1",
+   "name": "ปี 3/1",
+   "year": 3,
+   "size": 25,
+   "homeroom": "501",
+   "advisor": "T20"
+  },
+  {
+   "code": "3/2",
+   "name": "ปี 3/2",
+   "year": 3,
+   "size": 25,
+   "homeroom": "502",
+   "advisor": "T21"
+  },
+  {
+   "code": "3/3",
+   "name": "ปี 3/3",
+   "year": 3,
+   "size": 25,
+   "homeroom": "503",
+   "advisor": "T22"
+  },
+  {
+   "code": "3/4",
+   "name": "ปี 3/4",
+   "year": 3,
+   "size": 25,
+   "homeroom": "504",
+   "advisor": "T23"
+  },
+  {
+   "code": "3/5",
+   "name": "ปี 3/5",
+   "year": 3,
+   "size": 25,
+   "homeroom": "505",
+   "advisor": "T24"
+  },
+  {
+   "code": "4/1",
+   "name": "ปี 4/1",
+   "year": 4,
+   "size": 20,
+   "homeroom": "506",
+   "advisor": "T25"
+  },
+  {
+   "code": "4/2",
+   "name": "ปี 4/2",
+   "year": 4,
+   "size": 20,
+   "homeroom": "601",
+   "advisor": "T26"
+  },
+  {
+   "code": "4/3",
+   "name": "ปี 4/3",
+   "year": 4,
+   "size": 20,
+   "homeroom": "602",
+   "advisor": "T27"
+  },
+  {
+   "code": "4/4",
+   "name": "ปี 4/4",
+   "year": 4,
+   "size": 20,
+   "homeroom": "603",
+   "advisor": "T28"
+  },
+  {
+   "code": "4/5",
+   "name": "ปี 4/5",
+   "year": 4,
+   "size": 20,
+   "homeroom": "604",
+   "advisor": "T29"
+  }
+ ],
+ "rooms": [
+  {
+   "name": "301",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "302",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "303",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "304",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "305",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "306",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "401",
+   "building": "อาคาร 4",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "402",
+   "building": "อาคาร 4",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "403",
+   "building": "อาคาร 4",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "404",
+   "building": "อาคาร 4",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "405",
+   "building": "อาคาร 4",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "406",
+   "building": "อาคาร 4",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "501",
+   "building": "อาคาร 5",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "502",
+   "building": "อาคาร 5",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "503",
+   "building": "อาคาร 5",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "504",
+   "building": "อาคาร 5",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "505",
+   "building": "อาคาร 5",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "506",
+   "building": "อาคาร 5",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "601",
+   "building": "อาคาร 6",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "602",
+   "building": "อาคาร 6",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "603",
+   "building": "อาคาร 6",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "604",
+   "building": "อาคาร 6",
+   "kind": "classroom",
+   "capacity": 45,
+   "sports": []
+  },
+  {
+   "name": "ห้องคอมพิวเตอร์ 1",
+   "building": "อาคารเทคโนโลยี",
+   "kind": "computer",
+   "capacity": 40,
+   "sports": []
+  },
+  {
+   "name": "ห้องคอมพิวเตอร์ 2",
+   "building": "อาคารเทคโนโลยี",
+   "kind": "computer",
+   "capacity": 40,
+   "sports": []
+  },
+  {
+   "name": "ห้องคอมพิวเตอร์ 3",
+   "building": "อาคารเทคโนโลยี",
+   "kind": "computer",
+   "capacity": 40,
+   "sports": []
+  },
+  {
+   "name": "ห้องประชุม 1",
+   "building": "อาคารอำนวยการ",
+   "kind": "meeting",
+   "capacity": 120,
+   "sports": []
+  },
+  {
+   "name": "ห้องประชุม 2",
+   "building": "อาคารอำนวยการ",
+   "kind": "meeting",
+   "capacity": 120,
+   "sports": []
+  },
+  {
+   "name": "หอประชุมใหญ่",
+   "building": "อาคารอำนวยการ",
+   "kind": "meeting",
+   "capacity": 300,
+   "sports": []
+  },
+  {
+   "name": "โรงยิม จุดที่ 1",
+   "building": "โรงยิม",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "กระบี่กระบอง"
+   ]
+  },
+  {
+   "name": "สนามกรีฑา จุดที่ 1",
+   "building": "สนามกรีฑา",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "กรีฑา"
+   ]
+  },
+  {
+   "name": "อาคารว่ายน้ำ จุดที่ 1",
+   "building": "อาคารว่ายน้ำ",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "การช่วยชีวิตทางน้ำ"
+   ]
+  },
+  {
+   "name": "โรงยิม จุดที่ 2",
+   "building": "โรงยิม",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "บาสเกตบอล"
+   ]
+  },
+  {
+   "name": "สนามฟุตบอล จุดที่ 1",
+   "building": "สนามฟุตบอล",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "ฟุตบอล"
+   ]
+  },
+  {
+   "name": "สนามฟุตบอล จุดที่ 2",
+   "building": "สนามฟุตบอล",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "ฟุตบอล"
+   ]
+  },
+  {
+   "name": "อาคารสปอร์ตคอมเพล็ก 1 จุดที่ 1",
+   "building": "อาคารสปอร์ตคอมเพล็ก 1",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "วอลเลย์บอล"
+   ]
+  },
+  {
+   "name": "อาคารสปอร์ตคอมเพล็ก 1 จุดที่ 2",
+   "building": "อาคารสปอร์ตคอมเพล็ก 1",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "วอลเลย์บอล"
+   ]
+  },
+  {
+   "name": "อาคารว่ายน้ำ จุดที่ 2",
+   "building": "อาคารว่ายน้ำ",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "ว่ายน้ำ"
+   ]
+  },
+  {
+   "name": "อาคารสปอร์ตคอมเพล็ก 1 จุดที่ 3",
+   "building": "อาคารสปอร์ตคอมเพล็ก 1",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "แชร์บอล"
+   ]
+  },
+  {
+   "name": "อาคารสปอร์ตคอมเพล็ก 1 จุดที่ 4",
+   "building": "อาคารสปอร์ตคอมเพล็ก 1",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "แอโรบิก"
+   ]
+  }
+ ],
+ "courses": [
+  {
+   "code": "ทศ 101101",
+   "name": "ภาษาไทยเพื่อการสื่อสาร",
+   "credits": "3(2-2-5)",
+   "category": "ภาษา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "ทศ 101102",
+   "name": "ภาษาอังกฤษเพื่อการสื่อสาร",
+   "credits": "3(2-2-5)",
+   "category": "ภาษา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "กศ 011101",
+   "name": "จิตวิทยาสำหรับครู",
+   "credits": "3(3-0-6)",
+   "category": "วิชาชีพครู",
+   "combined": true,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "พล 111101",
+   "name": "ทักษะและการสอนกรีฑา",
+   "credits": "2(1-2-3)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "สนามกรีฑา",
+   "sport": "กรีฑา"
+  },
+  {
+   "code": "พล 111102",
+   "name": "ทักษะและการสอนว่ายน้ำ",
+   "credits": "2(1-2-3)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "อาคารว่ายน้ำ",
+   "sport": "ว่ายน้ำ"
+  },
+  {
+   "code": "วท 121101",
+   "name": "วิทยาศาสตร์การกีฬาเบื้องต้น",
+   "credits": "3(2-2-5)",
+   "category": "วิทยาศาสตร์",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "คณ 131101",
+   "name": "คณิตศาสตร์ในชีวิตประจำวัน",
+   "credits": "3(3-0-6)",
+   "category": "คณิตศาสตร์",
+   "combined": true,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "นท 171101",
+   "name": "เทคโนโลยีดิจิทัลเพื่อการศึกษา",
+   "credits": "3(2-2-5)",
+   "category": "นวัตกรรมและเทคโนโลยี",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "ลส 161001",
+   "name": "ลีลาศเพื่อสุขภาพ",
+   "credits": "3(2-2-5)",
+   "category": "วิชาเลือกเสรี",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": true,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "ทศ 102201",
+   "name": "ภาษาอังกฤษสำหรับครูพลศึกษา",
+   "credits": "3(2-2-5)",
+   "category": "ภาษา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "กศ 012201",
+   "name": "หลักสูตรและการจัดการเรียนรู้",
+   "credits": "3(2-2-5)",
+   "category": "วิชาชีพครู",
+   "combined": true,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "พล 112201",
+   "name": "ทักษะและการสอนฟุตบอล",
+   "credits": "2(1-2-3)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "สนามฟุตบอล",
+   "sport": "ฟุตบอล"
+  },
+  {
+   "code": "พล 112202",
+   "name": "ทักษะและการสอนวอลเลย์บอล",
+   "credits": "2(1-2-3)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "อาคารสปอร์ตคอมเพล็ก 1",
+   "sport": "วอลเลย์บอล"
+  },
+  {
+   "code": "พล 051383",
+   "name": "ทักษะการเรียนรู้กีฬากระบี่กระบอง",
+   "credits": "2(1-2-3)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "โรงยิม",
+   "sport": "กระบี่กระบอง"
+  },
+  {
+   "code": "วท 122201",
+   "name": "สรีรวิทยาการออกกำลังกาย",
+   "credits": "3(2-2-5)",
+   "category": "วิทยาศาสตร์",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "สค 142201",
+   "name": "สังคมกับการเป็นพลเมือง",
+   "credits": "3(3-0-6)",
+   "category": "สังคมศาสตร์และมนุษยศาสตร์",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "นท 172201",
+   "name": "นวัตกรรมการเรียนรู้พลศึกษา",
+   "credits": "3(2-2-5)",
+   "category": "นวัตกรรมและเทคโนโลยี",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "จน 161002",
+   "name": "ภาษาจีนเบื้องต้น",
+   "credits": "3(2-2-5)",
+   "category": "วิชาเลือกเสรี",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": true,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "กศ 013301",
+   "name": "การวัดและประเมินผลการเรียนรู้",
+   "credits": "3(2-2-5)",
+   "category": "วิชาชีพครู",
+   "combined": true,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "กศ 013302",
+   "name": "การวิจัยในชั้นเรียน",
+   "credits": "3(2-2-5)",
+   "category": "วิชาชีพครู",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "พล 113311",
+   "name": "ทักษะและการสอนกีฬาขั้นสูง",
+   "credits": "3(2-2-5)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "วิชาเลือกกีฬา",
+   "free_elective": false,
+   "venue": "สนามฟุตบอล",
+   "sport": "ฟุตบอล"
+  },
+  {
+   "code": "พล 113312",
+   "name": "การตัดสินกีฬา",
+   "credits": "3(2-2-5)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "วิชาเลือกกีฬา",
+   "free_elective": false,
+   "venue": "อาคารสปอร์ตคอมเพล็ก 1",
+   "sport": "วอลเลย์บอล"
+  },
+  {
+   "code": "พล 113313",
+   "name": "กลวิธีการฝึกกีฬา",
+   "credits": "3(2-2-5)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "วิชาเลือกกีฬา",
+   "free_elective": false,
+   "venue": "โรงยิม",
+   "sport": "บาสเกตบอล"
+  },
+  {
+   "code": "พล 113301",
+   "name": "ทักษะและการสอนแชร์บอล",
+   "credits": "2(1-2-3)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "อาคารสปอร์ตคอมเพล็ก 1",
+   "sport": "แชร์บอล"
+  },
+  {
+   "code": "พล 113302",
+   "name": "การช่วยชีวิตทางน้ำ",
+   "credits": "2(1-2-3)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "อาคารว่ายน้ำ",
+   "sport": "การช่วยชีวิตทางน้ำ"
+  },
+  {
+   "code": "พล 113303",
+   "name": "แอโรบิกเพื่อสุขภาพ",
+   "credits": "2(1-2-3)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "อาคารสปอร์ตคอมเพล็ก 1",
+   "sport": "แอโรบิก"
+  },
+  {
+   "code": "สศ 153301",
+   "name": "สุขศึกษาในโรงเรียน",
+   "credits": "3(2-2-5)",
+   "category": "วิชาบังคับ",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "นว 161003",
+   "name": "การนวดแผนไทยเพื่อสุขภาพ",
+   "credits": "3(2-2-5)",
+   "category": "วิชาเลือกเสรี",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": true,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "กศ 021037",
+   "name": "ปฏิบัติการสอนในสถานศึกษา 4",
+   "credits": "6(360)",
+   "category": "วิชาชีพครู",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  }
+ ],
+ "sections": [
+  {
+   "course_code": "ทศ 101101",
+   "group_codes": [
+    "1/1"
+   ],
+   "teacher_codes": [
+    "T08"
+   ]
+  },
+  {
+   "course_code": "ทศ 101101",
+   "group_codes": [
+    "1/2"
+   ],
+   "teacher_codes": [
+    "T08"
+   ]
+  },
+  {
+   "course_code": "ทศ 101101",
+   "group_codes": [
+    "1/3"
+   ],
+   "teacher_codes": [
+    "T08"
+   ]
+  },
+  {
+   "course_code": "ทศ 101101",
+   "group_codes": [
+    "1/4"
+   ],
+   "teacher_codes": [
+    "T09"
+   ]
+  },
+  {
+   "course_code": "ทศ 101101",
+   "group_codes": [
+    "1/5"
+   ],
+   "teacher_codes": [
+    "T09"
+   ]
+  },
+  {
+   "course_code": "ทศ 101101",
+   "group_codes": [
+    "1/6"
+   ],
+   "teacher_codes": [
+    "T09"
+   ]
+  },
+  {
+   "course_code": "ทศ 101102",
+   "group_codes": [
+    "1/1"
+   ],
+   "teacher_codes": [
+    "T10"
+   ]
+  },
+  {
+   "course_code": "ทศ 101102",
+   "group_codes": [
+    "1/2"
+   ],
+   "teacher_codes": [
+    "T10"
+   ]
+  },
+  {
+   "course_code": "ทศ 101102",
+   "group_codes": [
+    "1/3"
+   ],
+   "teacher_codes": [
+    "T10"
+   ]
+  },
+  {
+   "course_code": "ทศ 101102",
+   "group_codes": [
+    "1/4"
+   ],
+   "teacher_codes": [
+    "T11"
+   ]
+  },
+  {
+   "course_code": "ทศ 101102",
+   "group_codes": [
+    "1/5"
+   ],
+   "teacher_codes": [
+    "T11"
+   ]
+  },
+  {
+   "course_code": "ทศ 101102",
+   "group_codes": [
+    "1/6"
+   ],
+   "teacher_codes": [
+    "T11"
+   ]
+  },
+  {
+   "course_code": "กศ 011101",
+   "group_codes": [
+    "ปี 1"
+   ],
+   "teacher_codes": [
+    "T01"
+   ]
+  },
+  {
+   "course_code": "พล 111101",
+   "group_codes": [
+    "1/1"
+   ],
+   "teacher_codes": [
+    "T12"
+   ]
+  },
+  {
+   "course_code": "พล 111101",
+   "group_codes": [
+    "1/2"
+   ],
+   "teacher_codes": [
+    "T12"
+   ]
+  },
+  {
+   "course_code": "พล 111101",
+   "group_codes": [
+    "1/3"
+   ],
+   "teacher_codes": [
+    "T12"
+   ]
+  },
+  {
+   "course_code": "พล 111101",
+   "group_codes": [
+    "1/4"
+   ],
+   "teacher_codes": [
+    "T13"
+   ]
+  },
+  {
+   "course_code": "พล 111101",
+   "group_codes": [
+    "1/5"
+   ],
+   "teacher_codes": [
+    "T13"
+   ]
+  },
+  {
+   "course_code": "พล 111101",
+   "group_codes": [
+    "1/6"
+   ],
+   "teacher_codes": [
+    "T13"
+   ]
+  },
+  {
+   "course_code": "พล 111102",
+   "group_codes": [
+    "1/1"
+   ],
+   "teacher_codes": [
+    "T14"
+   ]
+  },
+  {
+   "course_code": "พล 111102",
+   "group_codes": [
+    "1/2"
+   ],
+   "teacher_codes": [
+    "T14"
+   ]
+  },
+  {
+   "course_code": "พล 111102",
+   "group_codes": [
+    "1/3"
+   ],
+   "teacher_codes": [
+    "T14"
+   ]
+  },
+  {
+   "course_code": "พล 111102",
+   "group_codes": [
+    "1/4"
+   ],
+   "teacher_codes": [
+    "T15"
+   ]
+  },
+  {
+   "course_code": "พล 111102",
+   "group_codes": [
+    "1/5"
+   ],
+   "teacher_codes": [
+    "T15"
+   ]
+  },
+  {
+   "course_code": "พล 111102",
+   "group_codes": [
+    "1/6"
+   ],
+   "teacher_codes": [
+    "T15"
+   ]
+  },
+  {
+   "course_code": "วท 121101",
+   "group_codes": [
+    "1/1"
+   ],
+   "teacher_codes": [
+    "T16",
+    "T17"
+   ]
+  },
+  {
+   "course_code": "วท 121101",
+   "group_codes": [
+    "1/2"
+   ],
+   "teacher_codes": [
+    "T16"
+   ]
+  },
+  {
+   "course_code": "วท 121101",
+   "group_codes": [
+    "1/3"
+   ],
+   "teacher_codes": [
+    "T16"
+   ]
+  },
+  {
+   "course_code": "วท 121101",
+   "group_codes": [
+    "1/4"
+   ],
+   "teacher_codes": [
+    "T18"
+   ]
+  },
+  {
+   "course_code": "วท 121101",
+   "group_codes": [
+    "1/5"
+   ],
+   "teacher_codes": [
+    "T18"
+   ]
+  },
+  {
+   "course_code": "วท 121101",
+   "group_codes": [
+    "1/6"
+   ],
+   "teacher_codes": [
+    "T18"
+   ]
+  },
+  {
+   "course_code": "คณ 131101",
+   "group_codes": [
+    "ปี 1"
+   ],
+   "teacher_codes": [
+    "T02"
+   ]
+  },
+  {
+   "course_code": "นท 171101",
+   "group_codes": [
+    "1/1"
+   ],
+   "teacher_codes": [
+    "T19"
+   ]
+  },
+  {
+   "course_code": "นท 171101",
+   "group_codes": [
+    "1/2"
+   ],
+   "teacher_codes": [
+    "T19"
+   ]
+  },
+  {
+   "course_code": "นท 171101",
+   "group_codes": [
+    "1/3"
+   ],
+   "teacher_codes": [
+    "T19"
+   ]
+  },
+  {
+   "course_code": "นท 171101",
+   "group_codes": [
+    "1/4"
+   ],
+   "teacher_codes": [
+    "T20"
+   ]
+  },
+  {
+   "course_code": "นท 171101",
+   "group_codes": [
+    "1/5"
+   ],
+   "teacher_codes": [
+    "T20"
+   ]
+  },
+  {
+   "course_code": "นท 171101",
+   "group_codes": [
+    "1/6"
+   ],
+   "teacher_codes": [
+    "T20"
+   ]
+  },
+  {
+   "course_code": "ลส 161001",
+   "group_codes": [
+    "ปี 1"
+   ],
+   "teacher_codes": [
+    "T21"
+   ]
+  },
+  {
+   "course_code": "ทศ 102201",
+   "group_codes": [
+    "2/1"
+   ],
+   "teacher_codes": [
+    "T22"
+   ]
+  },
+  {
+   "course_code": "ทศ 102201",
+   "group_codes": [
+    "2/2"
+   ],
+   "teacher_codes": [
+    "T22"
+   ]
+  },
+  {
+   "course_code": "ทศ 102201",
+   "group_codes": [
+    "2/3"
+   ],
+   "teacher_codes": [
+    "T22"
+   ]
+  },
+  {
+   "course_code": "ทศ 102201",
+   "group_codes": [
+    "2/4"
+   ],
+   "teacher_codes": [
+    "T23"
+   ]
+  },
+  {
+   "course_code": "ทศ 102201",
+   "group_codes": [
+    "2/5"
+   ],
+   "teacher_codes": [
+    "T23"
+   ]
+  },
+  {
+   "course_code": "ทศ 102201",
+   "group_codes": [
+    "2/6"
+   ],
+   "teacher_codes": [
+    "T23"
+   ]
+  },
+  {
+   "course_code": "กศ 012201",
+   "group_codes": [
+    "ปี 2"
+   ],
+   "teacher_codes": [
+    "T03",
+    "T04"
+   ]
+  },
+  {
+   "course_code": "พล 112201",
+   "group_codes": [
+    "2/1"
+   ],
+   "teacher_codes": [
+    "T24"
+   ]
+  },
+  {
+   "course_code": "พล 112201",
+   "group_codes": [
+    "2/2"
+   ],
+   "teacher_codes": [
+    "T24"
+   ]
+  },
+  {
+   "course_code": "พล 112201",
+   "group_codes": [
+    "2/3"
+   ],
+   "teacher_codes": [
+    "T24"
+   ]
+  },
+  {
+   "course_code": "พล 112201",
+   "group_codes": [
+    "2/4"
+   ],
+   "teacher_codes": [
+    "T25"
+   ]
+  },
+  {
+   "course_code": "พล 112201",
+   "group_codes": [
+    "2/5"
+   ],
+   "teacher_codes": [
+    "T25"
+   ]
+  },
+  {
+   "course_code": "พล 112201",
+   "group_codes": [
+    "2/6"
+   ],
+   "teacher_codes": [
+    "T25"
+   ]
+  },
+  {
+   "course_code": "พล 112202",
+   "group_codes": [
+    "2/1"
+   ],
+   "teacher_codes": [
+    "T26"
+   ]
+  },
+  {
+   "course_code": "พล 112202",
+   "group_codes": [
+    "2/2"
+   ],
+   "teacher_codes": [
+    "T26"
+   ]
+  },
+  {
+   "course_code": "พล 112202",
+   "group_codes": [
+    "2/3"
+   ],
+   "teacher_codes": [
+    "T26"
+   ]
+  },
+  {
+   "course_code": "พล 112202",
+   "group_codes": [
+    "2/4"
+   ],
+   "teacher_codes": [
+    "T27"
+   ]
+  },
+  {
+   "course_code": "พล 112202",
+   "group_codes": [
+    "2/5"
+   ],
+   "teacher_codes": [
+    "T27"
+   ]
+  },
+  {
+   "course_code": "พล 112202",
+   "group_codes": [
+    "2/6"
+   ],
+   "teacher_codes": [
+    "T27"
+   ]
+  },
+  {
+   "course_code": "พล 051383",
+   "group_codes": [
+    "2/1"
+   ],
+   "teacher_codes": [
+    "T28"
+   ]
+  },
+  {
+   "course_code": "พล 051383",
+   "group_codes": [
+    "2/2"
+   ],
+   "teacher_codes": [
+    "T28"
+   ]
+  },
+  {
+   "course_code": "พล 051383",
+   "group_codes": [
+    "2/3"
+   ],
+   "teacher_codes": [
+    "T28"
+   ]
+  },
+  {
+   "course_code": "พล 051383",
+   "group_codes": [
+    "2/4"
+   ],
+   "teacher_codes": [
+    "T29"
+   ]
+  },
+  {
+   "course_code": "พล 051383",
+   "group_codes": [
+    "2/5"
+   ],
+   "teacher_codes": [
+    "T29"
+   ]
+  },
+  {
+   "course_code": "พล 051383",
+   "group_codes": [
+    "2/6"
+   ],
+   "teacher_codes": [
+    "T29"
+   ]
+  },
+  {
+   "course_code": "วท 122201",
+   "group_codes": [
+    "2/1"
+   ],
+   "teacher_codes": [
+    "T30"
+   ]
+  },
+  {
+   "course_code": "วท 122201",
+   "group_codes": [
+    "2/2"
+   ],
+   "teacher_codes": [
+    "T30"
+   ]
+  },
+  {
+   "course_code": "วท 122201",
+   "group_codes": [
+    "2/3"
+   ],
+   "teacher_codes": [
+    "T30"
+   ]
+  },
+  {
+   "course_code": "วท 122201",
+   "group_codes": [
+    "2/4"
+   ],
+   "teacher_codes": [
+    "T31"
+   ]
+  },
+  {
+   "course_code": "วท 122201",
+   "group_codes": [
+    "2/5"
+   ],
+   "teacher_codes": [
+    "T31"
+   ]
+  },
+  {
+   "course_code": "วท 122201",
+   "group_codes": [
+    "2/6"
+   ],
+   "teacher_codes": [
+    "T31"
+   ]
+  },
+  {
+   "course_code": "สค 142201",
+   "group_codes": [
+    "2/1"
+   ],
+   "teacher_codes": [
+    "T32"
+   ]
+  },
+  {
+   "course_code": "สค 142201",
+   "group_codes": [
+    "2/2"
+   ],
+   "teacher_codes": [
+    "T32"
+   ]
+  },
+  {
+   "course_code": "สค 142201",
+   "group_codes": [
+    "2/3"
+   ],
+   "teacher_codes": [
+    "T32"
+   ]
+  },
+  {
+   "course_code": "สค 142201",
+   "group_codes": [
+    "2/4"
+   ],
+   "teacher_codes": [
+    "T33"
+   ]
+  },
+  {
+   "course_code": "สค 142201",
+   "group_codes": [
+    "2/5"
+   ],
+   "teacher_codes": [
+    "T33"
+   ]
+  },
+  {
+   "course_code": "สค 142201",
+   "group_codes": [
+    "2/6"
+   ],
+   "teacher_codes": [
+    "T33"
+   ]
+  },
+  {
+   "course_code": "นท 172201",
+   "group_codes": [
+    "2/1"
+   ],
+   "teacher_codes": [
+    "T34"
+   ]
+  },
+  {
+   "course_code": "นท 172201",
+   "group_codes": [
+    "2/2"
+   ],
+   "teacher_codes": [
+    "T34"
+   ]
+  },
+  {
+   "course_code": "นท 172201",
+   "group_codes": [
+    "2/3"
+   ],
+   "teacher_codes": [
+    "T34"
+   ]
+  },
+  {
+   "course_code": "นท 172201",
+   "group_codes": [
+    "2/4"
+   ],
+   "teacher_codes": [
+    "T35"
+   ]
+  },
+  {
+   "course_code": "นท 172201",
+   "group_codes": [
+    "2/5"
+   ],
+   "teacher_codes": [
+    "T35"
+   ]
+  },
+  {
+   "course_code": "นท 172201",
+   "group_codes": [
+    "2/6"
+   ],
+   "teacher_codes": [
+    "T35"
+   ]
+  },
+  {
+   "course_code": "จน 161002",
+   "group_codes": [
+    "ปี 2"
+   ],
+   "teacher_codes": [
+    "T36"
+   ]
+  },
+  {
+   "course_code": "กศ 013301",
+   "group_codes": [
+    "ปี 3"
+   ],
+   "teacher_codes": [
+    "T05"
+   ]
+  },
+  {
+   "course_code": "กศ 013302",
+   "group_codes": [
+    "3/1"
+   ],
+   "teacher_codes": [
+    "T37"
+   ]
+  },
+  {
+   "course_code": "กศ 013302",
+   "group_codes": [
+    "3/2"
+   ],
+   "teacher_codes": [
+    "T37"
+   ]
+  },
+  {
+   "course_code": "กศ 013302",
+   "group_codes": [
+    "3/3"
+   ],
+   "teacher_codes": [
+    "T37"
+   ]
+  },
+  {
+   "course_code": "กศ 013302",
+   "group_codes": [
+    "3/4"
+   ],
+   "teacher_codes": [
+    "T38"
+   ]
+  },
+  {
+   "course_code": "กศ 013302",
+   "group_codes": [
+    "3/5"
+   ],
+   "teacher_codes": [
+    "T38"
+   ]
+  },
+  {
+   "course_code": "พล 113311",
+   "group_codes": [
+    "ปี 3"
+   ],
+   "teacher_codes": [
+    "T39"
+   ]
+  },
+  {
+   "course_code": "พล 113312",
+   "group_codes": [
+    "ปี 3"
+   ],
+   "teacher_codes": [
+    "T40"
+   ]
+  },
+  {
+   "course_code": "พล 113313",
+   "group_codes": [
+    "ปี 3"
+   ],
+   "teacher_codes": [
+    "T41"
+   ]
+  },
+  {
+   "course_code": "พล 113301",
+   "group_codes": [
+    "3/1"
+   ],
+   "teacher_codes": [
+    "T42"
+   ]
+  },
+  {
+   "course_code": "พล 113301",
+   "group_codes": [
+    "3/2"
+   ],
+   "teacher_codes": [
+    "T42"
+   ]
+  },
+  {
+   "course_code": "พล 113301",
+   "group_codes": [
+    "3/3"
+   ],
+   "teacher_codes": [
+    "T42"
+   ]
+  },
+  {
+   "course_code": "พล 113301",
+   "group_codes": [
+    "3/4"
+   ],
+   "teacher_codes": [
+    "T43"
+   ]
+  },
+  {
+   "course_code": "พล 113301",
+   "group_codes": [
+    "3/5"
+   ],
+   "teacher_codes": [
+    "T43"
+   ]
+  },
+  {
+   "course_code": "พล 113302",
+   "group_codes": [
+    "3/1"
+   ],
+   "teacher_codes": [
+    "T44"
+   ]
+  },
+  {
+   "course_code": "พล 113302",
+   "group_codes": [
+    "3/2"
+   ],
+   "teacher_codes": [
+    "T44"
+   ]
+  },
+  {
+   "course_code": "พล 113302",
+   "group_codes": [
+    "3/3"
+   ],
+   "teacher_codes": [
+    "T44"
+   ]
+  },
+  {
+   "course_code": "พล 113302",
+   "group_codes": [
+    "3/4"
+   ],
+   "teacher_codes": [
+    "T45"
+   ]
+  },
+  {
+   "course_code": "พล 113302",
+   "group_codes": [
+    "3/5"
+   ],
+   "teacher_codes": [
+    "T45"
+   ]
+  },
+  {
+   "course_code": "พล 113303",
+   "group_codes": [
+    "3/1"
+   ],
+   "teacher_codes": [
+    "T46"
+   ]
+  },
+  {
+   "course_code": "พล 113303",
+   "group_codes": [
+    "3/2"
+   ],
+   "teacher_codes": [
+    "T46"
+   ]
+  },
+  {
+   "course_code": "พล 113303",
+   "group_codes": [
+    "3/3"
+   ],
+   "teacher_codes": [
+    "T46"
+   ]
+  },
+  {
+   "course_code": "พล 113303",
+   "group_codes": [
+    "3/4"
+   ],
+   "teacher_codes": [
+    "T47"
+   ]
+  },
+  {
+   "course_code": "พล 113303",
+   "group_codes": [
+    "3/5"
+   ],
+   "teacher_codes": [
+    "T47"
+   ]
+  },
+  {
+   "course_code": "สศ 153301",
+   "group_codes": [
+    "3/1"
+   ],
+   "teacher_codes": [
+    "T48"
+   ]
+  },
+  {
+   "course_code": "สศ 153301",
+   "group_codes": [
+    "3/2"
+   ],
+   "teacher_codes": [
+    "T48"
+   ]
+  },
+  {
+   "course_code": "สศ 153301",
+   "group_codes": [
+    "3/3"
+   ],
+   "teacher_codes": [
+    "T48"
+   ]
+  },
+  {
+   "course_code": "สศ 153301",
+   "group_codes": [
+    "3/4"
+   ],
+   "teacher_codes": [
+    "T49"
+   ]
+  },
+  {
+   "course_code": "สศ 153301",
+   "group_codes": [
+    "3/5"
+   ],
+   "teacher_codes": [
+    "T49"
+   ]
+  },
+  {
+   "course_code": "นว 161003",
+   "group_codes": [
+    "ปี 3"
+   ],
+   "teacher_codes": [
+    "T50"
+   ]
+  },
+  {
+   "course_code": "กศ 021037",
+   "group_codes": [
+    "ปี 4"
+   ],
+   "teacher_codes": [
+    "T06"
+   ]
+  }
+ ],
+ "busy": [
+  {
+   "kind": "unavailable",
+   "name": "ไปราชการ",
+   "day": 3,
+   "start": 1,
+   "end": 4,
+   "teacher_codes": [
+    "T11"
+   ],
+   "group_codes": []
+  }
+ ]
+}

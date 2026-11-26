@@ -1,0 +1,447 @@
+{
+ "format": "timetable-dataset",
+ "version": 2,
+ "name": "small",
+ "teachers": [
+  {
+   "code": "T01",
+   "name": "อ.สมชาย ใจดี"
+  },
+  {
+   "code": "T02",
+   "name": "อ.วิไลวรรณ ศรีสุข"
+  },
+  {
+   "code": "T03",
+   "name": "อ.ประเสริฐ มั่นคง"
+  },
+  {
+   "code": "T04",
+   "name": "อ.กนกพร แสงทอง"
+  },
+  {
+   "code": "T05",
+   "name": "อ.ธีระ รุ่งเรือง"
+  },
+  {
+   "code": "T06",
+   "name": "อ.สุภาวดี พรหมมา"
+  },
+  {
+   "code": "T07",
+   "name": "อ.วรเชษฐ์ บุญมา"
+  },
+  {
+   "code": "T08",
+   "name": "อ.นภัสสร คงสวัสดิ์"
+  },
+  {
+   "code": "T09",
+   "name": "อ.ภานุวัฒน์ ทองดี"
+  },
+  {
+   "code": "T10",
+   "name": "อ.ศิริพร วงศ์ใหญ่"
+  },
+  {
+   "code": "T11",
+   "name": "อ.ชาญวิทย์ สมบูรณ์"
+  }
+ ],
+ "admins": [
+  "T01",
+  "T02",
+  "T03",
+  "T04"
+ ],
+ "groups": [
+  {
+   "code": "1/1",
+   "name": "ปี 1/1",
+   "year": 1,
+   "size": 30,
+   "homeroom": "301",
+   "advisor": "T05"
+  },
+  {
+   "code": "1/2",
+   "name": "ปี 1/2",
+   "year": 1,
+   "size": 30,
+   "homeroom": "302",
+   "advisor": "T06"
+  },
+  {
+   "code": "2/1",
+   "name": "ปี 2/1",
+   "year": 2,
+   "size": 30,
+   "homeroom": "303",
+   "advisor": "T07"
+  },
+  {
+   "code": "2/2",
+   "name": "ปี 2/2",
+   "year": 2,
+   "size": 30,
+   "homeroom": "304",
+   "advisor": "T08"
+  },
+  {
+   "code": "4/1",
+   "name": "ปี 4/1",
+   "year": 4,
+   "size": 20,
+   "homeroom": "305",
+   "advisor": "T09"
+  }
+ ],
+ "rooms": [
+  {
+   "name": "301",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 40,
+   "sports": []
+  },
+  {
+   "name": "302",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 40,
+   "sports": []
+  },
+  {
+   "name": "303",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 40,
+   "sports": []
+  },
+  {
+   "name": "304",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 40,
+   "sports": []
+  },
+  {
+   "name": "305",
+   "building": "อาคาร 3",
+   "kind": "classroom",
+   "capacity": 40,
+   "sports": []
+  },
+  {
+   "name": "ห้องคอมพิวเตอร์ 1",
+   "building": "อาคารเทคโนโลยี",
+   "kind": "computer",
+   "capacity": 40,
+   "sports": []
+  },
+  {
+   "name": "ห้องประชุม 1",
+   "building": "อาคารอำนวยการ",
+   "kind": "meeting",
+   "capacity": 120,
+   "sports": []
+  },
+  {
+   "name": "ห้องประชุม 2",
+   "building": "อาคารอำนวยการ",
+   "kind": "meeting",
+   "capacity": 120,
+   "sports": []
+  },
+  {
+   "name": "โรงยิม จุดที่ 1",
+   "building": "โรงยิม",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "กระบี่กระบอง"
+   ]
+  },
+  {
+   "name": "สนามกรีฑา จุดที่ 1",
+   "building": "สนามกรีฑา",
+   "kind": "field",
+   "capacity": 60,
+   "sports": [
+    "กรีฑา"
+   ]
+  }
+ ],
+ "courses": [
+  {
+   "code": "ทศ 101101",
+   "name": "ภาษาไทยเพื่อการสื่อสาร",
+   "credits": "3(2-2-5)",
+   "category": "ภาษา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "กศ 011101",
+   "name": "จิตวิทยาสำหรับครู",
+   "credits": "3(3-0-6)",
+   "category": "วิชาชีพครู",
+   "combined": true,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "พล 111101",
+   "name": "ทักษะและการสอนกรีฑา",
+   "credits": "2(1-2-3)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "สนามกรีฑา",
+   "sport": "กรีฑา"
+  },
+  {
+   "code": "นท 171101",
+   "name": "เทคโนโลยีดิจิทัลเพื่อการศึกษา",
+   "credits": "3(2-2-5)",
+   "category": "นวัตกรรมและเทคโนโลยี",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "ลส 161001",
+   "name": "ลีลาศเพื่อสุขภาพ",
+   "credits": "3(2-2-5)",
+   "category": "วิชาเลือกเสรี",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": true,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "ทศ 102201",
+   "name": "ภาษาอังกฤษสำหรับครูพลศึกษา",
+   "credits": "3(2-2-5)",
+   "category": "ภาษา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "กศ 012201",
+   "name": "หลักสูตรและการจัดการเรียนรู้",
+   "credits": "3(2-2-5)",
+   "category": "วิชาชีพครู",
+   "combined": true,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "พล 051383",
+   "name": "ทักษะการเรียนรู้กีฬากระบี่กระบอง",
+   "credits": "2(1-2-3)",
+   "category": "ทักษะและการสอนกีฬา",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "โรงยิม",
+   "sport": "กระบี่กระบอง"
+  },
+  {
+   "code": "วท 122201",
+   "name": "สรีรวิทยาการออกกำลังกาย",
+   "credits": "3(2-2-5)",
+   "category": "วิทยาศาสตร์",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  },
+  {
+   "code": "กศ 021037",
+   "name": "ปฏิบัติการสอนในสถานศึกษา 4",
+   "credits": "6(360)",
+   "category": "วิชาชีพครู",
+   "combined": false,
+   "elective_set": "",
+   "free_elective": false,
+   "venue": "",
+   "sport": ""
+  }
+ ],
+ "sections": [
+  {
+   "course_code": "ทศ 101101",
+   "group_codes": [
+    "1/1"
+   ],
+   "teacher_codes": [
+    "T05"
+   ]
+  },
+  {
+   "course_code": "ทศ 101101",
+   "group_codes": [
+    "1/2"
+   ],
+   "teacher_codes": [
+    "T05"
+   ]
+  },
+  {
+   "course_code": "กศ 011101",
+   "group_codes": [
+    "ปี 1"
+   ],
+   "teacher_codes": [
+    "T01"
+   ]
+  },
+  {
+   "course_code": "พล 111101",
+   "group_codes": [
+    "1/1"
+   ],
+   "teacher_codes": [
+    "T06"
+   ]
+  },
+  {
+   "course_code": "พล 111101",
+   "group_codes": [
+    "1/2"
+   ],
+   "teacher_codes": [
+    "T06"
+   ]
+  },
+  {
+   "course_code": "นท 171101",
+   "group_codes": [
+    "1/1"
+   ],
+   "teacher_codes": [
+    "T07"
+   ]
+  },
+  {
+   "course_code": "นท 171101",
+   "group_codes": [
+    "1/2"
+   ],
+   "teacher_codes": [
+    "T07"
+   ]
+  },
+  {
+   "course_code": "ลส 161001",
+   "group_codes": [
+    "ปี 1"
+   ],
+   "teacher_codes": [
+    "T08"
+   ]
+  },
+  {
+   "course_code": "ทศ 102201",
+   "group_codes": [
+    "2/1"
+   ],
+   "teacher_codes": [
+    "T09"
+   ]
+  },
+  {
+   "course_code": "ทศ 102201",
+   "group_codes": [
+    "2/2"
+   ],
+   "teacher_codes": [
+    "T09"
+   ]
+  },
+  {
+   "course_code": "กศ 012201",
+   "group_codes": [
+    "ปี 2"
+   ],
+   "teacher_codes": [
+    "T02",
+    "T03"
+   ]
+  },
+  {
+   "course_code": "พล 051383",
+   "group_codes": [
+    "2/1"
+   ],
+   "teacher_codes": [
+    "T10"
+   ]
+  },
+  {
+   "course_code": "พล 051383",
+   "group_codes": [
+    "2/2"
+   ],
+   "teacher_codes": [
+    "T10"
+   ]
+  },
+  {
+   "course_code": "วท 122201",
+   "group_codes": [
+    "2/1"
+   ],
+   "teacher_codes": [
+    "T11"
+   ]
+  },
+  {
+   "course_code": "วท 122201",
+   "group_codes": [
+    "2/2"
+   ],
+   "teacher_codes": [
+    "T11"
+   ]
+  },
+  {
+   "course_code": "กศ 021037",
+   "group_codes": [
+    "ปี 4"
+   ],
+   "teacher_codes": [
+    "T04"
+   ]
+  }
+ ],
+ "busy": [
+  {
+   "kind": "unavailable",
+   "name": "ไปราชการ",
+   "day": 3,
+   "start": 1,
+   "end": 4,
+   "teacher_codes": [
+    "T08"
+   ],
+   "group_codes": []
+  }
+ ]
+}
